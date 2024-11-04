@@ -9,6 +9,9 @@ st.info('This app builds a machine learning application for heart disease diagno
 
 st.sidebar.header('User Input Features')
 
+# Initialize ecg_df
+ecg_df = pd.DataFrame()
+
 # Upload ECG signals CSV file
 uploaded_file = st.sidebar.file_uploader("Upload your ECG signal CSV file", type=["csv"])
 if uploaded_file is not None:
