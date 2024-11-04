@@ -20,9 +20,9 @@ else:
         sex = st.sidebar.selectbox('Sex',('male','female'))
         chest_pain_type = st.sidebar.selectbox('Chest pain type',('typical angina','atypical angina', 'non-anginal pain', 'asymptomatic'))
         resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 100, 153, 200)
-        serum_cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 172.0,231.0,201.0)
+        serum_cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 172.0, 201.0 ,231.0)
         fasting_blood_sugar = st.sidebar.selectbox('Fasting blood sugar (mg/dl)',('> 120 mg/dl','< 120 mg/dl'))
-        max_heart_rate = st.sidebar.slider('Max heart rate', 71,182,202)
+        max_heart_rate = st.sidebar.slider('Max heart rate', 71, 182, 202)
         
         data = {'island': island,
                 'bill_length_mm': bill_length_mm,
