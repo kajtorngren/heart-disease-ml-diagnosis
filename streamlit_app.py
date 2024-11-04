@@ -16,7 +16,7 @@ if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
     def user_input_features():
-        age = st.sidebar.slider('Age', 0, 52, 100)
+        age = st.sidebar.slider('Age', 0, 100, 52)
         sex = st.sidebar.selectbox('Sex',('male','female'))
         chest_pain_type = st.sidebar.selectbox('Chest pain type',('typical angina','atypical angina', 'non-anginal pain', 'asymptomatic'))
         resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 100, 200, 153)
