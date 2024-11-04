@@ -64,14 +64,14 @@ def user_input_features():
 input_df = user_input_features()
 
 # Display raw ECG data in a table
-with st.expander('Raw ECG Data'):
+with st.expander('ECG Signal Data'):
     if not ecg_df.empty:
         st.write(ecg_df)  # Display the entire raw data file as a table
     else:
         st.write("No data to display.")
 
 # ECG Data Visualization with axis labels and red line color
-with st.expander('ECG Data Visualization'):
+with st.expander('ECG Signal Data Visualization'):
     if not ecg_data.empty:
         # Create Altair line chart with labeled axes and red line color
         chart = alt.Chart(ecg_data).mark_line(color='red').encode(
