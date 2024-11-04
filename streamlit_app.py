@@ -11,20 +11,20 @@ st.sidebar.header('User Input Features')
 # Upload ECG signals CSV file
 uploaded_file = st.sidebar.file_uploader("Upload your ECG signals CSV file", type=["csv"])
 if uploaded_file is not None:
-    ecg_df = pd.read_csv(uploaded_file)
+    ecg_df = pd.read_csv(uploaded_file, header=None)
     
-    # Extract ECG signal starting from row 10 in the "Name" column
-    if 'Name' in ecg_df.columns:
-        ecg_values = ecg_df['Name'][10:].astype(float).reset_index(drop=True)
-        
-        # Define sampling rate from the metadata (499.01 Hz)
-        sampling_rate = 499.01
-        time_axis = [i / sampling_rate for i in range(len(ecg_values))]
-        
-        # Create a DataFrame for visualization
-        ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal': ecg_values})
-    else:
-        st.warning("The uploaded file does not contain a 'Name' column.")
+    # Extract sampling rate from row 8, second column
+    sampling_rate_str = ecg_df.iloc[8, 1]  # e.g., "499.348 Hz"
+    sampling_rate = float(sampling_rate_str.split()[0])
+    
+    # Extract ECG signal values starting from row 11 in the first column
+    ecg_values = ecg_df[0][14:].astype(float).reset_index(drop=True)
+    
+    # Create time axis based on the sampling rate
+    time_axis = [i / sampling_rate for i in range(len(ecg_values))]
+    
+    # Combine into a DataFrame for visualization
+    ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal': ecg_values})
 else:
     st.sidebar.warning("Please upload an ECG signals CSV file.")
     ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal'])  # Empty DataFrame
