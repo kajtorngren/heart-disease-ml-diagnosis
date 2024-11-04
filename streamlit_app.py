@@ -60,6 +60,13 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
+# Display raw ECG data in a table
+with st.expander('Raw ECG Data'):
+    if not ecg_df.empty:
+        st.write(ecg_df)  # Display the entire raw data file as a table
+    else:
+        st.write("No data to display.")
+
 # ECG Data Visualization with axis labels and red line color
 with st.expander('ECG Data Visualization'):
     if not ecg_data.empty:
