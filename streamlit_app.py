@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import altair as alt
 
-st.title('🫀 Heart Disease ML Diagnosis 🫀')
+st.title('🫀 Heart Disease Machine Learning Diagnosis 🫀')
 
-st.write('This app builds a machine learning application for heart disease diagnosis.')
+st.info('This app builds a machine learning application for heart disease diagnosis.')
 
 st.sidebar.header('User Input Features')
 
