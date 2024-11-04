@@ -5,12 +5,12 @@ import altair as alt
 
 st.title('🫀 Heart Disease ML Diagnosis 🫀')
 
-st.write('This app builds a machine learning application for heart disease diagnosis.')
+st.info('This app builds a machine learning application for heart disease diagnosis.')
 
 st.sidebar.header('User Input Features')
 
 # Upload ECG signals CSV file
-uploaded_file = st.sidebar.file_uploader("Upload your ECG signals CSV file", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload your ECG signal CSV file", type=["csv"])
 if uploaded_file is not None:
     ecg_df = pd.read_csv(uploaded_file, header=None)
     
