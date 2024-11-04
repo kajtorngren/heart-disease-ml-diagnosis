@@ -17,6 +17,15 @@ if uploaded_file is not None:
 else:
     st.sidebar.warning("Please upload an ECG signals CSV file.")
 
+
+# Extract ECG signal starting from row 10 in the "Name" column
+ecg_values = ecg_df['Name'][10:].astype(float).reset_index(drop=True)
+
+# Define sampling rate from the metadata (499.01 Hz)
+sampling_rate = 499.01
+time_axis = [i / sampling_rate for i in range(len(ecg_values))]
+
+
 # Collect other user input features
 def user_input_features():
     age = st.sidebar.slider('Age', 0, 100, 52)
@@ -44,5 +53,4 @@ def user_input_features():
 input_df = user_input_features()
 
 with st.expander('ECG data visualization'):
-    chart_data = data=df, x='time', y=ecg_values
-    st.line_chart(chart_data)
+    st.line_chart(data=ecg_df, x='time', y='ecg_values', color='Signal')
