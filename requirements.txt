@@ -2,10 +2,3 @@ streamlit
 numpy
 pandas 
 scikit-learn
-
-pandas
-plotly
-streamlit
-yfinance
-pandas-datareader
-prophet
