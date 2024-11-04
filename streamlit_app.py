@@ -17,7 +17,7 @@ if uploaded_file is not None:
     sampling_rate_str = ecg_df.iloc[8, 1]  # e.g., "499.348 Hz"
     sampling_rate = float(sampling_rate_str.split()[0])
     
-    # Extract ECG signal values starting from row 11 in the first column
+    # Extract ECG signal values starting from row 15 (index 14) in the first column
     ecg_values = ecg_df[0][14:].astype(float).reset_index(drop=True)
     
     # Create time axis based on the sampling rate
@@ -58,6 +58,7 @@ input_df = user_input_features()
 # ECG Data Visualization
 with st.expander('ECG Data Visualization'):
     if not ecg_data.empty:
-        st.line_chart(ecg_data.rename(columns={'Time (s)': 'index'}).set_index('index'), x='index', y='ECG Signal')
+        ecg_data.set_index('Time (s)', inplace=True)  # Set 'Time (s)' as the index for the chart
+        st.line_chart(ecg_data)  # Plot with 'Time (s)' as the x-axis by default
     else:
         st.write("No ECG data available to visualize.")
