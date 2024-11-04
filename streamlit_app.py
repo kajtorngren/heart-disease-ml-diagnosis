@@ -19,7 +19,7 @@ if uploaded_file is not None:
     input_df = pd.read_csv(uploaded_file)
 else:
     def user_input_features():
-        island = st.sidebar.selectbox('Island',('Biscoe','Dream','Torgersen'))
+        age = st.sidebar.slider('Age', 0, 100)
         sex = st.sidebar.selectbox('Sex',('male','female'))
         bill_length_mm = st.sidebar.slider('Bill length (mm)', 32.1,59.6,43.9)
         bill_depth_mm = st.sidebar.slider('Bill depth (mm)', 13.1,21.5,17.2)
