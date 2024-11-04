@@ -43,6 +43,6 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
-with st.expander('ECG data visualization')
+with st.expander('ECG data visualization'):
     chart_data = data=df, x='time', y=ecg_values
     st.line_chart(chart_data)
