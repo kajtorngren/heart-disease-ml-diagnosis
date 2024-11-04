@@ -30,7 +30,7 @@ if uploaded_file is not None:
     # Set time axis limit based on the last time value
     time_limit = time_axis[-1]
 else:
-    st.sidebar.warning("Please upload an ECG signals CSV file.")
+    st.sidebar.warning("Please upload an ECG signal CSV file.")
     ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
     time_limit = None
 
