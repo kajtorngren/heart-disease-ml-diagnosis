@@ -73,20 +73,14 @@ with st.expander('ECG Signal Data'):
 # ECG Data Visualization with axis labels and red line color
 with st.expander('ECG Signal Data Visualization'):
     if not ecg_data.empty:
-        # Create an interval selection
-        brush = alt.selection_interval(encodings=['x'])
-
         # Create Altair line chart with labeled axes and red line color
         chart = alt.Chart(ecg_data).mark_line(color='red').encode(
-            x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=brush.x)),
+            x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
             y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
         ).properties(
             width=700,
             height=400
-        ).add_selection(
-            brush
-        ).interactive()  # Enable interactive zooming
-
+        )
         st.altair_chart(chart, use_container_width=True)
     else:
         st.write("No ECG data available to visualize.")
