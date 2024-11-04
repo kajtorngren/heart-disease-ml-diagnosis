@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import altair as alt
 
 st.title('🫀 Heart Disease ML Diagnosis 🫀')
 
@@ -24,10 +25,10 @@ if uploaded_file is not None:
     time_axis = [i / sampling_rate for i in range(len(ecg_values))]
     
     # Combine into a DataFrame for visualization
-    ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal': ecg_values})
+    ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal (mV)': ecg_values})
 else:
     st.sidebar.warning("Please upload an ECG signals CSV file.")
-    ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal'])  # Empty DataFrame
+    ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
 
 # Collect other user input features
 def user_input_features():
@@ -55,10 +56,17 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
-# ECG Data Visualization
+# ECG Data Visualization with axis labels
 with st.expander('ECG Data Visualization'):
     if not ecg_data.empty:
-        ecg_data.set_index('Time (s)', inplace=True)  # Set 'Time (s)' as the index for the chart
-        st.line_chart(ecg_data)  # Plot with 'Time (s)' as the x-axis by default
+        # Create Altair line chart with labeled axes
+        chart = alt.Chart(ecg_data).mark_line().encode(
+            x=alt.X('Time (s)', title='Time (s)'),
+            y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+        ).properties(
+            width=700,
+            height=400
+        )
+        st.altair_chart(chart, use_container_width=True)
     else:
         st.write("No ECG data available to visualize.")
