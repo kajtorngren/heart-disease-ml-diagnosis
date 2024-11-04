@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
-st.title('🫀 Heart Disease Machine Learning Diagnosis 🫀')
+st.title('🫀 Heart Disease ML Diagnosis 🫀')
 
 st.write('This app build a machine learning application')
 
