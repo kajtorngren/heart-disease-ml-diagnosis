@@ -1,16 +1,56 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import altair as alt
+
+# Custom CSS for a black background and white text
+st.markdown(
+    """
+    <style>
+        /* Set the entire app background to black */
+        .main {
+            background-color: #000000;
+            color: #FFFFFF;
+        }
+
+        /* Change sidebar background color to black */
+        section[data-testid="stSidebar"] {
+            background-color: #333333;
+        }
+        
+        /* Adjust text color in sidebar */
+        section[data-testid="stSidebar"] .stTextInput, 
+        section[data-testid="stSidebar"] .stSlider {
+            color: #FFFFFF;
+        }
+
+        /* Set white color for expander content */
+        .st-expander {
+            color: #FFFFFF;
+        }
+
+        /* Set DataFrame and other text colors to white */
+        .stTable, .stDataFrame {
+            color: #FFFFFF;
+            background-color: #000000;
+        }
+        
+        /* Make the headers and titles white */
+        .stMarkdown h1, .stMarkdown h2, .stMarkdown h3, .stMarkdown h4, .stMarkdown h5, .stMarkdown h6 {
+            color: #FFFFFF;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 st.title('🫀 Heart Disease ML Diagnosis 🫀')
 
-st.info('This app builds a machine learning application for heart disease diagnosis.')
+st.write('This app builds a machine learning application for heart disease diagnosis.')
 
 st.sidebar.header('User Input Features')
 
 # Upload ECG signals CSV file
-uploaded_file = st.sidebar.file_uploader("Upload your ECG signal CSV file", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload your ECG signals CSV file", type=["csv"])
 if uploaded_file is not None:
     ecg_df = pd.read_csv(uploaded_file, header=None)
     
