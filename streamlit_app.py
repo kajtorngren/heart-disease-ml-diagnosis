@@ -26,9 +26,13 @@ if uploaded_file is not None:
     
     # Combine into a DataFrame for visualization
     ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal (mV)': ecg_values})
+    
+    # Set time axis limit based on the last time value
+    time_limit = time_axis[-1]
 else:
     st.sidebar.warning("Please upload an ECG signals CSV file.")
     ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
+    time_limit = None
 
 # Collect other user input features
 def user_input_features():
@@ -56,12 +60,12 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
-# ECG Data Visualization with axis labels
+# ECG Data Visualization with axis labels and red line color
 with st.expander('ECG Data Visualization'):
     if not ecg_data.empty:
-        # Create Altair line chart with labeled axes
-        chart = alt.Chart(ecg_data).mark_line().encode(
-            x=alt.X('Time (s)', title='Time (s)'),
+        # Create Altair line chart with labeled axes and red line color
+        chart = alt.Chart(ecg_data).mark_line(color='red').encode(
+            x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
             y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
         ).properties(
             width=700,
