@@ -40,7 +40,7 @@ else:
 # Collect other user input features
 def user_input_features():
     age = st.sidebar.slider('Age', 0, 100, 52)
-    sex = st.sidebar.selectbox('Sex', ('male', 'female'))
+    sex = st.sidebar.radio('Sex', ('male', 'female'))
     chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
     resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 100, 200, 153)
     serum_cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 172.0, 231.0, 201.0)
