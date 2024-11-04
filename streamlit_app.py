@@ -19,9 +19,11 @@ else:
         age = st.sidebar.slider('Age', 0, 52, 100)
         sex = st.sidebar.selectbox('Sex',('male','female'))
         chest_pain_type = st.sidebar.selectbox('Chest pain type',('typical angina','atypical angina', 'non-anginal pain', 'asymptomatic'))
-        bill_depth_mm = st.sidebar.slider('Bill depth (mm)', 13.1,21.5,17.2)
-        flipper_length_mm = st.sidebar.slider('Flipper length (mm)', 172.0,231.0,201.0)
-        body_mass_g = st.sidebar.slider('Body mass (g)', 2700.0,6300.0,4207.0)
+        resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 100, 153, 200)
+        serum_cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 172.0,231.0,201.0)
+        fasting_blood_sugar = st.sidebar.selectbox('Fasting blood sugar (mg/dl)',('> 120 mg/dl','< 120 mg/dl'))
+        max_heart_rate = st.sidebar.slider('Max heart rate', 71,182,202)
+        
         data = {'island': island,
                 'bill_length_mm': bill_length_mm,
                 'bill_depth_mm': bill_depth_mm,
