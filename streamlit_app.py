@@ -10,7 +10,7 @@ st.set_page_config(layout="wide")
 st.image("cardiology.jpg", use_column_width=True)
 
 st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
-st.info('This app builds a machine learning application for heart disease diagnosis.')
+st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
 st.sidebar.header('📝 User Input Features')
 
