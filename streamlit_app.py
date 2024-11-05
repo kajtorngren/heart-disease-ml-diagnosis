@@ -45,7 +45,7 @@ def user_input_features():
     resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 100, 200, 153)
     serum_cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=None, placeholder='Type a number...')
     fasting_blood_sugar = st.sidebar.selectbox('Fasting blood sugar', ('> 120 mg/dl', '< 120 mg/dl'))
-    max_heart_rate = st.sidebar.slider('Max heart rate', 71, 202, 172)
+    max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 71, 202, 172)
     
     # Combine inputs into a DataFrame
     data = {
