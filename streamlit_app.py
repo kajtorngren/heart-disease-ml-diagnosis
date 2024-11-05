@@ -6,7 +6,7 @@ import altair as alt
 # Add the banner image
 st.image("cardiology.jpg", use_column_width=True) 
 
-st.title('🫀 Heart Disease ML Diagnosis 🫀')
+st.title('🫀 Heart Disease Machine Learning Diagnosis 🫀')
 
 st.info('This app builds a machine learning application for heart disease diagnosis.')
 
