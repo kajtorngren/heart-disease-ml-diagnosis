@@ -18,7 +18,7 @@ st.sidebar.header('📝 User Input Features')
 ecg_df = pd.DataFrame()
 
 # Upload ECG signals CSV file
-uploaded_file = st.sidebar.file_uploader("Upload your ECG signal CSV file. Designed for Samsung Health Monitor App with Samsung Galaxy Watch 3.", type=["csv"])
+uploaded_file = st.sidebar.file_uploader("Upload your ECG signal CSV file. \nDesigned for Samsung Health Monitor App with Samsung Galaxy Watch 3.", type=["csv"])
 if uploaded_file is not None:
     ecg_df = pd.read_csv(uploaded_file, header=None)
     
