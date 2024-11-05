@@ -10,7 +10,7 @@ st.title('Heart Disease Machine Learning Diagnosis 🫀')
 
 st.info('This app builds a machine learning application for heart disease diagnosis.')
 
-st.sidebar.header('User Input Features')
+st.sidebar.header('📝 User Input Features')
 
 # Initialize ecg_df
 ecg_df = pd.DataFrame()
@@ -67,14 +67,14 @@ def user_input_features():
 input_df = user_input_features()
 
 # Display raw ECG data in a table
-with st.expander('ECG Signal Data'):
+with st.expander('📑 ECG Signal Data'):
     if not ecg_df.empty:
         st.write(ecg_df)  # Display the entire raw data file as a table
     else:
         st.write("No data to display.")
 
 # ECG Data Visualization with axis labels and red line color
-with st.expander('ECG Signal Data Visualization'):
+with st.expander('📉 ECG Signal Data Visualization'):
     if not ecg_data.empty:
         # Create Altair line chart with labeled axes and red line color
         chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
