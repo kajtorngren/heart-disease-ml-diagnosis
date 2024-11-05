@@ -4,10 +4,9 @@ import numpy as np
 import altair as alt
 
 # Add the banner image
-st.image("cardiology.jpg", use_column_width=True) 
+st.image("cardiology.jpg", use_column_width=True)
 
 st.title('Heart Disease Machine Learning Diagnosis 🫀')
-
 st.info('This app builds a machine learning application for heart disease diagnosis.')
 
 st.sidebar.header('📝 User Input Features')
@@ -66,24 +65,27 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
-# Display raw ECG data in a table
-with st.expander('📑 ECG Signal Data'):
-    if not ecg_df.empty:
-        st.write(ecg_df)  # Display the entire raw data file as a table
-    else:
-        st.write("No data to display.")
+# Display the ECG data and visualization side by side
+col1, col2 = st.columns(2)
 
-# ECG Data Visualization with axis labels and red line color
-with st.expander('📉 ECG Signal Data Visualization'):
-    if not ecg_data.empty:
-        # Create Altair line chart with labeled axes and red line color
-        chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
-            x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
-            y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
-        ).properties(
-            width=700,
-            height=400
-        )
-        st.altair_chart(chart, use_container_width=True)
-    else:
-        st.write("No ECG data available to visualize.")
+with col1:
+    with st.expander('📑 ECG Signal Data'):
+        if not ecg_df.empty:
+            st.write(ecg_df)  # Display the entire raw data file as a table
+        else:
+            st.write("No data to display.")
+
+with col2:
+    with st.expander('📉 ECG Signal Data Visualization'):
+        if not ecg_data.empty:
+            # Create Altair line chart with labeled axes and red line color
+            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
+                x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
+                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+            ).properties(
+                width=350,
+                height=400
+            )
+            st.altair_chart(chart, use_container_width=True)
+        else:
+            st.write("No ECG data available to visualize.")
