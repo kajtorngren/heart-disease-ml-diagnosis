@@ -4,7 +4,7 @@ import numpy as np
 import altair as alt
 
 # Add the banner image
-st.image("cardiology.jpg", use_column_width=True)  # Ensure the path to your image is correct
+st.image("cardiology.jpg", height=300)  # Sets the height to 300 pixels
 
 st.title('🫀 Heart Disease ML Diagnosis 🫀')
 
