@@ -77,7 +77,7 @@ with st.expander('ECG Signal Data'):
 with st.expander('ECG Signal Data Visualization'):
     if not ecg_data.empty:
         # Create Altair line chart with labeled axes and red line color
-        chart = alt.Chart(ecg_data).mark_line(color='red').encode(
+        chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
             x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
             y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
         ).properties(
