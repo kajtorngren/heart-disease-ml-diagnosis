@@ -3,6 +3,12 @@ import pandas as pd
 import numpy as np
 import altair as alt
 
+st.set_page_config(
+        page_title="Heart Failure Detection",
+        page_icon="❤",
+        layout="wide"
+    )
+
 # Set the page layout to wide
 st.set_page_config(layout="wide")
 
