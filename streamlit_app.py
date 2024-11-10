@@ -9,8 +9,6 @@ st.set_page_config(
         layout="wide"
     )
 
-# Set the page layout to wide
-st.set_page_config(layout="wide")
 
 # Add the banner image
 st.image("cardiology.jpg", use_column_width=True)
