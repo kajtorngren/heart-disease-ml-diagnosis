@@ -48,13 +48,13 @@ else:
 
 # Collect other user input features
 def user_input_features():
-    age = st.sidebar.slider('Age', 0, 100, 52)
+    age = st.sidebar.slider('Age', 18, 100, 50)
     sex = st.sidebar.radio('Sex', ('male', 'female'))
     chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
-    resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 100, 200, 153)
+    resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
     serum_cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=None, placeholder='Type a number...')
     fasting_blood_sugar = st.sidebar.selectbox('Fasting blood sugar', ('> 120 mg/dl', '< 120 mg/dl'))
-    max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 71, 202, 172)
+    max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
     
     # Combine inputs into a DataFrame
     data = {
