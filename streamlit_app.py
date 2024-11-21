@@ -1,3 +1,6 @@
+# URL: https://heart-disease-ml-diagnosis.streamlit.app/
+# Streamlit APIs: https://docs.streamlit.io/develop/api-reference
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -12,7 +15,7 @@ st.set_page_config(
 # Add the banner image
 st.image("cardiology.jpg", use_column_width=True)
 
-st.title('🧠 Hejsannnnn dasd Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
+st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
 st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
 st.sidebar.header('📝 User Input Features')
