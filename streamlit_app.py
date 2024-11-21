@@ -96,7 +96,7 @@ with col2:
             ).properties(
                 width=350,
                 height=400
-            )
+            ).interactive()
             st.altair_chart(chart, use_container_width=True)
         else:
             st.write("No ECG data available to visualize.")
