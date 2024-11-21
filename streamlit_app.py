@@ -56,7 +56,7 @@ def user_input_features():
     sex = st.sidebar.radio('Sex', ('male', 'female'))
     chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
     resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
-    serum_cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=None, placeholder='Type a number...')
+    cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=None, placeholder='Type a number...')
     fasting_blood_sugar = st.sidebar.selectbox('Fasting blood sugar', ('> 120 mg/dl', '< 120 mg/dl'))
     max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
     
@@ -66,7 +66,7 @@ def user_input_features():
         'sex': sex,
         'chest_pain_type': chest_pain_type,
         'resting_bp_s': resting_bp_s,
-        'serum_cholesterol': serum_cholesterol,
+        'cholesterol': cholesterol,
         'fasting_blood_sugar': fasting_blood_sugar,
         'max_heart_rate': max_heart_rate
     }
