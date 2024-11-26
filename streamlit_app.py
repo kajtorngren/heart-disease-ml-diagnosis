@@ -114,19 +114,6 @@ X_input_normalized = X_input_normalized.reshape(len(X_input), 187, 1)  # Omforma
 X_input = X_input.reshape(len(X_input), 187, 1)
 
 
-if st.button('Predict ECG'):
-
-    # Make predictions
-    y_pred = model.predict(X_input)
-    predicted_classes = np.argmax(y_pred, axis=1)
-
-    st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
-    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-
-    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
-    #------------------
-
-
 # Collect other user input features
 def user_input_features():
     age = st.sidebar.slider('Age', 18, 100, 50)
@@ -200,19 +187,20 @@ input_df = input_df[model.feature_names_in_]
 
 
 
-# Make predictions
-if st.button('Predict'):
+# Button for ECG predictions
+if st.button('Predict ECG'):
+    # Make predictions for ECG data
+    y_pred = model.predict(X_input)
+    predicted_classes = np.argmax(y_pred, axis=1)
 
-    # Make predictions
-    #prediction = model.predict(input_df)
-    #prediction_proba = model.predict_proba(input_df)
+    st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
+    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
 
-    #st.success(f"The predicted class is: {prediction[0]}")
-    #st.success(f"With a probability of {prediction_proba[0][1]*100:.1f}%.")
+    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
 
-    #------------------
-
-    # Make predictions
+# Button for user input predictions
+if st.button('Predict User Input'):
+    # Make predictions for user input features
     prediction = model.predict(input_df)  # Invert the predictions if they are inverted
     prediction_proba = model.predict_proba(input_df)
 
@@ -221,16 +209,6 @@ if st.button('Predict'):
         st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
     else:
         st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
-
-    #------------------
-
-    # Display the results
-    #if prediction[0] == 1:
-    #    st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
-    #else:
-    #    st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
-    
-
 
 # Display the ECG data and visualization side by side
 col1, col2 = st.columns(2)
