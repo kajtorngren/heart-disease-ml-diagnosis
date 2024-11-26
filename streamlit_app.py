@@ -10,8 +10,6 @@ from scipy.interpolate import interp1d
 import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 
-st.legacy_caching.clear_cache()  # Clears the Streamlit cache
-st.cache_data.clear()
 
 # Load the saved model
 model = joblib.load('BPCh_model.pkl')
@@ -65,12 +63,7 @@ else:
     time_limit = None
 
 
-# Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
-sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
-sampling_rate = float(sampling_rate_str.split()[0])
 
-# Detect R-peaks using NeuroKit2
-_, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
 
 
 # Function to resample ECG signal to 187 data points
@@ -101,15 +94,6 @@ def preprocess_ecg_for_prediction(ecg_values, rpeaks, target_length=187):
     return np.array(resized_segments)
 
 
-# Preprocess ECG signal for prediction
-X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
-
-X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
-X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
-X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
-X_input_normalized = X_input_normalized.reshape(len(X_input), 187, 1)  # Omforma tillbaka till 3D
-
-X_input = X_input.reshape(len(X_input), 187, 1)
 
 
 # Collect other user input features
@@ -119,7 +103,7 @@ def user_input_features():
     chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
     exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
     resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
-    cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=None, placeholder='Type a number...')
+    cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=200)
     max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
     
     chest_pain_type_mapping = {
@@ -171,6 +155,26 @@ input_df = input_df[model.feature_names_in_]
 
 # Button for ECG predictions
 if st.button('Predict ECG'):
+
+    # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
+    sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
+    sampling_rate = float(sampling_rate_str.split()[0])
+
+    # Detect R-peaks using NeuroKit2
+    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+
+
+    # Preprocess ECG signal for prediction
+    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+
+    X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
+    X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
+    X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
+    X_input_normalized = X_input_normalized.reshape(len(X_input), 187, 1)  # Omforma tillbaka till 3D
+
+    X_input = X_input.reshape(len(X_input), 187, 1)
+
     # Make predictions for ECG data
     y_pred = model.predict(X_input)
     predicted_classes = np.argmax(y_pred, axis=1)
