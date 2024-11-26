@@ -113,13 +113,18 @@ X_input_normalized = X_input_normalized.reshape(len(X_input), 187, 1)  # Omforma
 
 X_input = X_input.reshape(len(X_input), 187, 1)
 
-y_pred = model.predict(X_input)
-predicted_classes = np.argmax(y_pred, axis=1)
 
-st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
-percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+if st.button('Predict ECG'):
 
-st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+    # Make predictions
+    y_pred = model.predict(X_input)
+    predicted_classes = np.argmax(y_pred, axis=1)
+
+    st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
+    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+
+    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+    #------------------
 
 
 # Collect other user input features
