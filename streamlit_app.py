@@ -73,6 +73,7 @@ def user_input_features():
         'max_heart_rate': max_heart_rate
     }
     features = pd.DataFrame(data, index=[0])
+    print("User Input Parameters:", data)
     return features
 
 # Get user input features
