@@ -196,6 +196,10 @@ if st.button('Predict User Input'):
     else:
         st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
 
+if st.button('Total predict'):
+    st.sucess('Prediction soon')
+
+
 # Display the ECG data and visualization side by side
 col1, col2 = st.columns(2)
 
