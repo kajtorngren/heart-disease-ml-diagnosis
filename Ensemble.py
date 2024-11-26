@@ -31,15 +31,19 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
     def adjust_weights(ecg_risk, bp_chol_risk):
         """
         Justera vikterna för de två modellerna baserat på båda risknivåerna.
-        Ingen variabel får dominera beslutsfattandet.
+        Om en risk är 0, ge hela vikten till den andra.
         """
-        total_risk = ecg_risk + bp_chol_risk
-
-        # Dynamiska vikter proportionellt till riskerna
-        ecg_weight = ecg_risk / total_risk
-        bp_chol_weight = bp_chol_risk / total_risk
-
-        return ecg_weight, bp_chol_weight
+        if ecg_risk == 0 and bp_chol_risk == 0:
+            return 0.5, 0.5  # Ge lika vikt om båda är noll
+        elif ecg_risk == 0:
+            return 0.0, 1.0  # All vikt till BP/Chol om EKG-risk är 0
+        elif bp_chol_risk == 0:
+            return 1.0, 0.0  # All vikt till EKG om BP/Chol-risk är 0
+        else:
+            total_risk = ecg_risk + bp_chol_risk
+            ecg_weight = ecg_risk / total_risk
+            bp_chol_weight = bp_chol_risk / total_risk
+            return ecg_weight, bp_chol_weight
 
     # Hämta dynamiska vikter
     ecg_weight, bp_chol_weight = adjust_weights(ecg_risk, bp_chol_risk)
@@ -67,3 +71,8 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
     # Skriv ut procentuellt resultat för BP/Chol
     #print(f"BP/Chol Risk: {bp_chol_risk}%")
     return res
+
+
+
+
+print(run_ensemble(9,1,0.9))
