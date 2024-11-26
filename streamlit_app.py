@@ -93,8 +93,6 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
-st.write("Input DataFrame:")
-st.write(input_df)
 
 # Define a mapping between input column names and model's feature names
 column_mapping = {
