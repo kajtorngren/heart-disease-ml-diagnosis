@@ -7,6 +7,8 @@ import numpy as np
 import altair as alt
 import joblib
 
+st.legacy_caching.clear_cache()  # Clears the Streamlit cache
+
 # Load the saved model
 model = joblib.load('trained_model.pkl')
 
