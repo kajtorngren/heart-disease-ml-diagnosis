@@ -173,7 +173,7 @@ if st.button('Predict ECG'):
     X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
     X_input_normalized = X_input_normalized.reshape(len(X_input), 187, 1)  # Omforma tillbaka till 3D
 
-    X_input = X_input.reshape(len(X_input), 187, 1)
+    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
 
     # Make predictions for ECG data
     y_pred = model.predict(X_input)
