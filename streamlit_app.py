@@ -94,6 +94,19 @@ input_df = user_input_features()
 st.write("Input DataFrame:")
 st.write(input_df)
 
+# Define a mapping between input column names and model's feature names
+column_mapping = {
+    'chest_pain_type': 'cp',                 # Map chest pain type
+    'exercise_induced_angina': 'exang',     # Map exercise-induced angina
+    'cholesterol': 'chol',                  # Map cholesterol
+    'resting_bp_s': 'trestbps',             # Map resting blood pressure
+    'max_heart_rate': 'thalach'             # Map max heart rate
+}
+
+# Rename columns in input_df to match the model's feature names
+input_df.rename(columns=column_mapping, inplace=True)
+
+
 # Encoding categorical variables in the same way as during training
 input_df = pd.get_dummies(input_df, drop_first=True)
 
