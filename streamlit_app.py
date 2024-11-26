@@ -8,7 +8,7 @@ import altair as alt
 import joblib
 
 # Load the saved model
-model = joblib.load('BPCh_model.pkl')
+model = joblib.load('trained_model.pkl')
 
 st.set_page_config(
         page_title="Heart Failure Detection",
