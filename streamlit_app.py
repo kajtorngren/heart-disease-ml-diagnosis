@@ -227,7 +227,7 @@ if st.button('Total predict'):
     joblib.dump(prediction, 'BPCh_pred.pkl')
     joblib.dump(prediction_proba, 'BPCh_pred_prob.pkl')
 
-    st.success('Done')
+    st.success(f'{percentage_ones},{prediction},{prediction_proba}')
 
     
 
