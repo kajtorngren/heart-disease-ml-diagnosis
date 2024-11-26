@@ -197,7 +197,41 @@ if st.button('Predict User Input'):
         st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
 
 if st.button('Total predict'):
-    st.sucess('Prediction soon')
+    # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
+    sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
+    sampling_rate = float(sampling_rate_str.split()[0])
+
+    # Detect R-peaks using NeuroKit2
+    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+
+
+    # Preprocess ECG signal for prediction
+    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+
+    X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
+    X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
+    X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
+
+    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
+
+    # Make predictions for ECG data
+    y_pred = modelECG.predict(X_input)
+    predicted_classes = np.argmax(y_pred, axis=1)
+
+    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+    joblib.dump(percentage_ones, 'ECG_pred.pkl')
+
+    prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
+    prediction_proba = modelBPCh.predict_proba(input_df)
+    joblib.dump(prediction, 'BPCh_pred.pkl')
+    joblib.dump(prediction_proba, 'BPCh_pred_prob.pkl')
+
+    st.success('Done')
+
+    
+
+
 
 
 # Display the ECG data and visualization side by side
