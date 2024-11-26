@@ -172,10 +172,9 @@ if st.button('Predict ECG'):
     X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
     X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
 
-    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
 
     # Make predictions for ECG data
-    y_pred = model.predict(X_input)
+    y_pred = model.predict(X_input_normalized)
     predicted_classes = np.argmax(y_pred, axis=1)
 
     st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
