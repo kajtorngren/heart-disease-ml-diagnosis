@@ -129,6 +129,13 @@ else:
 # Ensure column order matches the model's expected feature order
 input_df = input_df[model.feature_names_in_]
 
+st.write("Input Data:")
+st.write(input_df.head())
+
+st.write("Model Expected Features:")
+st.write(model.feature_names_in_)
+
+
 # Make predictions
 if st.button('Predict'):
 
