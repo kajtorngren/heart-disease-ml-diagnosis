@@ -10,7 +10,7 @@ import joblib
 st.legacy_caching.clear_cache()  # Clears the Streamlit cache
 
 # Load the saved model
-model = joblib.load('ECG_model.pkl')
+model = joblib.load('BPCh_model.pkl')
 
 st.set_page_config(
         page_title="Heart Failure Detection",
