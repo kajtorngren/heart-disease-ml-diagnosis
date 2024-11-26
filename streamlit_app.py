@@ -65,9 +65,6 @@ else:
     time_limit = None
 
 
-# Load ECG data from your CSV file
-ecg_df = pd.read_csv('/Users/adinastark/Desktop/Heart disease/ECG singal från klockan/ECG Signal 5- 20210609143423.csv', header=None)
-
 # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
 sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
 sampling_rate = float(sampling_rate_str.split()[0])
@@ -207,16 +204,16 @@ with col1:
 
 
 #with col2:
-#    with st.expander('📉 ECG Signal Data Visualization'):
-#        if not ecg_data.empty:
-#            # Create Altair line chart with labeled axes and red line color
-#            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
-#               x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
-#                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
-#            ).properties(
-#                width=350,
-#                height=400
-#            ).interactive()
-#            st.altair_chart(chart, use_container_width=True)
-#        else:
-#            st.write("No ECG data available to visualize.")
+    with st.expander('📉 ECG Signal Data Visualization'):
+        if not ecg_data.empty:
+            # Create Altair line chart with labeled axes and red line color
+            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
+               x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
+                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+            ).properties(
+                width=350,
+                height=400
+            ).interactive()
+            st.altair_chart(chart, use_container_width=True)
+        else:
+            st.write("No ECG data available to visualize.")
