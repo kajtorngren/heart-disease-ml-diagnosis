@@ -136,17 +136,32 @@ st.write("Model Expected Features:")
 st.write(model.feature_names_in_)
 
 
+
+# Ensure labels correspond correctly to "at risk" (1) and "not at risk" (0)
+
 # Make predictions
 if st.button('Predict'):
 
     # Make predictions
-    prediction = model.predict(input_df)
+    #prediction = model.predict(input_df)
+    #prediction_proba = model.predict_proba(input_df)
+
+    #st.success(f"The predicted class is: {prediction[0]}")
+    #st.success(f"With a probability of {prediction_proba[0][1]*100:.1f}%.")
+
+    #------------------
+
+    # Make predictions
+    prediction = 1 - model.predict(input_df)  # Invert the predictions if they are inverted
     prediction_proba = model.predict_proba(input_df)
 
-    st.success(f"The predicted class is: {prediction[0]}")
-    st.success(f"With a probability of {prediction_proba[0][1]*100:.1f}%.")
+    # Display the prediction and probability
+    if prediction[0] == 1:
+        st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
+    else:
+        st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
 
-
+    #------------------
 
     # Display the results
     #if prediction[0] == 1:
