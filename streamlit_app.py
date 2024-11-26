@@ -12,7 +12,8 @@ from sklearn.preprocessing import MinMaxScaler
 
 
 # Load the saved model
-model = joblib.load('BPCh_model.pkl')
+modelBPCh = joblib.load('BPCh_model.pkl')
+modelECG = joblib.load('ECG_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
 
@@ -149,7 +150,7 @@ input_df.rename(columns=column_mapping, inplace=True)
 input_df = pd.get_dummies(input_df, drop_first=True)
 
 # Ensure column order matches the model's expected feature order
-input_df = input_df[model.feature_names_in_]
+input_df = input_df[modelBPCh.feature_names_in_]
 
 
 
@@ -172,9 +173,10 @@ if st.button('Predict ECG'):
     X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
     X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
 
+    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
 
     # Make predictions for ECG data
-    y_pred = model.predict(X_input_normalized)
+    y_pred = modelECG.predict(X_input)
     predicted_classes = np.argmax(y_pred, axis=1)
 
     st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
@@ -185,8 +187,8 @@ if st.button('Predict ECG'):
 # Button for user input predictions
 if st.button('Predict User Input'):
     # Make predictions for user input features
-    prediction = model.predict(input_df)  # Invert the predictions if they are inverted
-    prediction_proba = model.predict_proba(input_df)
+    prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
+    prediction_proba = modelBPCh.predict_proba(input_df)
 
     # Display the prediction and probability
     if prediction[0] == 0:
