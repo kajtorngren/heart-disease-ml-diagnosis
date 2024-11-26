@@ -205,17 +205,18 @@ with col1:
         else:
             st.write("No data to display.")
 
-with col2:
-    with st.expander('📉 ECG Signal Data Visualization'):
-        if not ecg_data.empty:
-            # Create Altair line chart with labeled axes and red line color
-            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
-                x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
-                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
-            ).properties(
-                width=350,
-                height=400
-            ).interactive()
-            st.altair_chart(chart, use_container_width=True)
-        else:
-            st.write("No ECG data available to visualize.")
+
+#with col2:
+#    with st.expander('📉 ECG Signal Data Visualization'):
+#        if not ecg_data.empty:
+#            # Create Altair line chart with labeled axes and red line color
+#            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
+#               x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
+#                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+#            ).properties(
+#                width=350,
+#                height=400
+#            ).interactive()
+#            st.altair_chart(chart, use_container_width=True)
+#        else:
+#            st.write("No ECG data available to visualize.")
