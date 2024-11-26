@@ -78,6 +78,10 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
+st.write("Input DataFrame:")
+st.write(input_df)
+
+
 # Display the ECG data and visualization side by side
 col1, col2 = st.columns(2)
 
