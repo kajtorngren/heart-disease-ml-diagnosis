@@ -254,6 +254,20 @@ if st.button('Total predict'):
 
         st.success(f'{res[0]} {res[1]}')
     else:
+        st.markdown('''
+        <style>
+        .element-container {
+            background-color: red;
+            opacity: 1;
+        }
+        .st-b7 {
+            color: white;
+        }
+        .css-nlntq9 {
+            font-family: Source Sans Pro;
+        }
+        </style>
+        ''', unsafe_allow_html=True)
         st.success(res[0])
 
 
