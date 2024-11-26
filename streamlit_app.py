@@ -11,6 +11,7 @@ import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 
 st.legacy_caching.clear_cache()  # Clears the Streamlit cache
+st.cache_data.clear()
 
 # Load the saved model
 model = joblib.load('BPCh_model.pkl')
