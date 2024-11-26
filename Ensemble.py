@@ -66,7 +66,7 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
 
     # Extra medicinsk insikt om arytmi vid hög EKG-risk
     if ecg_risk >= 70:
-        res += ["Du har stor grad av arytmi, uppsök läkare"]
+        res += ["Du har stor grad av arytmi, uppsök läkare!"]
 
     # Skriv ut procentuellt resultat för BP/Chol
     #print(f"BP/Chol Risk: {bp_chol_risk}%")

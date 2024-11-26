@@ -234,7 +234,14 @@ if st.button('Total predict'):
         BPCh_pred_prob = prediction_proba[0][1]
     
 
-    st.success(run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)[0])
+    res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
+    
+    if len(res) > 1:
+        st.success(f'{res[0]}. {res[1]}')
+    else:
+        st.success(res[0])
+
+
 
 
 
