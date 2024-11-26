@@ -171,7 +171,6 @@ if st.button('Predict ECG'):
     X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
     X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
     X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
-    X_input_normalized = X_input_normalized.reshape(len(X_input), 187, 1)  # Omforma tillbaka till 3D
 
     X_input = X_input.reshape(len(X_input_normalized), 187, 1)
 
