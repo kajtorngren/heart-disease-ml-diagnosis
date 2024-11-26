@@ -57,19 +57,28 @@ def user_input_features():
     age = st.sidebar.slider('Age', 18, 100, 50)
     sex = st.sidebar.radio('Sex', ('male', 'female'))
     chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+    exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
     resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
     cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=None, placeholder='Type a number...')
-    fasting_blood_sugar = st.sidebar.selectbox('Fasting blood sugar', ('> 120 mg/dl', '< 120 mg/dl'))
     max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
+    
+    chest_pain_type_mapping = {
+        'typical angina': 1,
+        'atypical angina': 2,
+        'non-anginal pain': 3,
+        'asymptomatic': 4
+    }
+
+    chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
     
     # Combine inputs into a DataFrame
     data = {
         'age': age,
-        'sex': sex,
-        'chest_pain_type': chest_pain_type,
+        'sex': 1 if sex == 'male' else 0,
+        'chest_pain_type': chest_pain_type_encoded,
+        'exercise_induced_angina': 1 if exercise_induced_angina == 'Yes' else 0,
         'resting_bp_s': resting_bp_s,
         'cholesterol': cholesterol,
-        'fasting_blood_sugar': fasting_blood_sugar,
         'max_heart_rate': max_heart_rate
     }
     features = pd.DataFrame(data, index=[0])
