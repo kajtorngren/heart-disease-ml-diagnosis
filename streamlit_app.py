@@ -228,13 +228,13 @@ if st.button('Total predict'):
 
     
     if prediction[0] == 0:
-        st.success(run_ensemble(percentage_ones,prediction[0],prediction_proba[0][0]))
+        BPCh_pred_prob = prediction_proba[0][0]
 
     else: 
-        st.success(run_ensemble(percentage_ones,prediction[0],prediction_proba[0][1]))
+        BPCh_pred_prob = prediction_proba[0][1]
     
 
-
+    st.success(run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)[0])
 
 
 
