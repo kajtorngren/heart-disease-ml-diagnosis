@@ -1,11 +1,14 @@
 import joblib
-def run_ensemble(data):
+
+
+def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
+    res = []
     # Riskprocent från EKG-modellen
-    ecg_risk = 90  # Risk från EKG-modellen (procent)
+    #ecg_risk = 90  # Risk från EKG-modellen (procent)
 
     # Input från BP/Chol-modellen
-    bp_chol_prediction = 1  # Prediktion från BP/Chol-modellen (0 eller 1)
-    bp_chol_probability = 0.76  # Sannolikhet från BP/Chol-modellen (0 till 1)
+    #bp_chol_prediction = 0  # Prediktion från BP/Chol-modellen (0 eller 1)
+    #bp_chol_probability = 0.85  # Sannolikhet från BP/Chol-modellen (0 till 1)
 
     #ECG_pred = joblib.load('ECG_pred.pkl')
     #BPCh_pred = joblib.load('BPCh_pred.pkl')
@@ -24,22 +27,19 @@ def run_ensemble(data):
         # Om modellen förutspår "hälsosam" (1), invertera sannolikheten till låg risk
         bp_chol_risk = int((1 - bp_chol_probability) * 100)
 
-    # Dynamiska vikter baserat på medicinsk kontext
+    # Dynamiska vikter baserat på båda riskerna
     def adjust_weights(ecg_risk, bp_chol_risk):
         """
-        Justera vikterna för de två modellerna baserat på risknivåer
+        Justera vikterna för de två modellerna baserat på båda risknivåerna.
+        Ingen variabel får dominera beslutsfattandet.
         """
-        # Om BP/Chol-risk är hög, ge BP-modellen mer vikt
-        if bp_chol_risk >= 70:
-            return 0.4, 0.6  # Ge mer vikt till BP/Chol om BP är mycket hög
-        # Om både EKG och BP/Chol är höga, ge lika vikt
-        elif ecg_risk >= 70 and bp_chol_risk >= 70:
-            return 0.5, 0.5  # Ge lika vikt om både EKG och BP är höga
-        # Om både EKG och BP/Chol är låga, ge lika vikt
-        elif ecg_risk < 30 and bp_chol_risk < 50:
-            return 0.5, 0.5  # Låg risk för båda, ge lika vikt
-        else:
-            return 0.5, 0.5  # Standard när riskerna är balanserade
+        total_risk = ecg_risk + bp_chol_risk
+
+        # Dynamiska vikter proportionellt till riskerna
+        ecg_weight = ecg_risk / total_risk
+        bp_chol_weight = bp_chol_risk / total_risk
+
+        return ecg_weight, bp_chol_weight
 
     # Hämta dynamiska vikter
     ecg_weight, bp_chol_weight = adjust_weights(ecg_risk, bp_chol_risk)
@@ -58,15 +58,12 @@ def run_ensemble(data):
         risk_category = "Mycket hög risk för hjärtsjukdom"
 
     # Skriv ut sammanvägt resultat på samma rad
-    print(f"Kombinerad risk: {combined_risk:.2f}% - {risk_category}")
+    res = [(f"Kombinerad risk: {combined_risk:.2f}% - {risk_category}")]
 
     # Extra medicinsk insikt om arytmi vid hög EKG-risk
     if ecg_risk >= 70:
-        print("Du har stor grad av arytmi, uppsök läkare")
+        res += ["Du har stor grad av arytmi, uppsök läkare"]
 
     # Skriv ut procentuellt resultat för BP/Chol
-    print(f"BP/Chol Risk: {bp_chol_risk}%")
-    return 0
-
-
-print(run_ensemble(1))
+    #print(f"BP/Chol Risk: {bp_chol_risk}%")
+    return res

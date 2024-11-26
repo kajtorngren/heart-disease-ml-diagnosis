@@ -221,23 +221,20 @@ if st.button('Total predict'):
     predicted_classes = np.argmax(y_pred, axis=1)
 
     percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-    joblib.dump(percentage_ones, 'ECG_pred.pkl')
-
+    
     prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
     prediction_proba = modelBPCh.predict_proba(input_df)
 
 
-    joblib.dump(prediction[0], 'BPCh_pred.pkl')
+    
     if prediction[0] == 0:
-        joblib.dump(prediction_proba[0][0], 'BPCh_pred_prob.pkl')
+        st.success(run_ensemble(percentage_ones,prediction[0],prediction_proba[0][0]))
 
-    else:
-        joblib.dump(prediction_proba[0][1], 'BPCh_pred_prob.pkl')
+    else: 
+        st.success(run_ensemble(percentage_ones,prediction[0],prediction_proba[0][1]))
     
 
-    st.success(f'{percentage_ones}, {prediction[0]}, {prediction_proba[0][1]}')
 
-    
 
 
 
