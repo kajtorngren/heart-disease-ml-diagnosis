@@ -143,11 +143,16 @@ if st.button('Predict'):
     prediction = model.predict(input_df)
     prediction_proba = model.predict_proba(input_df)
 
+    st.success(f"The predicted class is: {prediction[0]}")
+    st.success(f"With a probability of {prediction_proba[0][1]*100:.1f}%.")
+
+
+
     # Display the results
-    if prediction[0] == 1:
-        st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
-    else:
-        st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
+    #if prediction[0] == 1:
+    #    st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
+    #else:
+    #    st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
     
 
 
