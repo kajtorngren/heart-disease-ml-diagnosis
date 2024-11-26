@@ -9,6 +9,7 @@ import joblib
 from scipy.interpolate import interp1d
 import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
+from Ensemble import run_ensemble
 
 
 # Load the saved model
@@ -225,16 +226,16 @@ if st.button('Total predict'):
     prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
     prediction_proba = modelBPCh.predict_proba(input_df)
 
+
+    joblib.dump(prediction[0], 'BPCh_pred.pkl')
     if prediction[0] == 0:
-        joblib.dump(prediction[0], 'BPCh_pred.pkl')
         joblib.dump(prediction_proba[0][0], 'BPCh_pred_prob.pkl')
 
     else:
-        joblib.dump(prediction[0], 'BPCh_pred.pkl')
         joblib.dump(prediction_proba[0][1], 'BPCh_pred_prob.pkl')
     
 
-    st.success(f'{percentage_ones},{prediction[0]},{prediction_proba[0][1]}')
+    st.success(f'{percentage_ones}, {prediction[0]}, {prediction_proba[0][1]}')
 
     
 
