@@ -75,4 +75,4 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
 
 
 
-print(run_ensemble(9,1,0.9))
+print(run_ensemble(0.00,1,1))
