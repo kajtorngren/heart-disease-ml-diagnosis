@@ -138,9 +138,9 @@ if st.button('Predict'):
 
     # Display the results
     if prediction[0] == 1:
-        st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][1]:.2f}.")
+        st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][1]*100:.2f}%.")
     else:
-        st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][0]:.2f}.")
+        st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][0]*100:.2f}%.")
     
 
 
