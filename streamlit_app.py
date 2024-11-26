@@ -91,8 +91,8 @@ def user_input_features():
 # Get user input features
 input_df = user_input_features()
 
-st.write("Input DataFrame:")
-st.write(input_df)
+#st.write("Input DataFrame:")
+#st.write(input_df)
 
 # Define a mapping between input column names and model's feature names
 column_mapping = {
@@ -111,29 +111,29 @@ input_df.rename(columns=column_mapping, inplace=True)
 input_df = pd.get_dummies(input_df, drop_first=True)
 
 # Check for missing columns
-missing_cols = set(model.feature_names_in_) - set(input_df.columns)
-if missing_cols:
-    st.warning(f"Missing columns detected in input data: {missing_cols}")
-    for col in missing_cols:
-        input_df[col] = 0  # Add missing columns with default value 0
-else:
-    st.success("No missing columns detected. Input data is aligned with the model.")
+#missing_cols = set(model.feature_names_in_) - set(input_df.columns)
+#if missing_cols:
+#    st.warning(f"Missing columns detected in input data: {missing_cols}")
+#    for col in missing_cols:
+#        input_df[col] = 0  # Add missing columns with default value 0
+#else:
+#    st.success("No missing columns detected. Input data is aligned with the model.")
 
 # Check for extra columns
-extra_cols = set(input_df.columns) - set(model.feature_names_in_)
-if extra_cols:
-    st.warning(f"Extra columns detected in input data: {extra_cols}")
-else:
-    st.success("No extra columns detected. Input data matches the model's expected structure.")
+#extra_cols = set(input_df.columns) - set(model.feature_names_in_)
+#if extra_cols:
+#    st.warning(f"Extra columns detected in input data: {extra_cols}")
+#else:
+#    st.success("No extra columns detected. Input data matches the model's expected structure.")
 
 # Ensure column order matches the model's expected feature order
 input_df = input_df[model.feature_names_in_]
 
-st.write("Input Data:")
-st.write(input_df.head())
+#st.write("Input Data:")
+#st.write(input_df.head())
 
-st.write("Model Expected Features:")
-st.write(model.feature_names_in_)
+#st.write("Model Expected Features:")
+#st.write(model.feature_names_in_)
 
 
 
