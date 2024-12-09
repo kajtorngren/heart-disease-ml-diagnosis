@@ -5,4 +5,6 @@ scikit-learn
 neurokit2
 keras
 tensorflow
+streamlit
+streamlit-authenticator
 

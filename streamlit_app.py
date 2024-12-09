@@ -10,6 +10,74 @@ from scipy.interpolate import interp1d
 import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 from Ensemble import run_ensemble
+import streamlit as st
+import streamlit_authenticator as stauth
+import json
+from pathlib import Path
+
+# Fil för att lagra användaruppgifter
+CREDENTIALS_FILE = "credentials.json"
+
+# Ladda eller initiera användaruppgifter
+if Path(CREDENTIALS_FILE).exists():
+    with open(CREDENTIALS_FILE, "r") as f:
+        credentials = json.load(f)
+else:
+    credentials = {"usernames": {}, "passwords": []}
+
+
+def register_user():
+    st.sidebar.title("Registrera nytt konto")
+    username = st.sidebar.text_input("Välj användarnamn")
+    password = st.sidebar.text_input("Välj lösenord", type="password")
+    confirm_password = st.sidebar.text_input("Bekräfta lösenord", type="password")
+
+    if st.sidebar.button("Registrera"):
+        if username in credentials["usernames"]:
+            st.sidebar.error("Användarnamnet finns redan. Välj ett annat.")
+        elif password != confirm_password:
+            st.sidebar.error("Lösenorden matchar inte.")
+        else:
+            # Hasha lösenordet
+            hashed_password = stauth.Hasher([password]).generate()[0]
+            # Spara ny användare
+            credentials["usernames"][username] = hashed_password
+            with open(CREDENTIALS_FILE, "w") as f:
+                json.dump(credentials, f)
+            st.sidebar.success("Konto skapat! Du kan nu logga in.")
+
+
+# Hämta användarnamn och lösenord
+usernames = list(credentials["usernames"].keys())
+hashed_passwords = list(credentials["usernames"].values())
+
+# Sätt upp autentisering
+authenticator = stauth.Authenticate(
+    {"usernames": usernames},
+    {"passwords": hashed_passwords},
+    "app_name",
+    "unique_signature_key",  # Byt ut mot en egen unik sträng
+    cookie_expiry_days=30
+)
+
+# Välj mellan inloggning och registrering
+mode = st.sidebar.radio("Välj åtgärd", ["Logga in", "Registrera"])
+
+if mode == "Logga in":
+    name, authentication_status, username = authenticator.login('Logga in', 'main')
+
+    if authentication_status:
+        st.success(f"Välkommen {name}!")
+        authenticator.logout("Logga ut", "sidebar")
+        # Här lägger du huvudlogiken för din app
+        st.title("Din app är nu tillgänglig")
+    elif authentication_status == False:
+        st.error("Ogiltigt användarnamn eller lösenord")
+    elif authentication_status == None:
+        st.warning("Ange ditt användarnamn och lösenord")
+
+elif mode == "Registrera":
+    register_user()
 
 
 # Load the saved model
