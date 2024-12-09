@@ -66,6 +66,7 @@ mode = st.sidebar.radio("Välj åtgärd", ["Logga in", "Registrera"])
 
 if mode == "Logga in":
     location = 'sidebar'  # Eller 'main'
+    print(f"Location: {location}")
     name, authentication_status, username = authenticator.login('Logga in', location)
 
     if authentication_status:
