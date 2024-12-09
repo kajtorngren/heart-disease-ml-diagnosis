@@ -10,6 +10,7 @@ from scipy.interpolate import interp1d
 import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 from Ensemble import run_ensemble
+import streamlit_authenticator as stauth
 
 
 # Load the saved model
