@@ -10,6 +10,7 @@ from scipy.interpolate import interp1d
 import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 from Ensemble import run_ensemble
+import streamlit as st
 import streamlit_authenticator as stauth
 import json
 from pathlib import Path
@@ -22,11 +23,7 @@ if Path(CREDENTIALS_FILE).exists():
     with open(CREDENTIALS_FILE, "r") as f:
         credentials = json.load(f)
 else:
-    credentials = {
-        "usernames": {
-            "testuser": {"password": "$2b$12$hashedpassword1"}
-        }
-    }
+    credentials = {"usernames": {}, "passwords": []}
 
 
 def register_user():
@@ -44,56 +41,59 @@ def register_user():
             # Hasha lösenordet
             hashed_password = stauth.Hasher([password]).generate()[0]
             # Spara ny användare
-            credentials["usernames"][username] = {"password": hashed_password}
+            credentials["usernames"][username] = hashed_password
             with open(CREDENTIALS_FILE, "w") as f:
                 json.dump(credentials, f)
             st.sidebar.success("Konto skapat! Du kan nu logga in.")
 
 
+# Hämta användarnamn och lösenord
+usernames = list(credentials["usernames"].keys())
+hashed_passwords = list(credentials["usernames"].values())
+
 # Sätt upp autentisering
 authenticator = stauth.Authenticate(
-    {"usernames": credentials["usernames"]},
+    credentials,
     "app_name",
     "unique_signature_key",  # Byt ut mot en egen unik sträng
     cookie_expiry_days=30
 )
 
+
+
 # Välj mellan inloggning och registrering
 mode = st.sidebar.radio("Välj åtgärd", ["Logga in", "Registrera"])
 
 if mode == "Logga in":
-    try:
-        name, authentication_status, username = authenticator.login('Logga in', 'main')
+    name, authentication_status, username = authenticator.login('Logga in', 'main')
 
-        if authentication_status:
-            st.success(f"Välkommen {name}!")
-            authenticator.logout("Logga ut", 'sidebar')
-            # Här lägger du huvudlogiken för din app
-            st.title("Din app är nu tillgänglig")
-        elif authentication_status == False:
-            st.error("Ogiltigt användarnamn eller lösenord")
-        elif authentication_status == None:
-            st.warning("Ange ditt användarnamn och lösenord")
-    except Exception as e:
-        st.error(f"Fel vid inloggning: {e}")
+    if authentication_status:
+        st.success(f"Välkommen {name}!")
+        authenticator.logout("Logga ut", 'sidebar')
+        # Här lägger du huvudlogiken för din app
+        st.title("Din app är nu tillgänglig")
+    elif authentication_status == False:
+        st.error("Ogiltigt användarnamn eller lösenord")
+    elif authentication_status == None:
+        st.warning("Ange ditt användarnamn och lösenord")
 
 elif mode == "Registrera":
     register_user()
 
 
-# Ladda sparade modeller
+# Load the saved model
 modelBPCh = joblib.load('BPCh_model.pkl')
 modelECG = joblib.load('ECG_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
-# Appinställningar
-st.set_page_config(
-    page_title="Heart Failure Detection",
-    page_icon="❤",
-    layout="wide"
-)
 
-# Bannerbild
+st.set_page_config(
+        page_title="Heart Failure Detection",
+        page_icon="❤",
+        layout="wide"
+    )
+
+# Add the banner image
 st.image("cardiology.jpg", use_column_width=True)
 
 st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
@@ -104,7 +104,7 @@ st.sidebar.header('📝 User Input Features')
 # Initialize ecg_df
 ecg_df = pd.DataFrame()
 
-# Ladda upp ECG-signaler CSV-fil
+# Upload ECG signals CSV file
 uploaded_file = st.sidebar.file_uploader(
     "Upload your ECG signal CSV file.  \nDesigned for Samsung Health Monitor App with Samsung Galaxy Watch 3.",
     type=["csv"]
@@ -113,55 +113,61 @@ uploaded_file = st.sidebar.file_uploader(
 if uploaded_file is not None:
     ecg_df = pd.read_csv(uploaded_file, header=None)
     
-    # Extrahera samplingsfrekvens
+    # Extract sampling rate from row 8, second column
     sampling_rate_str = ecg_df.iloc[8, 1]  # e.g., "499.348 Hz"
     sampling_rate = float(sampling_rate_str.split()[0])
     
-    # Extrahera ECG-signalvärden från rad 15 (index 14)
+    # Extract ECG signal values starting from row 15 (index 14) in the first column
     ecg_values = ecg_df[0][14:].astype(float).reset_index(drop=True)
     
-    # Skapa tidsaxel baserat på samplingsfrekvens
+    # Create time axis based on the sampling rate
     time_axis = [i / sampling_rate for i in range(len(ecg_values))]
     
-    # Kombinera till en DataFrame för visualisering
+    # Combine into a DataFrame for visualization
     ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal (mV)': ecg_values})
     
-    # Sätt tidsgräns
+    # Set time axis limit based on the last time value
     time_limit = time_axis[-1]
 else:
     st.sidebar.warning("Please upload an ECG signal CSV file.")
-    ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Tom DataFrame
+    ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
     time_limit = None
 
 
-# Funktion för att interpolera ECG-signal
+
+
+
+# Function to resample ECG signal to 187 data points
 def resample_signal(signal, target_length=187):
     x_original = np.linspace(0, 1, len(signal))
     x_resampled = np.linspace(0, 1, target_length)
     interpolator = interp1d(x_original, signal, kind='linear')
     return interpolator(x_resampled)
 
-# Funktion för att bearbeta RR-intervall
+# Function to preprocess all RR intervals (between consecutive R-peaks)
 def preprocess_ecg_for_prediction(ecg_values, rpeaks, target_length=187):
     resized_segments = []
     
-    # Iterera genom alla R-toppar
+    # Iterate through all consecutive R-peaks
     for i in range(len(rpeaks['ECG_R_Peaks']) - 1):
         start = rpeaks['ECG_R_Peaks'][i]
         end = rpeaks['ECG_R_Peaks'][i + 1]
         
-        # Extrahera segment mellan R-toppar
+        # Extract segment between R-peaks
         segment = ecg_values[start:end]
         
-        # Interpolera segment till 187 datapunkter
+        # Resize the segment to 187 data points
         resized_segment = resample_signal(segment, target_length)
         
-        # Lägg till i lista
+        # Append the resized segment to the list
         resized_segments.append(resized_segment)
     
     return np.array(resized_segments)
 
-# Funktion för att samla användarinput
+
+
+
+# Collect other user input features
 def user_input_features():
     age = st.sidebar.slider('Age', 18, 100, 50)
     sex = st.sidebar.radio('Sex', ('male', 'female'))
@@ -180,7 +186,7 @@ def user_input_features():
 
     chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
     
-    # Kombinera inputs till en DataFrame
+    # Combine inputs into a DataFrame
     data = {
         'age': age,
         'sex': 1 if sex == 'male' else 0,
@@ -193,7 +199,144 @@ def user_input_features():
     features = pd.DataFrame(data, index=[0])
     return features
 
-# Få användarinput
+# Get user input features
 input_df = user_input_features()
 
-# Fler funktioner från din ursprungliga kod här...
+
+# Define a mapping between input column names and model's feature names
+column_mapping = {
+    'chest_pain_type': 'cp',                 # Map chest pain type
+    'exercise_induced_angina': 'exang',     # Map exercise-induced angina
+    'cholesterol': 'chol',                  # Map cholesterol
+    'resting_bp_s': 'trestbps',             # Map resting blood pressure
+    'max_heart_rate': 'thalach'             # Map max heart rate
+}
+
+# Rename columns in input_df to match the model's feature names
+input_df.rename(columns=column_mapping, inplace=True)
+
+
+# Encoding categorical variables in the same way as during training
+input_df = pd.get_dummies(input_df, drop_first=True)
+
+# Ensure column order matches the model's expected feature order
+input_df = input_df[modelBPCh.feature_names_in_]
+
+
+
+# Button for ECG predictions
+if st.button('Predict ECG'):
+
+    # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
+    sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
+    sampling_rate = float(sampling_rate_str.split()[0])
+
+    # Detect R-peaks using NeuroKit2
+    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+
+
+    # Preprocess ECG signal for prediction
+    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+
+    X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
+    X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
+    X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
+
+    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
+
+    # Make predictions for ECG data
+    y_pred = modelECG.predict(X_input)
+    predicted_classes = np.argmax(y_pred, axis=1)
+
+    st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
+    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+
+    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+
+# Button for user input predictions
+if st.button('Predict User Input'):
+    # Make predictions for user input features
+    prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
+    prediction_proba = modelBPCh.predict_proba(input_df)
+
+    # Display the prediction and probability
+    if prediction[0] == 0:
+        st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
+    else:
+        st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
+
+if st.button('Total predict'):
+    # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
+    sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
+    sampling_rate = float(sampling_rate_str.split()[0])
+
+    # Detect R-peaks using NeuroKit2
+    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+
+
+    # Preprocess ECG signal for prediction
+    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+
+    X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
+    X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
+    X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
+
+    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
+
+    # Make predictions for ECG data
+    y_pred = modelECG.predict(X_input)
+    predicted_classes = np.argmax(y_pred, axis=1)
+
+    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+    
+    prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
+    prediction_proba = modelBPCh.predict_proba(input_df)
+
+
+    
+    if prediction[0] == 0:
+        BPCh_pred_prob = prediction_proba[0][0]
+
+    else: 
+        BPCh_pred_prob = prediction_proba[0][1]
+    
+
+    res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
+
+    if len(res) > 1:
+        st.success(f'{res[0]} {res[1]}')
+    else:
+        st.success(res[0])
+
+
+
+
+
+
+# Display the ECG data and visualization side by side
+col1, col2 = st.columns(2)
+
+with col1:
+    with st.expander('📑 ECG Signal Data'):
+        if not ecg_df.empty:
+            st.write(ecg_df)  # Display the entire raw data file as a table
+        else:
+            st.write("No data to display.")
+
+
+#with col2:
+    with st.expander('📉 ECG Signal Data Visualization'):
+        if not ecg_data.empty:
+            # Create Altair line chart with labeled axes and red line color
+            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
+               x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
+                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+            ).properties(
+                width=350,
+                height=400
+            ).interactive()
+            st.altair_chart(chart, use_container_width=True)
+        else:
+            st.write("No ECG data available to visualize.")
