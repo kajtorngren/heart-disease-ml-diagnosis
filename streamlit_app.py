@@ -65,7 +65,7 @@ authenticator = stauth.Authenticate(
 mode = st.sidebar.radio("Välj åtgärd", ["Logga in", "Registrera"])
 
 if mode == "Logga in":
-    name, authentication_status, username = authenticator.login('Logga in', 'unrendered')
+    name, authentication_status, username = authenticator.login('Logga in', location = 'main')
 
     if authentication_status:
         st.success(f"Välkommen {name}!")
