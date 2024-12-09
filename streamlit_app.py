@@ -58,13 +58,14 @@ authenticator = stauth.Authenticate(
     "unique_signature_key",  # Byt ut mot en egen unik sträng
     cookie_expiry_days=30
 )
-location = 'sidebar'  # Eller 'main'
+
 
 
 # Välj mellan inloggning och registrering
 mode = st.sidebar.radio("Välj åtgärd", ["Logga in", "Registrera"])
 
 if mode == "Logga in":
+    location = 'sidebar'  # Eller 'main'
     name, authentication_status, username = authenticator.login('Logga in', location)
 
     if authentication_status:
