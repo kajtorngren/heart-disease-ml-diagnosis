@@ -53,8 +53,7 @@ hashed_passwords = list(credentials["usernames"].values())
 
 # Sätt upp autentisering
 authenticator = stauth.Authenticate(
-    {"usernames": usernames},
-    {"passwords": hashed_passwords},
+    credentials,
     "app_name",
     "unique_signature_key",  # Byt ut mot en egen unik sträng
     cookie_expiry_days=30
