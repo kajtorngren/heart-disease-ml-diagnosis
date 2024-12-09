@@ -24,6 +24,7 @@ if Path(CREDENTIALS_FILE).exists():
         credentials = json.load(f)
 else:
     credentials = {"usernames": {}, "passwords": []}
+    kkkkkkk
 
 
 def register_user():
