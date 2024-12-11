@@ -12,12 +12,18 @@ import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 from Ensemble import run_ensemble
 
-
+# Internetflik visning
 st.set_page_config(
         page_title="Heart Failure Detection",
         page_icon="❤",
         layout="wide"
     )
+
+# Add the banner image
+st.image("cardiology.jpg", use_column_width=True)
+
+st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
+st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
 ####################################################################################
 import pyrebase
@@ -88,12 +94,6 @@ modelBPCh = joblib.load('BPCh_model.pkl')
 modelECG = joblib.load('ECG_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
-
-# Add the banner image
-st.image("cardiology.jpg", use_column_width=True)
-
-st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
-st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
 st.sidebar.header('📝 User Input Features')
 
