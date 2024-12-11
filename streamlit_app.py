@@ -46,7 +46,7 @@ db = firebase.database()
 storage = firebase.storage()
 
 # Authentication
-choice = st.sidebar.selectbox('login/Signup', ['Login', 'Sign up'])
+choice = st.sidebar.selectbox('Login/Signup', ['Login', 'Sign up'])
 
 # Obtain User Input for email and password
 email = st.sidebar.text_input('Please enter your email address')
