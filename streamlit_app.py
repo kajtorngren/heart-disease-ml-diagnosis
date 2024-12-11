@@ -38,7 +38,6 @@ auth = firebase.auth()
 # Database
 db = firebase.database()
 storage = firebase.storage()
-st.sidebar.title("App")
 
 # Authentication
 choice = st.sidebar.selectbox('login/Signup', ['Login', 'Sign up'])
