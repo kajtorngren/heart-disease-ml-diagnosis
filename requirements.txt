@@ -13,3 +13,4 @@ pyrebase
 pycrypto
 datetime
 pycryptodome
+requests
