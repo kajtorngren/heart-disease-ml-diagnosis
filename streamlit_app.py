@@ -19,7 +19,16 @@ from datatime import datatime
 
 
 # Configuration Key
-
+firebaseConfig = {
+  'apiKey': st.secrets[API_KEY],
+  'authDomain': "streamlit-heart-disease-ml.firebaseapp.com",
+  'projectId': "streamlit-heart-disease-ml",
+  'databaseURL': "https://streamlit-heart-disease-ml-default-rtdb.europe-west1.firebasedatabase.app/",
+  'storageBucket': "streamlit-heart-disease-ml.firebasestorage.app",
+  'messagingSenderId': "1040645849945",
+  'appId': "1:1040645849945:web:a19cc6518fdb3da11d4248",
+  'measurementId': "G-NWG4YZ6VSX"
+}
 
 
 # Firebase Authentication
@@ -29,7 +38,7 @@ auth = firebase.auth()
 # Database
 db = firebase.database()
 storage = firebase.storage()
-st.sidebar.title("Our community app")
+st.sidebar.title("App")
 
 # Authentication
 choice = st.sidebar.selectbox('login/Signup', ['Login', 'Sign up'])
