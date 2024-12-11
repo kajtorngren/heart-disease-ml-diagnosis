@@ -5,9 +5,11 @@ scikit-learn
 neurokit2
 keras
 tensorflow
+
 streamlit
 streamlit-authenticator
 
 pyrebase
 pycrypto
 datetime
+pycryptodome
