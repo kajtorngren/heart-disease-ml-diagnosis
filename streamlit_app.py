@@ -20,7 +20,7 @@ from datetime import datetime
 
 # Configuration Key
 firebaseConfig = {
-  'apiKey': st.secrets["auth_token"],
+  'apiKey': st.secrets["API_KEY"],
   'authDomain': "streamlit-heart-disease-ml.firebaseapp.com",
   'projectId': "streamlit-heart-disease-ml",
   'databaseURL': "https://streamlit-heart-disease-ml-default-rtdb.europe-west1.firebasedatabase.app/",
