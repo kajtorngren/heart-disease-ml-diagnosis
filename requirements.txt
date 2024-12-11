@@ -9,8 +9,7 @@ tensorflow
 streamlit
 streamlit-authenticator
 
-pyrebase
+pyrebase4
 pycrypto
 datetime
 pycryptodome
-requests
