@@ -20,7 +20,7 @@ st.set_page_config(
     )
 
 # Add the banner image
-st.image("cardiology.jpg", use_column_width=True)
+st.image("cardiology.jpg", use_container_width=True)
 
 st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
 st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
