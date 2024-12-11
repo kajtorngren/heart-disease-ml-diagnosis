@@ -15,7 +15,7 @@ from Ensemble import run_ensemble
 
 ####################################################################################
 import pyrebase
-from datatime import datatime
+from datetime import datetime
 
 
 # Configuration Key
