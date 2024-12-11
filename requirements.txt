@@ -9,4 +9,3 @@ streamlit
 streamlit-authenticator
 
 pyrebase
-datatime
