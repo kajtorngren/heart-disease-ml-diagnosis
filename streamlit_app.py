@@ -16,7 +16,7 @@ from Ensemble import run_ensemble
 st.set_page_config(
         page_title="Heart Failure Detection",
         page_icon="❤",
-        layout="wide"
+        #layout="wide"
     )
 
 # Add the banner image
