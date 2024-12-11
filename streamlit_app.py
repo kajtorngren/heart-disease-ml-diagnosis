@@ -13,6 +13,12 @@ from sklearn.preprocessing import MinMaxScaler
 from Ensemble import run_ensemble
 
 
+st.set_page_config(
+        page_title="Heart Failure Detection",
+        page_icon="❤",
+        layout="wide"
+    )
+
 ####################################################################################
 import pyrebase
 from datetime import datetime
@@ -82,12 +88,6 @@ modelBPCh = joblib.load('BPCh_model.pkl')
 modelECG = joblib.load('ECG_model.pkl')
 scaler = joblib.load('scaler.pkl')
 
-
-st.set_page_config(
-        page_title="Heart Failure Detection",
-        page_icon="❤",
-        layout="wide"
-    )
 
 # Add the banner image
 st.image("cardiology.jpg", use_column_width=True)
