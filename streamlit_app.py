@@ -79,7 +79,7 @@ if choice == 'Sign up':
 
 # Login Block
 if choice == 'Login':
-    login = st.sidebar.checkbox('Login')
+    login = st.sidebar.button('Login')
     if login:
         user = auth.sign_in_with_email_and_password(email,password)
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
