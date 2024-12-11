@@ -60,6 +60,10 @@ password = st.sidebar.text_input('Please enter your password',type = 'password')
 
 # App 
 
+if 'user' not in st.session_state:
+    st.session_state.user = None  # Initialize the session state for user if not already set
+
+
 # Sign up Block
 if choice == 'Sign up':
     handle = st.sidebar.text_input(
@@ -78,7 +82,7 @@ if choice == 'Sign up':
         st.info('Login via login drop down selection to start you diagnosing!')
 
 # Login Block
-if choice == 'Login':
+if choice == 'Login' and st.session_state.user is None:
     login = st.sidebar.button('Login')
     if login:
         user = auth.sign_in_with_email_and_password(email,password)
