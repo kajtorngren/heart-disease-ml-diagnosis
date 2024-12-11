@@ -9,3 +9,6 @@ streamlit
 streamlit-authenticator
 
 pyrebase
+datatime
+pycrypto
+oauth2client
