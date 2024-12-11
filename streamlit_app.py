@@ -1,6 +1,7 @@
 # URL: https://heart-disease-ml-diagnosis.streamlit.app/
 # Streamlit APIs: https://docs.streamlit.io/develop/api-reference
 
+# Modules
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -10,6 +11,71 @@ from scipy.interpolate import interp1d
 import neurokit2 as nk
 from sklearn.preprocessing import MinMaxScaler
 from Ensemble import run_ensemble
+
+
+####################################################################################
+import pyrebase
+from datatime import datatime
+
+
+# Configuration Key
+firebaseConfig = {
+  'apiKey': "AIzaSyBR0iscdTf7cmLVNjRGZ2LWm1aK_oBHtss",
+  'authDomain': "streamlit-heart-disease-ml.firebaseapp.com",
+  'projectId': "streamlit-heart-disease-ml",
+  'databaseURL': "https://streamlit-heart-disease-ml-default-rtdb.europe-west1.firebasedatabase.app/",
+  'storageBucket': "streamlit-heart-disease-ml.firebasestorage.app",
+  'messagingSenderId': "1040645849945",
+  'appId': "1:1040645849945:web:a19cc6518fdb3da11d4248",
+  'measurementId': "G-NWG4YZ6VSX"
+}
+
+
+# Firebase Authentication
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
+# Database
+db = firebase.database()
+storage = firebase.storage()
+st.sidebar.title("Our community app")
+
+# Authentication
+choice = st.sidebar.selectbox('login/Signup', ['Login', 'Sign up'])
+
+# Obtain User Input for email and password
+email = st.sidebar.text_input('Please enter your email address')
+password = st.sidebar.text_input('Please enter your password',type = 'password')
+
+# App 
+
+# Sign up Block
+if choice == 'Sign up':
+    handle = st.sidebar.text_input(
+        'Please input your app handle name', value='Default')
+    submit = st.sidebar.button('Create my account')
+
+    if submit:
+        user = auth.create_user_with_email_and_password(email, password)
+        st.success('Your account is created suceesfully!')
+        st.balloons()
+        # Sign in
+        user = auth.sign_in_with_email_and_password(email, password)
+        db.child(user['localId']).child("Handle").set(handle)
+        db.child(user['localId']).child("ID").set(user['localId'])
+        st.title('Welcome' + handle)
+        st.info('Login via login drop down selection')
+
+# Login Block
+if choice == 'Login':
+    login = st.sidebar.checkbox('Login')
+    if login:
+        user = auth.sign_in_with_email_and_password(email,password)
+        st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+        bio = st.radio('Jump to',['Home','Workplace Feeds', 'Settings'])
+
+
+#######################################################################################
 
 
 # Load the saved model
