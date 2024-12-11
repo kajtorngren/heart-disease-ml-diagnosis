@@ -105,7 +105,7 @@ def user_input_features():
     chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
     exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
     resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
-    cholesterol = st.sidebar.number_input('Cholesterol (mg/dl)', value=200)
+    cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
     max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
     
     chest_pain_type_mapping = {
