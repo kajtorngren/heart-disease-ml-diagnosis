@@ -19,16 +19,7 @@ from datatime import datatime
 
 
 # Configuration Key
-firebaseConfig = {
-  'apiKey': "AIzaSyBR0iscdTf7cmLVNjRGZ2LWm1aK_oBHtss",
-  'authDomain': "streamlit-heart-disease-ml.firebaseapp.com",
-  'projectId': "streamlit-heart-disease-ml",
-  'databaseURL': "https://streamlit-heart-disease-ml-default-rtdb.europe-west1.firebasedatabase.app/",
-  'storageBucket': "streamlit-heart-disease-ml.firebasestorage.app",
-  'messagingSenderId': "1040645849945",
-  'appId': "1:1040645849945:web:a19cc6518fdb3da11d4248",
-  'measurementId': "G-NWG4YZ6VSX"
-}
+
 
 
 # Firebase Authentication
