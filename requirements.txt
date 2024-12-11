@@ -10,5 +10,5 @@ streamlit-authenticator
 
 pyrebase
 datatime
-pycrypto
+pycrypto==2.6.1
 oauth2client
