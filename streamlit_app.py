@@ -164,13 +164,13 @@ if choice == 'Login':
 
         # Collect other user input features
         def user_input_features():
-            age = st.sidebar.slider('Age', 18, 100, 50)
-            sex = st.sidebar.radio('Sex', ('male', 'female'))
-            chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
-            exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
-            resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
-            cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
-            max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
+            age = st.slider('Age', 18, 100, 50)
+            sex = st.radio('Sex', ('male', 'female'))
+            chest_pain_type = st.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+            exercise_induced_angina = st.selectbox('Chest pain from exercise', ('Yes', 'No'))
+            resting_bp_s = st.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+            cholesterol = st.slider('Cholesterol (mg/dl)', 150, 300, 200)
+            max_heart_rate = st.slider('Max heart rate (bps)', 70, 220, 150)
         
             chest_pain_type_mapping = {
                 'typical angina': 1,
