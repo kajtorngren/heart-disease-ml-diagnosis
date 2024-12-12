@@ -164,7 +164,7 @@ if choice == 'Login':
 
         # Collect other user input features
         def user_input_features():
-            age = st.sidebar.slider('Age', 18, 100, 50, key='slider')
+            age = st.sidebar.slider('Age', 18, 100, 50)
             sex = st.sidebar.radio('Sex', ('male', 'female'))
             chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
             exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
