@@ -84,7 +84,7 @@ if choice == 'Login':
         user = auth.sign_in_with_email_and_password(email,password)
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
         bio = st.radio('Jump to',['Input features','Heart disease prediction', 'History'])
-        
+        st.sidebar.success('Login successful!')
 
 #######################################################################################
 
