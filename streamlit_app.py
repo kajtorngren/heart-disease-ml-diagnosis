@@ -83,7 +83,7 @@ if choice == 'Login':
     if login:
         user = auth.sign_in_with_email_and_password(email,password)
         st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-
+        st.title(f'Welcome {handle}')
 #######################################################################################
 
 
