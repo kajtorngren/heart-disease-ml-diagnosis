@@ -159,11 +159,11 @@ if choice == 'Login':
             return np.array(resized_segments)
 
 
-
+        'st.session_state object:', st.session_state
 
         # Collect other user input features
         def user_input_features():
-            age = st.sidebar.slider('Age', 18, 100, 50)
+            age = st.sidebar.slider('Age', 18, 100, 50, key = 'slider')
             sex = st.sidebar.radio('Sex', ('male', 'female'))
             chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
             exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
