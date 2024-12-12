@@ -321,7 +321,7 @@ if choice == 'Login':
                     st.write("No data to display.")
 
 
-        #with col2:
+        with col2:
             with st.expander('📉 ECG Signal Data Visualization'):
                 if not ecg_data.empty:
                     # Create Altair line chart with labeled axes and red line color
