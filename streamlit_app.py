@@ -159,37 +159,26 @@ if choice == 'Login':
             return np.array(resized_segments)
 
 
-                # Initialize session state for user input data
-        if "user_data" not in st.session_state:
-            st.session_state["user_data"] = pd.DataFrame()
-
-        # Function to collect user input features
+        # Collect other user input features
         def user_input_features():
-            age = st.sidebar.slider('Age', 18, 100, 50, key='slider_age')
-            sex = st.sidebar.radio('Sex', ('male', 'female'), key='radio_sex')
-            chest_pain_type = st.sidebar.selectbox(
-                'Chest pain type', 
-                ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'),
-                key='selectbox_chest_pain'
-            )
-            exercise_induced_angina = st.sidebar.selectbox(
-                'Chest pain from exercise', 
-                ('Yes', 'No'), 
-                key='selectbox_exercise'
-            )
-            resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120, key='slider_bp')
-            cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200, key='slider_cholesterol')
-            max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150, key='slider_hr')
-
+            age = st.sidebar.slider('Age', 18, 100, 50, key = 'slider')
+            sex = st.sidebar.radio('Sex', ('male', 'female'))
+            chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+            exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
+            resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+            cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
+            max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
+        
             chest_pain_type_mapping = {
                 'typical angina': 1,
                 'atypical angina': 2,
                 'non-anginal pain': 3,
                 'asymptomatic': 4
             }
-            chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
 
-            # Combine inputs into a dictionary
+            chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
+        
+            # Combine inputs into a DataFrame
             data = {
                 'age': age,
                 'sex': 1 if sex == 'male' else 0,
