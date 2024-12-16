@@ -238,4 +238,4 @@ if choice == 'Login':
 
         except Exception as e:
             # Handle invalid login
-            st.sidebar.error('Invalid username or password. Please try again.')
+            st.sidebar.error('Invalid email address or password. \nPlease try again.')
