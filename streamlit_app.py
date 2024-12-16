@@ -81,10 +81,13 @@ if choice == 'Sign up':
 if choice == 'Login':
     login = st.sidebar.checkbox('Login/Logout')
     if login:
-        user = auth.sign_in_with_email_and_password(email,password)
-        st.sidebar.success('Login successful!')
-        st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-        bio = st.sidebar.radio('Jump to',['Input features','Heart disease prediction', 'History'])
+        try:
+            user = auth.sign_in_with_email_and_password(email, password)
+            st.sidebar.success('Login successful!')
+            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+            bio = st.sidebar.radio('Jump to', ['Input features', 'Heart disease prediction', 'History'])
+        except Exception as e:
+            st.sidebar.error('Invalid username or password. Please try again.')
     
 
 #######################################################################################
