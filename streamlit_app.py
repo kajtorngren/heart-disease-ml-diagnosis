@@ -331,6 +331,10 @@ if choice == 'Login':
                     else:
                         st.write("No ECG data available to visualize.")
 
+            
+
+            post = st.text_input("Let's share my current mood as a post!",max_chars = 100)
+            add_post = st.button('Share Posts')
 
 
         except Exception as e:
