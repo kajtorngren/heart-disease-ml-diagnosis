@@ -81,165 +81,164 @@ if choice == 'Sign up':
 if choice == 'Login':
     login = st.sidebar.checkbox('Login/Logout')
     if login:
-        try:
-            # Authenticate user
-            user = auth.sign_in_with_email_and_password(email, password)
-            st.sidebar.success('Login successful!')
-            st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
-            bio = st.sidebar.radio('Jump to', ['Input features', 'Heart disease prediction', 'History'])
+        # Authenticate user
+        user = auth.sign_in_with_email_and_password(email, password)
+        st.sidebar.success('Login successful!')
+        st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
+        bio = st.sidebar.radio('Jump to', ['Input features', 'Heart disease prediction', 'History'])
 
 #######################################################################################
 
-            # Load the saved models
-            modelBPCh = joblib.load('BPCh_model.pkl')
-            modelECG = joblib.load('ECG_model.pkl')
-            scaler = joblib.load('scaler.pkl')
+        # Load the saved models
+        modelBPCh = joblib.load('BPCh_model.pkl')
+        modelECG = joblib.load('ECG_model.pkl')
+        scaler = joblib.load('scaler.pkl')
 
-            st.sidebar.header('📝 User Input Features')
+        st.sidebar.header('📝 User Input Features')
 
-            # Initialize ecg_df
-            ecg_df = pd.DataFrame()
+        # Initialize ecg_df
+        ecg_df = pd.DataFrame()
 
-            # Upload ECG signals CSV file
-            uploaded_file = st.sidebar.file_uploader(
-                "Upload your ECG signal CSV file.  \nDesigned for Samsung Health Monitor App with Samsung Galaxy Watch 3.",
-                type=["csv"]
-            )
+        # Upload ECG signals CSV file
+        uploaded_file = st.sidebar.file_uploader(
+            "Upload your ECG signal CSV file.  \nDesigned for Samsung Health Monitor App with Samsung Galaxy Watch 3.",
+            type=["csv"]
+        )
 
-            if uploaded_file is not None:
-                ecg_df = pd.read_csv(uploaded_file, header=None)
+        if uploaded_file is not None:
+            ecg_df = pd.read_csv(uploaded_file, header=None)
 
-                # Extract sampling rate from row 8, second column
-                sampling_rate_str = ecg_df.iloc[8, 1]  # e.g., "499.348 Hz"
-                sampling_rate = float(sampling_rate_str.split()[0])
+            # Extract sampling rate from row 8, second column
+            sampling_rate_str = ecg_df.iloc[8, 1]  # e.g., "499.348 Hz"
+            sampling_rate = float(sampling_rate_str.split()[0])
 
-                # Extract ECG signal values starting from row 15 (index 14) in the first column
-                ecg_values = ecg_df[0][14:].astype(float).reset_index(drop=True)
+            # Extract ECG signal values starting from row 15 (index 14) in the first column
+            ecg_values = ecg_df[0][14:].astype(float).reset_index(drop=True)
 
-                # Create time axis based on the sampling rate
-                time_axis = [i / sampling_rate for i in range(len(ecg_values))]
+            # Create time axis based on the sampling rate
+            time_axis = [i / sampling_rate for i in range(len(ecg_values))]
 
-                # Combine into a DataFrame for visualization
-                ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal (mV)': ecg_values})
+            # Combine into a DataFrame for visualization
+            ecg_data = pd.DataFrame({'Time (s)': time_axis, 'ECG Signal (mV)': ecg_values})
 
-                # Set time axis limit based on the last time value
-                time_limit = time_axis[-1]
-            else:
-                st.sidebar.warning("Please upload an ECG signal CSV file.")
-                ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
-                time_limit = None
+            # Set time axis limit based on the last time value
+            time_limit = time_axis[-1]
+        else:
+            st.sidebar.warning("Please upload an ECG signal CSV file.")
+            ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
+            time_limit = None
 
-            # Function to resample ECG signal to 187 data points
-            def resample_signal(signal, target_length=187):
-                x_original = np.linspace(0, 1, len(signal))
-                x_resampled = np.linspace(0, 1, target_length)
-                interpolator = interp1d(x_original, signal, kind='linear')
-                return interpolator(x_resampled)
+        # Function to resample ECG signal to 187 data points
+        def resample_signal(signal, target_length=187):
+            x_original = np.linspace(0, 1, len(signal))
+            x_resampled = np.linspace(0, 1, target_length)
+            interpolator = interp1d(x_original, signal, kind='linear')
+            return interpolator(x_resampled)
 
-            # Function to preprocess all RR intervals (between consecutive R-peaks)
-            def preprocess_ecg_for_prediction(ecg_values, rpeaks, target_length=187):
-                resized_segments = []
-                for i in range(len(rpeaks['ECG_R_Peaks']) - 1):
-                    start = rpeaks['ECG_R_Peaks'][i]
-                    end = rpeaks['ECG_R_Peaks'][i + 1]
+        # Function to preprocess all RR intervals (between consecutive R-peaks)
+        def preprocess_ecg_for_prediction(ecg_values, rpeaks, target_length=187):
+            resized_segments = []
+            for i in range(len(rpeaks['ECG_R_Peaks']) - 1):
+                start = rpeaks['ECG_R_Peaks'][i]
+                end = rpeaks['ECG_R_Peaks'][i + 1]
 
-                    # Extract segment between R-peaks
-                    segment = ecg_values[start:end]
+                # Extract segment between R-peaks
+                segment = ecg_values[start:end]
 
-                    # Resize the segment to 187 data points
-                    resized_segment = resample_signal(segment, target_length)
+                # Resize the segment to 187 data points
+                resized_segment = resample_signal(segment, target_length)
 
-                    # Append the resized segment to the list
-                    resized_segments.append(resized_segment)
+                # Append the resized segment to the list
+                resized_segments.append(resized_segment)
 
-                return np.array(resized_segments)
+            return np.array(resized_segments)
 
-            # Collect other user input features
-            def user_input_features():
-                age = st.sidebar.slider('Age', 18, 100, 50)
-                sex = st.sidebar.radio('Sex', ('male', 'female'))
-                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
-                exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
-                resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
-                cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
-                max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
+        # Collect other user input features
+        def user_input_features():
+            age = st.sidebar.slider('Age', 18, 100, 50)
+            sex = st.sidebar.radio('Sex', ('male', 'female'))
+            chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+            exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
+            resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+            cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
+            max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
-                chest_pain_type_mapping = {
-                    'typical angina': 1,
-                    'atypical angina': 2,
-                    'non-anginal pain': 3,
-                    'asymptomatic': 4
-                }
-
-                chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
-
-                # Combine inputs into a DataFrame
-                data = {
-                    'age': age,
-                    'sex': 1 if sex == 'male' else 0,
-                    'chest_pain_type': chest_pain_type_encoded,
-                    'exercise_induced_angina': 1 if exercise_induced_angina == 'Yes' else 0,
-                    'resting_bp_s': resting_bp_s,
-                    'cholesterol': cholesterol,
-                    'max_heart_rate': max_heart_rate
-                }
-                features = pd.DataFrame(data, index=[0])
-                return features
-
-            # Get user input features
-            input_df = user_input_features()
-
-            # Define a mapping between input column names and model's feature names
-            column_mapping = {
-                'chest_pain_type': 'cp',
-                'exercise_induced_angina': 'exang',
-                'cholesterol': 'chol',
-                'resting_bp_s': 'trestbps',
-                'max_heart_rate': 'thalach'
+            chest_pain_type_mapping = {
+                'typical angina': 1,
+                'atypical angina': 2,
+                'non-anginal pain': 3,
+                'asymptomatic': 4
             }
 
-            # Rename columns in input_df to match the model's feature names
-            input_df.rename(columns=column_mapping, inplace=True)
+            chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
 
-            # Encoding categorical variables in the same way as during training
-            input_df = pd.get_dummies(input_df, drop_first=True)
+            # Combine inputs into a DataFrame
+            data = {
+                'age': age,
+                'sex': 1 if sex == 'male' else 0,
+                'chest_pain_type': chest_pain_type_encoded,
+                'exercise_induced_angina': 1 if exercise_induced_angina == 'Yes' else 0,
+                'resting_bp_s': resting_bp_s,
+                'cholesterol': cholesterol,
+                'max_heart_rate': max_heart_rate
+            }
+            features = pd.DataFrame(data, index=[0])
+            return features
 
-            # Ensure column order matches the model's expected feature order
-            input_df = input_df[modelBPCh.feature_names_in_]
+        # Get user input features
+        input_df = user_input_features()
 
-            # Button for ECG predictions
-            if st.button('Predict ECG'):
-                if uploaded_file is None:
-                    st.warning("Please upload an ECG signal file first.")
+        # Define a mapping between input column names and model's feature names
+        column_mapping = {
+            'chest_pain_type': 'cp',
+            'exercise_induced_angina': 'exang',
+            'cholesterol': 'chol',
+            'resting_bp_s': 'trestbps',
+            'max_heart_rate': 'thalach'
+        }
+
+        # Rename columns in input_df to match the model's feature names
+        input_df.rename(columns=column_mapping, inplace=True)
+
+        # Encoding categorical variables in the same way as during training
+        input_df = pd.get_dummies(input_df, drop_first=True)
+
+        # Ensure column order matches the model's expected feature order
+        input_df = input_df[modelBPCh.feature_names_in_]
+
+        # Button for ECG predictions
+        if st.button('Predict ECG'):
+            if uploaded_file is None:
+                st.warning("Please upload an ECG signal file first.")
+        else:
+            # Detect R-peaks using NeuroKit2
+            _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+            # Preprocess ECG signal for prediction
+            X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+            X_input_reshaped = X_input.reshape(len(X_input), -1)
+            X_input_normalized = scaler.transform(X_input_reshaped)
+            X_input_normalized = np.clip(X_input_normalized, 0, 1)
+            X_input = X_input_normalized.reshape(len(X_input_normalized), 187, 1)
+
+            # Make predictions for ECG data
+            y_pred = modelECG.predict(X_input)
+            predicted_classes = np.argmax(y_pred, axis=1)
+            percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+
+            st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+
+
+        # Button for user input predictions
+        if st.button('Predict User Input'):
+            prediction = modelBPCh.predict(input_df)
+            prediction_proba = modelBPCh.predict_proba(input_df)
+
+            if prediction[0] == 0:
+                st.success(f"The model predicts a risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
             else:
-                # Detect R-peaks using NeuroKit2
-                _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+                st.success(f"The model predicts no risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
 
-                # Preprocess ECG signal for prediction
-                X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
-                X_input_reshaped = X_input.reshape(len(X_input), -1)
-                X_input_normalized = scaler.transform(X_input_reshaped)
-                X_input_normalized = np.clip(X_input_normalized, 0, 1)
-                X_input = X_input_normalized.reshape(len(X_input_normalized), 187, 1)
-
-                # Make predictions for ECG data
-                y_pred = modelECG.predict(X_input)
-                predicted_classes = np.argmax(y_pred, axis=1)
-                percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-
-                st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
-
-
-            # Button for user input predictions
-            if st.button('Predict User Input'):
-                prediction = modelBPCh.predict(input_df)
-                prediction_proba = modelBPCh.predict_proba(input_df)
-
-                if prediction[0] == 0:
-                    st.success(f"The model predicts a risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
-                else:
-                    st.success(f"The model predicts no risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
-
-        except Exception as e:
-            # Handle invalid login
-            st.sidebar.error('Invalid email address or password. \nPlease try again.')
+    else:
+        # Handle invalid login
+        st.sidebar.error('Invalid email address or password. \nPlease try again.')
