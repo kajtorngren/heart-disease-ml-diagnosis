@@ -62,7 +62,7 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
         risk_category = "Very high risk for heart disease"
 
     # Skriv ut sammanvägt resultat på samma rad
-    res = [(f"Kombinerad risk: {combined_risk:.2f}% - {risk_category}")]
+    res = [(f"Combined risk: {combined_risk:.2f}% - {risk_category}")]
 
     # Extra medicinsk insikt om arytmi vid hög EKG-risk
     if ecg_risk >= 70:
