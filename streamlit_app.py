@@ -125,7 +125,7 @@ if choice == 'Login':
                 # Set time axis limit based on the last time value
                 time_limit = time_axis[-1]
             else:
-                st.sidebar.warning("Please upload an ECG signal CSV file.")
+                st.sidebar.warning("Please upload your ECG signal CSV file.")
                 ecg_data = pd.DataFrame(columns=['Time (s)', 'ECG Signal (mV)'])  # Empty DataFrame
                 time_limit = None
 
@@ -210,7 +210,7 @@ if choice == 'Login':
             # Button for ECG predictions
             if st.button('Predict ECG'):
                 if uploaded_file is None:
-                    st.warning("Please upload an ECG signal file first.")
+                    st.warning("Please upload your ECG signal file first.")
 
                 else:    
                     # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
