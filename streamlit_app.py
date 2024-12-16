@@ -240,6 +240,6 @@ if choice == 'Login':
                 else:
                     st.success(f"The model predicts no risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
 
-        else:
+        except Exception as e:
             # Handle invalid login
             st.sidebar.error('Invalid email address or password. \nPlease try again.')
