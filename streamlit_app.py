@@ -88,7 +88,7 @@ if choice == 'Login':
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
             bio = st.sidebar.radio('Jump to', ['Input features', 'Heart disease prediction', 'History'])
 
-            #######################################################################################
+#######################################################################################
 
             # Load the saved models
             modelBPCh = joblib.load('BPCh_model.pkl')
