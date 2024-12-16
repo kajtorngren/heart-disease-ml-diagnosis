@@ -53,13 +53,13 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
 
     # Tröskelvärden för riskkategori
     if combined_risk < 50:
-        risk_category = "Låg risk för hjärtsjukdom."
+        risk_category = "Low risk for heart disease."
     elif 50 <= combined_risk < 75:
-        risk_category = "Medelhög risk för hjärtsjukdom."
+        risk_category = "Moderate risk for heart disease"
     elif 75 <= combined_risk < 90:
-        risk_category = "Hög risk för hjärtsjukdom."
+        risk_category = "High risk for heart disease."
     else:
-        risk_category = "Mycket hög risk för hjärtsjukdom."
+        risk_category = "Very high risk for heart disease"
 
     # Skriv ut sammanvägt resultat på samma rad
     res = [(f"Kombinerad risk: {combined_risk:.2f}% - {risk_category}")]
