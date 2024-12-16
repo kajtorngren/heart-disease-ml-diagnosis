@@ -210,7 +210,7 @@ if choice == 'Login':
             # Button for ECG predictions
             if st.button('Predict ECG'):
                 if uploaded_file is None:
-                st.warning("Please upload an ECG signal file first.")
+                    st.warning("Please upload an ECG signal file first.")
             else:
                 # Detect R-peaks using NeuroKit2
                 _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
