@@ -333,8 +333,8 @@ if choice == 'Login':
 
             
 
-            post = st.text_input("Let's share my current mood as a post!",max_chars = 100)
-            add_post = st.button('Share Posts')
+            post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
+            add_post = st.button('Share results')
 
 
         except Exception as e:
