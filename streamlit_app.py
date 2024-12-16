@@ -211,23 +211,23 @@ if choice == 'Login':
             if st.button('Predict ECG'):
                 if uploaded_file is None:
                     st.warning("Please upload an ECG signal file first.")
-            else:
-                # Detect R-peaks using NeuroKit2
-                _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+                else:
+                    # Detect R-peaks using NeuroKit2
+                    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
 
-                # Preprocess ECG signal for prediction
-                X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
-                X_input_reshaped = X_input.reshape(len(X_input), -1)
-                X_input_normalized = scaler.transform(X_input_reshaped)
-                X_input_normalized = np.clip(X_input_normalized, 0, 1)
-                X_input = X_input_normalized.reshape(len(X_input_normalized), 187, 1)
+                    # Preprocess ECG signal for prediction
+                    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+                    X_input_reshaped = X_input.reshape(len(X_input), -1)
+                    X_input_normalized = scaler.transform(X_input_reshaped)
+                    X_input_normalized = np.clip(X_input_normalized, 0, 1)
+                    X_input = X_input_normalized.reshape(len(X_input_normalized), 187, 1)
 
-                # Make predictions for ECG data
-                y_pred = modelECG.predict(X_input)
-                predicted_classes = np.argmax(y_pred, axis=1)
-                percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+                    # Make predictions for ECG data
+                    y_pred = modelECG.predict(X_input)
+                    predicted_classes = np.argmax(y_pred, axis=1)
+                    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
 
-                st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+                    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
 
 
             # Button for user input predictions
