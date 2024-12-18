@@ -26,7 +26,7 @@ st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
 st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
 ####################################################################################
-import pyrebase4
+import pyrebase
 from datetime import datetime
 
 
