@@ -10,6 +10,6 @@ streamlit
 streamlit-authenticator
 
 pyrebase4
-pycrypto
+
 datetime
 pycryptodome
