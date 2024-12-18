@@ -13,3 +13,4 @@ pyrebase4
 pycrypto
 datetime
 pycryptodome
+oauth2client
