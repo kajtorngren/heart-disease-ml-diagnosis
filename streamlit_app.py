@@ -51,9 +51,6 @@ auth = firebase.auth()
 db = firebase.database()
 storage = firebase.storage()
 
-#Password length
-st.sidebar.info('Make a password of atleast 6 characters to be considered safe.')
-
 # Authentication
 choice = st.sidebar.selectbox('Login/Signup', ['Login', 'Sign up'])
 
@@ -65,6 +62,8 @@ password = st.sidebar.text_input('Please enter your password',type = 'password')
 
 # Sign up Block
 if choice == 'Sign up':
+
+    st.sidebar.info('Make a password of atleast 6 characters to be considered safe.')
     handle = st.sidebar.text_input(
         'Please input your app handle name', value='Default')
     submit = st.sidebar.button('Create my account')
