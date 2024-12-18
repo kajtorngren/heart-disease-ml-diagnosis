@@ -6,11 +6,9 @@ neurokit2
 keras
 tensorflow
 
-streamlit
 streamlit-authenticator
 
 pyrebase4
-pycrypto
-datetime
 pycryptodome
+datetime
 oauth2client
