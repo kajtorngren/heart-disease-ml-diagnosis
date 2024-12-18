@@ -11,5 +11,3 @@ streamlit-authenticator
 pyrebase4
 pycryptodome
 datetime
-google-auth
-google-auth-oauthlib
