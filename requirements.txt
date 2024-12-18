@@ -11,4 +11,4 @@ streamlit-authenticator
 pyrebase4
 pycryptodome
 datetime
-oauth2client
+
