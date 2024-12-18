@@ -8,5 +8,5 @@ tensorflow
 
 streamlit-authenticator
 
-pyrebase4
+pyrebase
 datetime
