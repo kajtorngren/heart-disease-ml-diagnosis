@@ -51,6 +51,9 @@ auth = firebase.auth()
 db = firebase.database()
 storage = firebase.storage()
 
+#Password length
+st.sidebar.info('Make a password of atleast 6 characters to be considered safe.')
+
 # Authentication
 choice = st.sidebar.selectbox('Login/Signup', ['Login', 'Sign up'])
 
