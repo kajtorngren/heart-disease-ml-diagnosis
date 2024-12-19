@@ -69,15 +69,21 @@ if choice == 'Sign up':
     submit = st.sidebar.button('Create my account')
 
     if submit:
-        user = auth.create_user_with_email_and_password(email, password)
-        st.success('Your account is created successfully!')
-        st.balloons()
-        # Sign in
-        user = auth.sign_in_with_email_and_password(email, password)
-        db.child(user['localId']).child("Handle").set(handle)
-        db.child(user['localId']).child("ID").set(user['localId'])
-        st.title(f'Welcome {handle}')
-        st.info('Login via login drop down selection to start you diagnosing!')
+        if len(password) < 6:
+            st.sidebar.error('Password must be at least 6 characters long.')
+        else:
+            try:
+                user = auth.create_user_with_email_and_password(email, password)
+                st.success('Your account is created successfully!')
+                st.balloons()
+                # Sign in
+                user = auth.sign_in_with_email_and_password(email, password)
+                db.child(user['localId']).child("Handle").set(handle)
+                db.child(user['localId']).child("ID").set(user['localId'])
+                st.title(f'Welcome {handle}')
+                st.info('Login via login drop down selection to start your diagnosing!')
+            except Exception as e:
+                st.sidebar.error(f"Error: {e}")
 
 # Login Block
 if choice == 'Login':
