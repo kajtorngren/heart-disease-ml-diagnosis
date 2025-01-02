@@ -343,8 +343,6 @@ if choice == 'Login':
             st.session_state.username = user.uid
             st.session_state.useremail = user.email
             
-            global Usernm
-            Usernm=(user.uid)
     
             if st.button('Post'):
                 if post!='':
