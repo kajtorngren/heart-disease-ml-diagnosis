@@ -336,28 +336,29 @@ if choice == 'Login':
                         st.write("No ECG data available to visualize.")
 
             
+            #History and Posts
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
             uid = user['localId']
     
             if st.button('Post'):
                 if post!='':
-                    info = db.collection('Posts').document(uid).get()
+                    info = db.collection('Posts').document(Handle).get()
 
                 if info.exists:
                     info = info.to_dict()
 
                     if 'Content' in info.keys():
-                        pos=db.collection('Posts').document(uid)
+                        pos=db.collection('Posts').document(Handle)
                         pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
                         # st.write('Post uploaded!!')
                     else:
-                        data={"Content":[post],'Username':uid}
-                        db.collection('Posts').document(uid).set(data)    
+                        data={"Content":[post],'Username':Handle}
+                        db.collection('Posts').document(Handle).set(data)    
                 else:
                     
-                    data={"Content":[post],'Username':uid}
-                    db.collection('Posts').document(uid).set(data)
+                    data={"Content":[post],'Username':Handle}
+                    db.collection('Posts').document(Handle).set(data)
                 
                 st.success('Post uploaded!!')
 
