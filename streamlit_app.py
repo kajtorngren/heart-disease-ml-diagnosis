@@ -361,10 +361,7 @@ if choice == 'Login':
                 
                 st.success('Post uploaded!!')
 
-            st.header(' :violet[History] ')
-
-            
-            docs = db.collection('Posts').get()
+                st.header(' :violet[History] ')
             
 
 
