@@ -28,7 +28,7 @@ st.info('This app builds a machine learning application for heart disease diagno
 ####################################################################################
 import pyrebase
 from datetime import datetime
-from firebase_admin import firestore
+
 
 # Configuration Key
 firebaseConfig = {
@@ -48,7 +48,7 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 # Database
-db = firebase.client()
+db = firebase.database()
 storage = firebase.storage()
 
 # Authentication
