@@ -48,7 +48,7 @@ firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
 # Database
-db = firebase.database()
+db = firebase.client()
 storage = firebase.storage()
 
 # Authentication
