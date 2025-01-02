@@ -339,10 +339,6 @@ if choice == 'Login':
             #History and Posts
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
-            user = auth.get_user_by_email(email)
-            st.session_state.username = user.uid
-            st.session_state.useremail = user.email
-    
     
             if st.button('Post'):
                 if post!='':
