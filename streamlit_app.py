@@ -338,6 +338,7 @@ if choice == 'Login':
             
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
+
             user = auth.get_user_by_email(email)
             print(user.uid)
             st.session_state.username = user.uid
@@ -346,7 +347,7 @@ if choice == 'Login':
             global Usernm
             Usernm=(user.uid)
     
-            if st.button('Post',use_container_width=20):
+            if st.button('Post'):
                 if post!='':
                     
                     info = db.collection('Posts').document(st.session_state.username).get()
