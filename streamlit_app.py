@@ -344,7 +344,7 @@ if choice == 'Login':
             if st.button('Post',use_container_width=20):
                 if post!='':
                     
-                info = db.collection('Posts').document(user.uid).get()
+                    info = db.collection('Posts').document(user.uid).get()
                 if info.exists:
                     info = info.to_dict()
                     if 'Content' in info.keys():
