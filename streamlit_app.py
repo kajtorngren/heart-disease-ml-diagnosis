@@ -337,31 +337,42 @@ if choice == 'Login':
 
             
 
-            post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
-            uid = user['localId']
-    
+            post = st.text_input("Share your current mood, inputs, and results!", max_chars=200)
+            uid = user['localId']  # Retrieve the unique user ID
+
             if st.button('Post'):
-                if post!='':
-                    info = db.collection('Posts').document(uid).get()
+                if post.strip():  # Check if the post is not empty or just whitespace
+                    # Get the user's existing posts, if any
+                    user_doc = db.collection('Posts').document(uid).get()
 
-                if info.exists:
-                    info = info.to_dict()
+                    if user_doc.exists:
+                        user_data = user_doc.to_dict()
 
-                    if 'Content' in info.keys():
-                        pos=db.collection('Posts').document(uid)
-                        pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
-                        # st.write('Post uploaded!!')
+                        if 'Content' in user_data:
+                            # Update existing posts with the new post
+                            db.collection('Posts').document(uid).update({
+                                'Content': firestore.ArrayUnion([post])
+                            })
+                        else:
+                            # Create the 'Content' field if it doesn't exist
+                            db.collection('Posts').document(uid).set({
+                                'Content': [post],
+                                'Username': uid
+                            }, merge=True)
                     else:
-                        data={"Content":[post],'Username':uid}
-                        db.collection('Posts').document(uid).set(data)    
-                else:
-                    
-                    data={"Content":[post],'Username':uid}
-                    db.collection('Posts').document(uid).set(data)
-                
-                st.success('Post uploaded!!')
+                        # Create a new document for the user if it doesn't exist
+                        db.collection('Posts').document(uid).set({
+                            'Content': [post],
+                            'Username': uid
+                        })
 
+                    st.success('Post uploaded successfully!')
+                else:
+                    st.error('Post cannot be empty!')
+
+            # Display the user's post history
             st.header(' :violet[History] ')
+
 
 
         except Exception as e:
