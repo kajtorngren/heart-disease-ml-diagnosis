@@ -339,7 +339,6 @@ if choice == 'Login':
             #History and Posts
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
-            uid = user['localId']
     
             if st.button('Post'):
                 if post!='':
