@@ -343,22 +343,22 @@ if choice == 'Login':
     
             if st.button('Post'):
                 if post!='':
-                    info = db.collection('Posts').document(Handle).get()
+                    info = db.collection('Posts').document(handle).get()
 
                 if info.exists:
                     info = info.to_dict()
 
                     if 'Content' in info.keys():
-                        pos=db.collection('Posts').document(Handle)
+                        pos=db.collection('Posts').document(handle)
                         pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
                         # st.write('Post uploaded!!')
                     else:
-                        data={"Content":[post],'Username':Handle}
-                        db.collection('Posts').document(Handle).set(data)    
+                        data={"Content":[post],'Username':handle}
+                        db.collection('Posts').document(handle).set(data)    
                 else:
                     
-                    data={"Content":[post],'Username':Handle}
-                    db.collection('Posts').document(Handle).set(data)
+                    data={"Content":[post],'Username':handle}
+                    db.collection('Posts').document(handle).set(data)
                 
                 st.success('Post uploaded!!')
 
