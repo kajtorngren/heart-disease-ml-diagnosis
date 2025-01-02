@@ -338,8 +338,7 @@ if choice == 'Login':
             
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
-            add_post = st.button('Share results')
-
+    
 
             if st.button('Post',use_container_width=20):
                 if post!='':
