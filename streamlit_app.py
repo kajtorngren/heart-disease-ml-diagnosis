@@ -341,30 +341,26 @@ if choice == 'Login':
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
     
             if st.button('Post'):
-                if post:  # Ensure post is not empty
-                    # Get the document for the current user
-                    user_doc = db.collection('Posts').document(st.session_state.username)
-                    info = user_doc.get()
+                if post!='':
+                    info = db.collection('Posts').document(st.session_state.username).get()
 
-                    if info.exists:
-                        # Document exists, check if 'Content' field exists
-                        info_data = info.to_dict()
-                        if 'Content' in info_data:
-                            # Append the new post to the existing array
-                            user_doc.update({u'Content': firestore.ArrayUnion([post])})
-                        else:
-                            # Create a new 'Content' array and set it in the document
-                            user_doc.set({"Content": [post], "Username": st.session_state.username})
+                if info.exists:
+                    info = info.to_dict()
+
+                    if 'Content' in info.keys():
+                        pos=db.collection('Posts').document(st.session_state.username)
+                        pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
+
                     else:
-                        # Create a new document for the user
-                        user_doc.set({"Content": [post], "Username": st.session_state.username})
-
-                    st.success('Post uploaded!!')
+                        data={"Content":[post],'Username':st.session_state.username}
+                        db.collection('Posts').document(st.session_state.username).set(data)    
                 else:
-                    st.warning("Post content cannot be empty.")
+                    
+                    data={"Content":[post],'Username':st.session_state.username}
+                    db.collection('Posts').document(st.session_state.username).set(data)
+                
 
-            # Display History
-            st.header('History')
+            st.header(' :violet[History] ')
             
 
 
