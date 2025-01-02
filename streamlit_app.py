@@ -341,6 +341,31 @@ if choice == 'Login':
             add_post = st.button('Share results')
 
 
+            if st.button('Post',use_container_width=20):
+                if post!='':
+                    
+                info = db.collection('Posts').document(user.uid).get()
+                if info.exists:
+                    info = info.to_dict()
+                    if 'Content' in info.keys():
+                
+                        pos=db.collection('Posts').document(user.uid)
+                        pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
+                        # st.write('Post uploaded!!')
+                    else:
+                    
+                        data={"Content":[post],'Username':user.uid}
+                        db.collection('Posts').document(user.uid).set(data)    
+                else:
+                    
+                    data={"Content":[post],'Username':user.uid}
+                    db.collection('Posts').document(user.uid).set(data)
+                
+                st.success('Post uploaded!!')
+
+            st.header(' :violet[History] ')
+
+
         except Exception as e:
             # Handle invalid login
             st.sidebar.error('Invalid email address or password. \nPlease try again.')
