@@ -72,7 +72,7 @@ if choice == 'Sign up':
         if len(password) < 6:
             st.sidebar.error("Password must be at least 6 characters long.")
         else:
-            user = auth.create_user_with_email_and_password(email = email, password = password,uid=username)
+            user = auth.create_user_with_email_and_password(email, password)
             st.success('Your account is created successfully!')
             st.balloons()
             # Sign in
