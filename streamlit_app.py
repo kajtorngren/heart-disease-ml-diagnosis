@@ -340,7 +340,6 @@ if choice == 'Login':
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
 
             user = auth.get_user_by_email(email)
-            print(user.uid)
             st.session_state.username = user.uid
             st.session_state.useremail = user.email
             
