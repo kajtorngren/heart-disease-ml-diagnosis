@@ -342,7 +342,7 @@ if choice == 'Login':
     
             if st.button('Post'):
                 if post!='':
-                    info = db.collection('Posts').document(user.uid).get()
+                    info = db.collection('Posts').document(uid).get()
 
                 if info.exists:
                     info = info.to_dict()
