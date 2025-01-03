@@ -47,7 +47,7 @@ service_account_info = {
   "universe_domain": "googleapis.com"
 }
 
-cred = credentials.Certificate(json.loads(json.dumps(service_account_info)))
+cred = credentials.Certificate(service_account_info)
 firebase_admin.initialize_app(cred)
 
 if 'username' not in st.session_state:
