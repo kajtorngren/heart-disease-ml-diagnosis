@@ -336,6 +336,8 @@ if choice == 'Login':
                         st.write("No ECG data available to visualize.")
 
             
+
+
             #History and Posts
             import firebase_admin
             from firebase_admin import firestore
@@ -384,7 +386,7 @@ if choice == 'Login':
                     db2.collection('Posts').document(user['localId']).set(data)
                 
 
-            st.header('History')
+            st.header('📚 History of inputs and predictions')
             
             docs = db2.collection('Posts').document(user['localId']).get()
             
