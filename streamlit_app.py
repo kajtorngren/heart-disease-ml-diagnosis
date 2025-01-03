@@ -357,21 +357,18 @@ if not st.session_state["signedout"]:
 
                 st.header(' :violet[History] ')
 
-
-            if st.session_state.signout:
-                st.sidebar.text(f'Name: {st.session_state.username}')
-                st.sidebar.text(f'Email id: {st.session_state.useremail}')
-                if st.sidebar.button('Sign out'):
-                    st.session_state.signout = False
-                    st.session_state.signedout = False
-                    st.session_state.username = ''
-                    
             except Exception:
                 st.sidebar.warning('Login Failed')
 
 #########
 
-
+if st.session_state.signout:
+    st.sidebar.text(f'Name: {st.session_state.username}')
+    st.sidebar.text(f'Email id: {st.session_state.useremail}')
+    if st.sidebar.button('Sign out'):
+        st.session_state.signout = False
+        st.session_state.signedout = False
+        st.session_state.username = ''
             
 
 #######################################################################################
