@@ -84,7 +84,7 @@ if choice == 'Sign up':
 
 # Login Block
 if choice == 'Login':
-    login = st.sidebar.button('Login/Logout')
+    login = st.sidebar.checkbox('Login/Logout')
     if login:
         try:
             # Authenticate user
