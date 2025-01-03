@@ -386,7 +386,7 @@ if choice == 'Login':
                     db2.collection('Posts').document(user['localId']).set(data)
                 
 
-            st.header('📚 History of inputs and predictions')
+            st.header('📖 History of inputs and predictions')
             
             docs = db2.collection('Posts').document(user['localId']).get()
             
