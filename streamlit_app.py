@@ -337,27 +337,51 @@ if choice == 'Login':
 
             
             #History and Posts
+            import firebase_admin
+            from firebase_admin import firestore
+            from firebase_admin import credentials
+            from firebase_admin import auth
+            import json
+
+            # Firebase setup
+            service_account_info = {
+            "type": "service_account",
+            "project_id": "streamlit-heart-disease-ml",
+            "private_key_id": "f3b905fab6c3084234fb3b7beb74da258717283d",
+            "private_key": st.secrets["PRIVATE_KEY"],
+            "client_email": "firebase-adminsdk-ubvvc@streamlit-heart-disease-ml.iam.gserviceaccount.com",
+            "client_id": "111991242877666197944",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ubvvc%40streamlit-heart-disease-ml.iam.gserviceaccount.com",
+            "universe_domain": "googleapis.com"
+            }
+
+            cred = credentials.Certificate(service_account_info)
+
+            db2 = firestore.client()
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
     
             if st.button('Post'):
                 if post!='':
-                    info = db.collection('Posts').document(st.session_state.username).get()
+                    info = db2.collection('Posts').document(user['localId']).get()
 
                 if info.exists:
                     info = info.to_dict()
 
                     if 'Content' in info.keys():
-                        pos=db.collection('Posts').document(st.session_state.username)
+                        pos=db2.collection('Posts').document(user['localId'])
                         pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
 
                     else:
-                        data={"Content":[post],'Username':st.session_state.username}
-                        db.collection('Posts').document(st.session_state.username).set(data)    
+                        data={"Content":[post],'Username':user['localId']}
+                        db2.collection('Posts').document(user['localId']).set(data)    
                 else:
                     
-                    data={"Content":[post],'Username':st.session_state.username}
-                    db.collection('Posts').document(st.session_state.username).set(data)
+                    data={"Content":[post],'Username':user['localId']}
+                    db2.collection('Posts').document(user['localId']).set(data)
                 
 
             st.header(' :violet[History] ')
