@@ -77,7 +77,8 @@ if choice == 'Sign up':
             st.balloons()
             # Sign in
             user = auth.sign_in_with_email_and_password(email, password)
-            db.child(handle).child("ID").set(user['localId'])
+            db.child(user['localId']).child("Handle").set(handle)
+            db.child(user['localId']).child("ID").set(user['localId'])
             st.title(f'Welcome {handle}')
             st.info('Login via login drop down selection to start you diagnosing!')
 
@@ -365,22 +366,22 @@ if choice == 'Login':
     
             if st.button('Post'):
                 if post!='':
-                    info = db2.collection('Posts').document(user['localId']).get()
+                    info = db2.collection('Posts').document(handle).get()
 
                 if info.exists:
                     info = info.to_dict()
 
                     if 'Content' in info.keys():
-                        pos=db2.collection('Posts').document(user['localId'])
+                        pos=db2.collection('Posts').document(handle)
                         pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
 
                     else:
-                        data={"Content":[post],'Username':user['localId']}
+                        data={"Content":[post],'Username':handle}
                         db2.collection('Posts').document(user['localId']).set(data)    
                 else:
                     
-                    data={"Content":[post],'Username':user['localId']}
-                    db2.collection('Posts').document(user['localId']).set(data)
+                    data={"Content":[post],'Username':handle}
+                    db2.collection('Posts').document(handle).set(data)
                 
 
             st.header('History')
