@@ -386,7 +386,7 @@ if choice == 'Login':
 
             st.header('History')
             
-            docs = db.collection('Posts').get()
+            docs = db2.collection('Posts').document(user['localId']).get()
             
             if docs.exists:
                 data = docs.to_dict()  # Convert Firestore document to a Python dictionary
