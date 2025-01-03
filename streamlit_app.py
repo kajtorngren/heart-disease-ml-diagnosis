@@ -362,7 +362,7 @@ if not st.session_state["signedout"]:
 if st.session_state.signout:
     st.sidebar.text(f'Name: {st.session_state.username}')
     st.sidebar.text(f'Email id: {st.session_state.useremail}')
-    if st.button('Sign out'):
+    if st.sidebar.button('Sign out'):
         st.session_state.signout = False
         st.session_state.signedout = False
         st.session_state.username = ''
