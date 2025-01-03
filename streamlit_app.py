@@ -392,7 +392,13 @@ if choice == 'Login':
             
             if docs.exists:
                 data = docs.to_dict()  # Convert Firestore document to a Python dictionary
-                st.write(data)  # Print the data to the Streamlit app
+                # Convert data into a list of dictionaries for table display
+                table_data = []
+                if 'Content' in data:
+                    for post in data['Content']:
+                        table_data.append({'Username': data['Username'], 'Content': post})
+                
+                st.table(table_data)  # Display the table in Streamlit
             else:
                 st.write("No data found for this user.")
 
