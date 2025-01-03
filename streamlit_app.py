@@ -384,7 +384,7 @@ if choice == 'Login':
                     db2.collection('Posts').document(user['localId']).set(data)
                 
 
-            st.header(' :violet[History] ')
+            st.header(' [History] ')
             
             docs = db2.collection('Posts').get()
             
