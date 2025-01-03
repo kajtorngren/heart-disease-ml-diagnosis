@@ -11,3 +11,9 @@ streamlit-authenticator
 pyrebase4
 pycryptodome
 datetime
+
+
+firebase_admin
+streamlit
+streamlit_option_menu
+python-dotenv
