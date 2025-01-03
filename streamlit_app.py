@@ -366,22 +366,22 @@ if choice == 'Login':
     
             if st.button('Post'):
                 if post!='':
-                    info = db2.collection('Posts').document(handle).get()
+                    info = db2.collection('Posts').document(user['localId']).get()
 
                 if info.exists:
                     info = info.to_dict()
 
                     if 'Content' in info.keys():
-                        pos=db2.collection('Posts').document(handle)
+                        pos=db2.collection('Posts').document(user['localId'])
                         pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
 
                     else:
-                        data={"Content":[post],'Username':handle}
+                        data={"Content":[post],'Username':user['localId']}
                         db2.collection('Posts').document(user['localId']).set(data)    
                 else:
                     
-                    data={"Content":[post],'Username':handle}
-                    db2.collection('Posts').document(handle).set(data)
+                    data={"Content":[post],'Username':user['localId']}
+                    db2.collection('Posts').document(user['localId']).set(data)
                 
 
             st.header('History')
