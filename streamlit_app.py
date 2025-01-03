@@ -386,7 +386,13 @@ if choice == 'Login':
 
             st.header(' :violet[History] ')
             
-
+            docs = db2.collection('Posts').get()
+            
+            for doc in docs:
+                d=doc.to_dict()
+                try:
+                    st.text_area(label=':green[Posted by:] '+':orange[{}]'.format(d['Username']),value=d['Content'][-1],height=20)
+                except: pass
 
         except Exception as e:
             # Handle invalid login
