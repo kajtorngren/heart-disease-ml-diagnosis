@@ -401,6 +401,40 @@ if choice == 'Login':
             else:
                 st.write("No data found for this user.")
 
+            if st.button('Save'):
+                user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
+                
+                # Save to Firestore under the "Users" collection, keyed by user ID
+                user_id = 'your_user_id'  # Replace with dynamic user ID, e.g., from authentication
+                post_data = {
+                    'UserID': user_id,
+                    'UserInput': user_data
+                }
+
+                # Add or update user data in Firestore
+                db2.collection('Users').document(user_id).set(post_data)
+
+                st.success('Your input has been saved!')
+
+            # Display the history of saved inputs
+            st.header('📖 History of inputs')
+
+            # Retrieve user input history from Firestore
+            docs = db2.collection('Users').document('your_user_id').get()
+
+            if docs.exists:
+                data = docs.to_dict()  # Convert Firestore document to a Python dictionary
+                user_input_history = data.get('UserInput', {})  # Get the saved input (it's a dict)
+
+                # Display the most recent input as a table
+                if user_input_history:
+                    st.write("Saved Inputs:")
+                    st.table(pd.DataFrame([user_input_history]))  # Display the latest input as a table
+                else:
+                    st.write("No inputs found.")
+            else:
+                st.write("No data found for this user.")
+
         except Exception as e:
             # Handle invalid login
             st.sidebar.error('Invalid email address or password. \nPlease try again.')
