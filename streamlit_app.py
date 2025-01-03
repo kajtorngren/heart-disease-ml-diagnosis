@@ -64,8 +64,7 @@ password = st.sidebar.text_input('Please enter your password',type = 'password')
 if choice == 'Sign up':
 
     st.sidebar.info('Make a password of atleast 6 characters to be considered safe.')
-    handle = st.sidebar.text_input(
-        'Please input your unique username', value='')
+    handle = st.sidebar.text_input('Please input your unique username', value='')
     submit = st.sidebar.button('Create my account')
 
     if submit:
