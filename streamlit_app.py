@@ -77,8 +77,7 @@ if choice == 'Sign up':
             st.balloons()
             # Sign in
             user = auth.sign_in_with_email_and_password(email, password)
-            db.child(user['localId']).child("Handle").set(handle)
-            db.child(user['localId']).child("ID").set(user['localId'])
+            db.child(handle).child("ID").set(user['localId'])
             st.title(f'Welcome {handle}')
             st.info('Login via login drop down selection to start you diagnosing!')
 
