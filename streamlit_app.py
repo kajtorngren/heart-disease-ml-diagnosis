@@ -155,21 +155,13 @@ if not st.session_state["signedout"]:
 
                 # Collect other user input features
                 def user_input_features():
-                    # Store user inputs in session_state
-                    if 'age' not in st.session_state:
-                        st.session_state.age = st.sidebar.slider('Age', 18, 100, 50)
-                    if 'sex' not in st.session_state:
-                        st.session_state.sex = st.sidebar.radio('Sex', ('male', 'female'))
-                    if 'chest_pain_type' not in st.session_state:
-                        st.session_state.chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
-                    if 'exercise_induced_angina' not in st.session_state:
-                        st.session_state.exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
-                    if 'resting_bp_s' not in st.session_state:
-                        st.session_state.resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
-                    if 'cholesterol' not in st.session_state:
-                        st.session_state.cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
-                    if 'max_heart_rate' not in st.session_state:
-                        st.session_state.max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
+                    age = st.sidebar.slider('Age', 18, 100, 50)
+                    sex = st.sidebar.radio('Sex', ('male', 'female'))
+                    chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+                    exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
+                    resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+                    cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
+                    max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
                     chest_pain_type_mapping = {
                         'typical angina': 1,
@@ -178,17 +170,17 @@ if not st.session_state["signedout"]:
                         'asymptomatic': 4
                     }
 
-                    chest_pain_type_encoded = chest_pain_type_mapping[st.session_state.chest_pain_type]
+                    chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
 
                     # Combine inputs into a DataFrame
                     data = {
-                        'age': st.session_state.age,
-                        'sex': 1 if st.session_state.sex == 'male' else 0,
+                        'age': age,
+                        'sex': 1 if sex == 'male' else 0,
                         'chest_pain_type': chest_pain_type_encoded,
-                        'exercise_induced_angina': 1 if st.session_state.exercise_induced_angina == 'Yes' else 0,
-                        'resting_bp_s': st.session_state.resting_bp_s,
-                        'cholesterol': st.session_state.cholesterol,
-                        'max_heart_rate': st.session_state.max_heart_rate
+                        'exercise_induced_angina': 1 if exercise_induced_angina == 'Yes' else 0,
+                        'resting_bp_s': resting_bp_s,
+                        'cholesterol': cholesterol,
+                        'max_heart_rate': max_heart_rate
                     }
                     features = pd.DataFrame(data, index=[0])
                     return features
