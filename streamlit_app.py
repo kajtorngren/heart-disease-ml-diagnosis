@@ -388,11 +388,11 @@ if choice == 'Login':
             
             docs = db2.collection('Posts').document(user['localId']).get()
             
-            for doc in docs:
-                d=doc.to_dict()
-                try:
-                    st.write(label=':green[Posted by:] '+':orange[{}]'.format(d['Username']),value=d['Content'][-1],height=20)
-                except: pass
+            if docs.exists:
+                data = docs.to_dict()  # Convert Firestore document to a Python dictionary
+                st.write(data)  # Print the data to the Streamlit app
+            else:
+                st.write("No data found for this user.")
 
         except Exception as e:
             # Handle invalid login
