@@ -414,23 +414,8 @@ if choice == 'Login':
                     'UserInput': user_data
                 }
 
-                # Retrieve existing data from Firestore to append new input
-                user_doc_ref = db2.collection('Users').document(user_id)
-                user_doc = user_doc_ref.get()
-
-                if user_doc.exists:
-                    data = user_doc.to_dict()  # Get existing data
-                    user_input_history = data.get('UserInput', [])  # If no previous data, set as an empty list
-                    user_input_history.append(user_data)  # Add new input to the history
-
-                    # Update the document with the new history
-                    user_doc_ref.set({
-                        'UserID': user_id,
-                        'UserInput': user_input_history
-                    })
-                else:
-                    # If no existing data, just create a new entry
-                    user_doc_ref.set(post_data)
+                # Add or update user data in Firestore
+                db2.collection('Users').document(user_id).set(post_data)
 
                 st.success('Your input has been saved!')
 
@@ -442,12 +427,12 @@ if choice == 'Login':
 
             if docs.exists:
                 data = docs.to_dict()  # Convert Firestore document to a Python dictionary
-                user_input_history = data.get('UserInput', [])  # Get the saved input (it's a list)
+                user_input_history = data.get('UserInput', {})  # Get the saved input (it's a dict)
 
-                # Display the input history in a table format
+                # Display the most recent input as a table
                 if user_input_history:
                     st.write("Saved Inputs:")
-                    st.table(pd.DataFrame(user_input_history))  # Display the input history as a table
+                    st.table(pd.DataFrame([user_input_history]))  # Display the latest input as a table
                 else:
                     st.write("No inputs found.")
             else:
