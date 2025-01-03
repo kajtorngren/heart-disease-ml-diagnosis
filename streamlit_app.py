@@ -77,7 +77,7 @@ if not st.session_state["signedout"]:
                 st.success('Your account is created successfully!')
                 st.balloons()
     else:
-        if st.sidebar.checkbox('Login'):
+        if st.sidebar.button('Login'):
             try:
                 user = auth.get_user_by_email(email)
                 st.session_state.username = user.uid
@@ -362,7 +362,7 @@ if not st.session_state["signedout"]:
 if st.session_state.signout:
     st.sidebar.text(f'Name: {st.session_state.username}')
     st.sidebar.text(f'Email id: {st.session_state.useremail}')
-    if st.sidebar.checkbox('Sign out'):
+    if st.sidebar.button('Sign out'):
         st.session_state.signout = False
         st.session_state.signedout = False
         st.session_state.username = ''
