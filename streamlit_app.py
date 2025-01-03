@@ -386,7 +386,7 @@ if choice == 'Login':
 
             st.header('History')
             
-            docs = db2.collection('Posts').get()
+            docs = db2.collection('Posts').document(user['localId']).get()
             
             for doc in docs:
                 d=doc.to_dict()
