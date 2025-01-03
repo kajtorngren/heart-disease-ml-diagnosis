@@ -365,7 +365,7 @@ if choice == 'Login':
 
             post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
     
-            if st.button('Post'):
+            if st.button('Save you inputs and prediction results'):
                 if post!='':
                     info = db2.collection('Posts').document(user['localId']).get()
 
