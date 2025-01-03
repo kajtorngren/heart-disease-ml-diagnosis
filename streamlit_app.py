@@ -65,7 +65,7 @@ if choice == 'Sign up':
 
     st.sidebar.info('Make a password of atleast 6 characters to be considered safe.')
     handle = st.sidebar.text_input(
-        'Please input your app handle name', value='Default')
+        'Please input your uniqie username', value='Default')
     submit = st.sidebar.button('Create my account')
 
     if submit:
