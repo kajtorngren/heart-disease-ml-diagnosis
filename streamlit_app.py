@@ -212,34 +212,33 @@ if choice == 'Login':
             input_df = input_df[modelBPCh.feature_names_in_]
 
 
-
             # Display the ECG data and visualization side by side
-                        col1, col2 = st.columns(2)
+            col1, col2 = st.columns(2)
 
-                        with col1:
-                            with st.expander('📑 ECG Signal Data'):
-                                if not ecg_df.empty:
-                                    st.write(ecg_df)  # Display the entire raw data file as a table
-                                else:
-                                    st.write("No data to display.")
+            with col1:
+                with st.expander('📑 ECG Signal Data'):
+                    if not ecg_df.empty:
+                        st.write(ecg_df)  # Display the entire raw data file as a table
+                    else:
+                        st.write("No data to display.")
 
 
-                        with col2:
-                            with st.expander('📉 ECG Signal Data Visualization'):
-                                if not ecg_data.empty:
-                                    # Create Altair line chart with labeled axes and red line color
-                                    chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
-                                        x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
-                                        y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
-                                    ).properties(
-                                        width=350,
-                                        height=400
-                                    ).interactive()
-                                    st.altair_chart(chart, use_container_width=True)
-                                else:
-                                    st.write("No ECG data available to visualize.")
+            with col2:
+                with st.expander('📉 ECG Signal Data Visualization'):
+                    if not ecg_data.empty:
+                        # Create Altair line chart with labeled axes and red line color
+                        chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
+                            x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
+                            y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+                        ).properties(
+                            width=350,
+                            height=400
+                        ).interactive()
+                        st.altair_chart(chart, use_container_width=True)
+                    else:
+                        st.write("No ECG data available to visualize.")
 
-                                    
+
             # Button for ECG predictions
             if st.button('Predict ECG'):
                 if uploaded_file is None:
