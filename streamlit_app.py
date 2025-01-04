@@ -436,7 +436,7 @@ if choice == 'Login':
                 if user_input_history:
                     for user_input in user_input_history:
                         # Add UserInput and Timestamp to the table
-                        table_data.append({'UserID': data['UserID'], 'UserInput': user_input, 'Timestamp': data.get('Timestamp', 'N/A')})
+                        table_data.append({'UserInput': user_input})
                     
                     st.table(table_data)  # Display the table in Streamlit
                 else:
