@@ -427,18 +427,12 @@ if choice == 'Login':
 
             if docs.exists:
                 data = docs.to_dict()  # Convert Firestore document to a Python dictionary
-                
-                # Check if 'UserInput' exists and process it for table display
-                user_input_history = data.get('UserInput', [])
-                
-                # Convert data into a list of dictionaries for table display
-                table_data = []
+                user_input_history = data.get('UserInput', {})  # Get the saved input (it's a dict)
+
+                # Display the most recent input as a table
                 if user_input_history:
-                    for user_input in user_input_history:
-                        # Add UserInput and Timestamp to the table
-                        table_data.append({'UserInput': user_input})
-                    
-                    st.table(table_data)  # Display the table in Streamlit
+                    st.write("Saved Inputs:")
+                    st.table(pd.DataFrame([user_input_history]))  # Display the latest input as a table
                 else:
                     st.write("No inputs found.")
             else:
