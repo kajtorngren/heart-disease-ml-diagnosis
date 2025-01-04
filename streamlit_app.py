@@ -404,19 +404,14 @@ if choice == 'Login':
 
 
 #test for parameters
-            # For saving user inputs (from the dataframe)
             if st.button('Save'):
                 user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
-
-                # Get the current timestamp
-                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 
-                # Save user input data to Firestore under "Users" collection
-                user_id = user['localId']  # Use dynamic user ID
+                # Save to Firestore under the "Users" collection, keyed by user ID
+                user_id = user['localId']  # Replace with dynamic user ID, e.g., from authentication
                 post_data = {
                     'UserID': user_id,
-                    'UserInput': user_data,
-                    'Timestamp': timestamp  # Add the timestamp to user inputs
+                    'UserInput': user_data
                 }
 
                 # Add or update user data in Firestore
