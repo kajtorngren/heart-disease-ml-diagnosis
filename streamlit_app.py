@@ -408,7 +408,7 @@ if choice == 'Login':
                 user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
                 
                 # Save to Firestore under the "Users" collection, keyed by user ID
-                user_id = 'your_user_id'  # Replace with dynamic user ID, e.g., from authentication
+                user_id = user['localId']  # Replace with dynamic user ID, e.g., from authentication
                 post_data = {
                     'UserID': user_id,
                     'UserInput': user_data
@@ -423,7 +423,7 @@ if choice == 'Login':
             st.subheader('📖 History of inputs')
 
             # Retrieve user input history from Firestore
-            docs = db2.collection('Users').document('your_user_id').get()
+            docs = db2.collection('Users').document(user['localId']).get()
 
             if docs.exists:
                 data = docs.to_dict()  # Convert Firestore document to a Python dictionary
