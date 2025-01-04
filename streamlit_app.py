@@ -420,7 +420,7 @@ if choice == 'Login':
                 st.success('Your input has been saved!')
 
             # Display the history of saved inputs
-            st.header('📖 History of inputs')
+            st.write('📖 History of inputs')
 
             # Retrieve user input history from Firestore
             docs = db2.collection('Users').document('your_user_id').get()
