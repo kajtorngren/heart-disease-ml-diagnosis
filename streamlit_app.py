@@ -399,9 +399,7 @@ if choice == 'Login':
             if st.button('Save your inputs and prediction results'):
                 if post != '':
                     info = db2.collection('Posts').document(user['localId']).get()
-
-                    # Current timestamp
-                    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Add timestamp
 
                     if info.exists:
                         info = info.to_dict()
@@ -447,7 +445,7 @@ if choice == 'Login':
                         table_data.append({
                             'Content': entry['Text'],
                             'Date': entry['Date']
-                        })
+                        })  # Include date in table
                 st.table(table_data)  # Display the table in Streamlit
             else:
                 st.write("No data found for this user.")
