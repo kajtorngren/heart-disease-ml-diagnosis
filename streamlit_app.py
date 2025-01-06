@@ -388,7 +388,7 @@ if choice == 'Login':
             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ubvvc%40streamlit-heart-disease-ml.iam.gserviceaccount.com",
             "universe_domain": "googleapis.com"
             }
-
+            
             from datetime import datetime
 
             cred = credentials.Certificate(service_account_info)
@@ -430,12 +430,14 @@ if choice == 'Login':
                 table_data = []
                 if 'Content' in data:
                     for post_entry in data['Content']:
-                        # Each entry is a single string combining timestamp and post content
-                        table_data.append({'Post': post_entry})
+                        # Split timestamp and text
+                        timestamp, text = post_entry.split(": ", 1)
+                        table_data.append({'Timestamp': timestamp, 'Text': text})
 
-                st.table(table_data)  # Display the table in Streamlit
+                st.table(table_data)  # Display the table with two columns
             else:
                 st.write("No data found for this user.")
+
 
 
 
