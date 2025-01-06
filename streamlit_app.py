@@ -388,11 +388,15 @@ if choice == 'Login':
             "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ubvvc%40streamlit-heart-disease-ml.iam.gserviceaccount.com",
             "universe_domain": "googleapis.com"
             }
-            
+
             from datetime import datetime
+            import pytz  # Ensure pytz is installed: pip install pytz
 
             cred = credentials.Certificate(service_account_info)
             db2 = firestore.client()
+
+            # Set Swedish timezone
+            swedish_tz = pytz.timezone('Europe/Stockholm')
 
             # User input for the post
             post = st.text_input("Share your current mood, inputs, and results!", max_chars=200)
@@ -401,8 +405,8 @@ if choice == 'Login':
                 if post != '':
                     info = db2.collection('Posts').document(user['localId']).get()
 
-                    # Current timestamp
-                    current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    # Current timestamp in Swedish time
+                    current_time = datetime.now(swedish_tz).strftime("%Y-%m-%d %H:%M:%S")
 
                     # Combine post and timestamp as a single entry
                     post_with_timestamp = f"{current_time}: {post}"
@@ -437,6 +441,7 @@ if choice == 'Login':
                 st.table(table_data)  # Display the table with two columns
             else:
                 st.write("No data found for this user.")
+
 
 
 
