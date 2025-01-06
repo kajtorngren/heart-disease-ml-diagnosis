@@ -225,13 +225,15 @@ if choice == 'Login':
                 features = pd.DataFrame(data, index=[0])
                 return features
             
+            # Get user input features
+            input_df = user_input_features()
+
             # Add 'Run' button
             if st.sidebar.button('Run'):
                 st.session_state.run_clicked = True
 
             if st.session_state.run_clicked:
-                # Get user input features
-                input_df = user_input_features()
+                
 
                 # Define a mapping between input column names and model's feature names
                 column_mapping = {
