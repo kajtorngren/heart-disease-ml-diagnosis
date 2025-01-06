@@ -435,6 +435,8 @@ if choice == 'Login':
 
             docs = db2.collection('Posts').document(user['localId']).get()
 
+            st.write("Table of saved text, input features and total prediction:")    
+
             if docs.exists:
                 data = docs.to_dict()
                 table_data = []
