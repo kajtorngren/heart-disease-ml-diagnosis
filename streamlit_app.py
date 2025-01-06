@@ -22,7 +22,7 @@ st.set_page_config(
 # Add the banner image
 st.image("cardiology.jpg", use_container_width=True)
 
-st.title('🧠 Hello Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
+st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
 st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
 ####################################################################################
@@ -162,6 +162,17 @@ if choice == 'Login':
                 age = st.sidebar.slider('Age', 18, 100, 50)
                 sex = st.sidebar.radio('Sex', ('male', 'female'))
                 chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+
+                st.sidebar.info(
+                """
+                **Chest Pain Types:**
+                - **Typical Angina**: Predictable chest pain caused by exertion, relieved by rest.  
+                - **Atypical Angina**: Chest pain that does not follow typical patterns and may occur at rest.  
+                - **Non-Anginal Pain**: Pain unrelated to the heart, often caused by muscles or digestion.  
+                - **Asymptomatic**: No chest pain symptoms but may still have heart disease.  
+                """
+    )
+
                 exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
                 resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
                 cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
