@@ -445,11 +445,9 @@ if choice == 'Login':
                         timestamp, text = post_entry.split(": ", 1)
                         table_data.append({'Timestamp': timestamp, 'Text': text})
 
-                # Display the table with two columns, no index number on the left
                 st.table(table_data)  # Display the table with two columns
             else:
                 st.write("No data found for this user.")
-
 
 
 
