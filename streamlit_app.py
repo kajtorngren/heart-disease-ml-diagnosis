@@ -163,9 +163,9 @@ if choice == 'Login':
 
             # Collect other user input features
             def user_input_features():
-                age = st.sidebar.slider('Age', 18, 100, 50)
-                sex = st.sidebar.radio('Sex', ('male', 'female'))
-                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+                st.sidebar.slider('Age', 18, 100, 50)
+                st.sidebar.radio('Sex', ('male', 'female'))
+                st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
 
                 st.sidebar.info(
                 """
@@ -177,8 +177,8 @@ if choice == 'Login':
                 """
                 )
 
-                exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
-                resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+                st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
+                st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
 
                 st.sidebar.info(
                 """
@@ -189,7 +189,7 @@ if choice == 'Login':
                 )
 
 
-                cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
+                st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
 
                 st.sidebar.info(
                 """
@@ -199,9 +199,18 @@ if choice == 'Login':
                 """
                 )
 
-                max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
+                st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
-                
+            
+            
+            # Get user input features
+            user_input_features()
+
+            # Add 'Run' button
+            if st.sidebar.button('Run'):
+                st.session_state.run_clicked = True
+
+            if st.session_state.run_clicked:
 
                 chest_pain_type_mapping = {
                     'typical angina': 1,
@@ -210,29 +219,18 @@ if choice == 'Login':
                     'asymptomatic': 4
                 }
 
-                chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
-
-                # Combine inputs into a DataFrame
-                data = {
-                    'age': age,
-                    'sex': 1 if sex == 'male' else 0,
-                    'chest_pain_type': chest_pain_type_encoded,
-                    'exercise_induced_angina': 1 if exercise_induced_angina == 'Yes' else 0,
-                    'resting_bp_s': resting_bp_s,
-                    'cholesterol': cholesterol,
-                    'max_heart_rate': max_heart_rate
+                input_data = {
+                'age': st.session_state.age,
+                'sex': 1 if st.session_state.sex == 'male' else 0,
+                'chest_pain_type': chest_pain_type_mapping[st.session_state.chest_pain_type],
+                'exercise_induced_angina': 1 if st.session_state.exercise_induced_angina == 'Yes' else 0,
+                'resting_bp_s': st.session_state.resting_bp_s,
+                'cholesterol': st.session_state.cholesterol,
+                'max_heart_rate': st.session_state.max_heart_rate
                 }
-                features = pd.DataFrame(data, index=[0])
-                return features
-            
-            # Get user input features
-            input_df = user_input_features()
 
-            # Add 'Run' button
-            if st.sidebar.button('Run'):
-                st.session_state.run_clicked = True
+                input_df = pd.DataFrame(input_data, index=[0])
 
-            if st.session_state.run_clicked:
                 
 
                 # Define a mapping between input column names and model's feature names
