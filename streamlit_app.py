@@ -29,10 +29,6 @@ st.info('This app builds a machine learning application for heart disease diagno
 import pyrebase
 from datetime import datetime
 
-# Initialize session state variables
-if 'run_clicked' not in st.session_state:
-    st.session_state.run_clicked = False
-
 
 # Configuration Key
 firebaseConfig = {
@@ -163,9 +159,9 @@ if choice == 'Login':
 
             # Collect other user input features
             def user_input_features():
-                st.sidebar.slider('Age', 18, 100, 50)
-                st.sidebar.radio('Sex', ('male', 'female'))
-                st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+                age = st.sidebar.slider('Age', 18, 100, 50)
+                sex = st.sidebar.radio('Sex', ('male', 'female'))
+                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
 
                 st.sidebar.info(
                 """
@@ -177,8 +173,8 @@ if choice == 'Login':
                 """
                 )
 
-                st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
-                st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+                exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
+                resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
 
                 st.sidebar.info(
                 """
@@ -189,7 +185,7 @@ if choice == 'Login':
                 )
 
 
-                st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
+                cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
 
                 st.sidebar.info(
                 """
@@ -199,18 +195,7 @@ if choice == 'Login':
                 """
                 )
 
-                st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
-
-            
-            
-            # Get user input features
-            user_input_features()
-
-            # Add 'Run' button
-            if st.sidebar.button('Run'):
-                st.session_state.run_clicked = True
-
-            if st.session_state.run_clicked:
+                max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
                 chest_pain_type_mapping = {
                     'typical angina': 1,
@@ -219,161 +204,165 @@ if choice == 'Login':
                     'asymptomatic': 4
                 }
 
-                input_data = {
-                'age': st.session_state.age,
-                'sex': 1 if st.session_state.sex == 'male' else 0,
-                'chest_pain_type': chest_pain_type_mapping[st.session_state.chest_pain_type],
-                'exercise_induced_angina': 1 if st.session_state.exercise_induced_angina == 'Yes' else 0,
-                'resting_bp_s': st.session_state.resting_bp_s,
-                'cholesterol': st.session_state.cholesterol,
-                'max_heart_rate': st.session_state.max_heart_rate
+                chest_pain_type_encoded = chest_pain_type_mapping[chest_pain_type]
+
+                # Combine inputs into a DataFrame
+                data = {
+                    'age': age,
+                    'sex': 1 if sex == 'male' else 0,
+                    'chest_pain_type': chest_pain_type_encoded,
+                    'exercise_induced_angina': 1 if exercise_induced_angina == 'Yes' else 0,
+                    'resting_bp_s': resting_bp_s,
+                    'cholesterol': cholesterol,
+                    'max_heart_rate': max_heart_rate
                 }
+                features = pd.DataFrame(data, index=[0])
+                return features
 
-                input_df = pd.DataFrame(input_data, index=[0])
+            # Get user input features
+            input_df = user_input_features()
 
+            # Define a mapping between input column names and model's feature names
+            column_mapping = {
+                'chest_pain_type': 'cp',
+                'exercise_induced_angina': 'exang',
+                'cholesterol': 'chol',
+                'resting_bp_s': 'trestbps',
+                'max_heart_rate': 'thalach'
+            }
+
+            # Rename columns in input_df to match the model's feature names
+            input_df.rename(columns=column_mapping, inplace=True)
+
+            # Encoding categorical variables in the same way as during training
+            input_df = pd.get_dummies(input_df, drop_first=True)
+
+            # Ensure column order matches the model's expected feature order
+            input_df = input_df[modelBPCh.feature_names_in_]
+
+
+            # Display the ECG data and visualization side by side
+            col1, col2 = st.columns(2)
+
+            with col1:
+                with st.expander('📑 ECG Signal Data'):
+                    if not ecg_df.empty:
+                        st.write(ecg_df)  # Display the entire raw data file as a table
+                    else:
+                        st.write("No data to display.")
+
+
+            with col2:
+                with st.expander('📉 ECG Signal Data Visualization'):
+                    if not ecg_data.empty:
+                        # Create Altair line chart with labeled axes and red line color
+                        chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
+                            x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
+                            y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
+                        ).properties(
+                            width=350,
+                            height=400
+                        ).interactive()
+                        st.altair_chart(chart, use_container_width=True)
+                    else:
+                        st.write("No ECG data available to visualize.")
+
+
+            # Button for ECG predictions
+            if st.button('Predict ECG'):
+                if uploaded_file is None:
+                    st.warning("Please upload your ECG signal file first.")
+
+                else:    
+                    # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
+                    sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
+                    sampling_rate = float(sampling_rate_str.split()[0])
+
+                    # Detect R-peaks using NeuroKit2
+                    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+
+
+                    # Preprocess ECG signal for prediction
+                    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+
+                    X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
+                    X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
+                    X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
+
+                    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
+
+                    # Make predictions for ECG data
+                    y_pred = modelECG.predict(X_input)
+                    predicted_classes = np.argmax(y_pred, axis=1)
+
+                    st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
+                    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
+
+                    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+
+
+
+            # Button for user input predictions
+            if st.button('Predict User Input'):
+                # Make predictions for user input features
+                prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
+                prediction_proba = modelBPCh.predict_proba(input_df)
+
+                # Display the prediction and probability
+                if prediction[0] == 0:
+                    st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
+                else:
+                    st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
+
+
+
+            if st.button('Total predict'):
+                if uploaded_file is None:
+                    st.warning("Please upload your ECG signal file first to make a total prediction.")
+                else:    
+                    # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
+                    sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
+                    sampling_rate = float(sampling_rate_str.split()[0])
+
+                    # Detect R-peaks using NeuroKit2
+                    _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
+
+
+
+                    # Preprocess ECG signal for prediction
+                    X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
+
+                    X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
+                    X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
+                    X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
+
+                    X_input = X_input.reshape(len(X_input_normalized), 187, 1)
+
+                    # Make predictions for ECG data
+                    y_pred = modelECG.predict(X_input)
+                    predicted_classes = np.argmax(y_pred, axis=1)
+
+                    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
                 
-
-                # Define a mapping between input column names and model's feature names
-                column_mapping = {
-                    'chest_pain_type': 'cp',
-                    'exercise_induced_angina': 'exang',
-                    'cholesterol': 'chol',
-                    'resting_bp_s': 'trestbps',
-                    'max_heart_rate': 'thalach'
-                }
-
-                # Rename columns in input_df to match the model's feature names
-                input_df.rename(columns=column_mapping, inplace=True)
-
-                # Encoding categorical variables in the same way as during training
-                input_df = pd.get_dummies(input_df, drop_first=True)
-
-                # Ensure column order matches the model's expected feature order
-                input_df = input_df[modelBPCh.feature_names_in_]
-
-
-                # Display the ECG data and visualization side by side
-                col1, col2 = st.columns(2)
-
-                with col1:
-                    with st.expander('📑 ECG Signal Data'):
-                        if not ecg_df.empty:
-                            st.write(ecg_df)  # Display the entire raw data file as a table
-                        else:
-                            st.write("No data to display.")
-
-
-                with col2:
-                    with st.expander('📉 ECG Signal Data Visualization'):
-                        if not ecg_data.empty:
-                            # Create Altair line chart with labeled axes and red line color
-                            chart = alt.Chart(ecg_data).mark_line(color='#F63366').encode(
-                                x=alt.X('Time (s)', title='Time (s)', scale=alt.Scale(domain=[0, time_limit])),
-                                y=alt.Y('ECG Signal (mV)', title='ECG Signal (mV)')
-                            ).properties(
-                                width=350,
-                                height=400
-                            ).interactive()
-                            st.altair_chart(chart, use_container_width=True)
-                        else:
-                            st.write("No ECG data available to visualize.")
-
-
-                # Button for ECG predictions
-                if st.button('Predict ECG'):
-                    if uploaded_file is None:
-                        st.warning("Please upload your ECG signal file first.")
-
-                    else:    
-                        # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
-                        sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
-                        sampling_rate = float(sampling_rate_str.split()[0])
-
-                        # Detect R-peaks using NeuroKit2
-                        _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
-
-
-
-                        # Preprocess ECG signal for prediction
-                        X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
-
-                        X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
-                        X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
-                        X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
-
-                        X_input = X_input.reshape(len(X_input_normalized), 187, 1)
-
-                        # Make predictions for ECG data
-                        y_pred = modelECG.predict(X_input)
-                        predicted_classes = np.argmax(y_pred, axis=1)
-
-                        st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
-                        percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-
-                        st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
-
-
-
-                # Button for user input predictions
-                if st.button('Predict User Input'):
-                    # Make predictions for user input features
                     prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
                     prediction_proba = modelBPCh.predict_proba(input_df)
 
-                    # Display the prediction and probability
+
+            
                     if prediction[0] == 0:
-                        st.success(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
-                    else:
-                        st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
+                        BPCh_pred_prob = prediction_proba[0][0]
 
-
-
-                if st.button('Total predict'):
-                    if uploaded_file is None:
-                        st.warning("Please upload your ECG signal file first to make a total prediction.")
-                    else:    
-                        # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
-                        sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
-                        sampling_rate = float(sampling_rate_str.split()[0])
-
-                        # Detect R-peaks using NeuroKit2
-                        _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
-
-
-
-                        # Preprocess ECG signal for prediction
-                        X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
-
-                        X_input_reshaped = X_input.reshape(len(X_input), -1)  # Omforma till 2D (n_samples, 187)
-                        X_input_normalized = scaler.transform(X_input_reshaped)  # Normalisera
-                        X_input_normalized = np.clip(X_input_normalized, 0, 1)  # Begränsar värden till intervallet [0, 1]
-
-                        X_input = X_input.reshape(len(X_input_normalized), 187, 1)
-
-                        # Make predictions for ECG data
-                        y_pred = modelECG.predict(X_input)
-                        predicted_classes = np.argmax(y_pred, axis=1)
-
-                        percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-                    
-                        prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
-                        prediction_proba = modelBPCh.predict_proba(input_df)
-
-
+                    else: 
+                        BPCh_pred_prob = prediction_proba[0][1]
                 
-                        if prediction[0] == 0:
-                            BPCh_pred_prob = prediction_proba[0][0]
 
-                        else: 
-                            BPCh_pred_prob = prediction_proba[0][1]
-                    
+                    res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
 
-                        res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
-
-                        if len(res) > 1:
-                            st.success(f'{res[0]} {res[1]}')
-                        else:
-                            st.success(res[0])
+                    if len(res) > 1:
+                        st.success(f'{res[0]} {res[1]}')
+                    else:
+                        st.success(res[0])
 
 
 
