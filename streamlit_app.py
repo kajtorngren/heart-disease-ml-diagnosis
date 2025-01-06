@@ -179,13 +179,22 @@ if choice == 'Login':
                 st.sidebar.info(
                 """
                 **Resting Blood Pressure:**
-                
+
                 This is the **systolic blood pressure** (top/first number) measured in mm Hg.  
                 """
                 )
 
 
                 cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
+
+                st.sidebar.info(
+                """
+                **Cholesterol:**
+                
+                This is the **total cholesterol** level in your blood, which is a sum of all types of cholesterol.  
+                """
+                )
+
                 max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
                 chest_pain_type_mapping = {
