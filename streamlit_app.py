@@ -425,7 +425,7 @@ if choice == 'Login':
                 table_data = []
                 if 'Content' in data:
                     for post in data['Content']:
-                        table_data.append({'Username': data['Username'], 'Content': post}) # Two contents
+                        table_data.append({'Content': post}) # Two contents
                 
                 st.table(table_data)  # Display the table in Streamlit
             else:
