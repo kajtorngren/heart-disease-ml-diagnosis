@@ -395,14 +395,14 @@ if choice == 'Login':
 
             db2 = firestore.client()
 
-            post = st.text_input("Share your current mood, inputs and results!", max_chars=200)
+            post = st.text_input("Share your current mood, inputs, and results!", max_chars=200)
 
             if st.button('Save your inputs and prediction results'):
                 if post != '':
                     info = db2.collection('Posts').document(user['localId']).get()
 
                     # Get the current timestamp
-                    timestamp = datetime.now()
+                    timestamp = firestore.SERVER_TIMESTAMP
 
                     if info.exists:
                         info = info.to_dict()
@@ -443,15 +443,22 @@ if choice == 'Login':
                 if 'Content' in data:
                     for entry in data['Content']:
                         # Retrieve post and timestamp
-                        post_text = entry['post']
-                        timestamp = entry['timestamp']
-                        # Format timestamp for display
-                        formatted_time = timestamp.strftime('%Y-%m-%d %H:%M:%S') if isinstance(timestamp, datetime) else timestamp
+                        post_text = entry.get('post', 'N/A')
+                        timestamp = entry.get('timestamp')
+                        if isinstance(timestamp, datetime):  # Firestore Timestamp is already converted
+                            formatted_time = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+                        else:
+                            formatted_time = "Unknown"
+
                         table_data.append({'Content': post_text, 'Timestamp': formatted_time})
 
-                st.table(table_data)  # Display the table in Streamlit
+                if table_data:
+                    st.table(table_data)  # Display the table in Streamlit
+                else:
+                    st.write("No data found for this user.")
             else:
                 st.write("No data found for this user.")
+
 
 
 
