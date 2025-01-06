@@ -448,7 +448,7 @@ if choice == 'Login':
                         table_data.append({'Timestamp': timestamp, 'Text': text})
 
                 # Use st.dataframe() instead of st.table() and hide the index
-                st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
+                st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index, can also use table instead
             else:
                 st.write("No data found for this user.")
 
