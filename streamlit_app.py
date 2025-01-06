@@ -433,14 +433,14 @@ if choice == 'Login':
                         data = {"Content": [post_with_timestamp], 'Username': user['localId']}
                         db2.collection('Posts').document(user['localId']).set(data)
 
-
             docs = db2.collection('Posts').document(user['localId']).get()
 
             if docs.exists:
                 data = docs.to_dict()
                 table_data = []
                 if 'Content' in data:
-                    for post_entry in data['Content']:
+                    # Reverse the order of posts to show the latest post first
+                    for post_entry in reversed(data['Content']):
                         # Split timestamp and text
                         timestamp, text = post_entry.split(": ", 1)
                         table_data.append({'Timestamp': timestamp, 'Text': text})
@@ -448,6 +448,7 @@ if choice == 'Login':
                 st.table(table_data)  # Display the table with two columns
             else:
                 st.write("No data found for this user.")
+
 
 
 
