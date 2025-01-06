@@ -244,6 +244,8 @@ if choice == 'Login':
             # Display the ECG data and visualization side by side
             col1, col2 = st.columns(2)
 
+            st.subheader('ECG Signal')
+
             with col1:
                 with st.expander('📑 ECG Signal Data'):
                     if not ecg_df.empty:
@@ -267,6 +269,8 @@ if choice == 'Login':
                     else:
                         st.write("No ECG data available to visualize.")
 
+
+            st.subheader('Heart Disease Prediction')
 
             # Button for ECG predictions
             if st.button('Predict ECG'):
