@@ -171,10 +171,18 @@ if choice == 'Login':
                 - **Non-Anginal Pain**: Often related to muscles, not the heart. It can worsen with movement or pressure and improve with rest or changing position.  
                 - **Asymptomatic**: No chest pain symptoms but may still have heart disease.  
                 """
-    )
+                )
 
                 exercise_induced_angina = st.sidebar.selectbox('Chest pain from exercise', ('Yes', 'No'))
                 resting_bp_s = st.sidebar.slider('Resting blood pressure (mm Hg)', 90, 200, 120)
+
+                st.sidebar.info(
+                """
+                **Resting Blood Pressure**: This is the **systolic blood pressure** (top/first number) measured in mm Hg.  
+                """
+                )
+
+
                 cholesterol = st.sidebar.slider('Cholesterol (mg/dl)', 150, 300, 200)
                 max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
