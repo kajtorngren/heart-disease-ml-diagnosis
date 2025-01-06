@@ -89,6 +89,9 @@ if choice == 'Login':
             # Authenticate user
             user = auth.sign_in_with_email_and_password(email, password)
             st.sidebar.success('Login successful!')
+            db.child(user['localId']).child("Handle").set(handle)
+            db.child(user['localId']).child("ID").set(user['localId'])
+            st.sidebar.success(f'Welcome {handle}')
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 #######################################################################################
