@@ -410,7 +410,7 @@ if choice == 'Login':
             # User input for the post
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
-            if st.button('Save your text, input features and total prediction'):
+            if st.button('Save your text, input featurues and total prediction'):
                 if post != '':
                     info = db2.collection('Posts').document(user['localId']).get()
 
@@ -445,8 +445,7 @@ if choice == 'Login':
                         timestamp, text = post_entry.split(": ", 1)
                         table_data.append({'Timestamp': timestamp, 'Text': text})
 
-                # Use st.dataframe() instead of st.table() and hide the index
-                st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
+                st.table(table_data, hide_index=True)  # Display the table with two columns
             else:
                 st.write("No data found for this user.")
 
