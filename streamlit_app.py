@@ -397,11 +397,17 @@ if choice == 'Login':
 
             from datetime import datetime
             import pytz  # Ensure pytz is installed: pip install pytz
+            import streamlit as st
+            from google.cloud import firestore
+            from firebase_admin import credentials, initialize_app
+
+            # Firebase credentials and initialization
+            cred = credentials.Certificate(service_account_info)
+            initialize_app(cred)
 
             # Displaying history of inputs and predictions
             st.subheader('📖 History of inputs and predictions')
 
-            cred = credentials.Certificate(service_account_info)
             db2 = firestore.client()
 
             # Set Swedish timezone
@@ -433,6 +439,7 @@ if choice == 'Login':
                         data = {"Content": [post_with_timestamp], 'Username': user['localId']}
                         db2.collection('Posts').document(user['localId']).set(data)
 
+            # Fetch user's posts from Firestore
             docs = db2.collection('Posts').document(user['localId']).get()
 
             if docs.exists:
@@ -440,15 +447,29 @@ if choice == 'Login':
                 table_data = []
                 if 'Content' in data:
                     # Reverse the order of posts to show the latest post first
-                    for post_entry in reversed(data['Content']):
+                    for i, post_entry in enumerate(reversed(data['Content'])):
                         # Split timestamp and text
                         timestamp, text = post_entry.split(": ", 1)
-                        table_data.append({'Timestamp': timestamp, 'Text': text})
+                        table_data.append({'Timestamp': timestamp, 'Text': text, 'Index': i})
 
-                # Use st.dataframe() instead of st.table() and hide the index
-                st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
+                    # Display the table with a delete button for each row
+                    df = pd.DataFrame(table_data)
+                    st.dataframe(df[['Timestamp', 'Text']], hide_index=True)
+
+                    # Select row to delete
+                    row_to_delete = st.selectbox("Select a post to delete", df['Index'])
+
+                    if st.button('Delete selected post'):
+                        post_to_remove = data['Content'][len(data['Content']) - 1 - row_to_delete]
+                        # Remove the selected post from Firestore
+                        db2.collection('Posts').document(user['localId']).update({
+                            'Content': firestore.ArrayRemove([post_to_remove])
+                        })
+                        st.success("Post deleted successfully!")
+
             else:
                 st.write("No data found for this user.")
+
 
 
 
