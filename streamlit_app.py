@@ -240,11 +240,13 @@ if choice == 'Login':
             # Ensure column order matches the model's expected feature order
             input_df = input_df[modelBPCh.feature_names_in_]
 
+            st.subheader('ECG Signal')
 
+            
             # Display the ECG data and visualization side by side
             col1, col2 = st.columns(2)
 
-            st.subheader('ECG Signal')
+            
 
             with col1:
                 with st.expander('📑 ECG Signal Data'):
