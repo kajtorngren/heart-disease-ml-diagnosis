@@ -88,7 +88,7 @@ if choice == 'Login':
         try:
             # Authenticate user
             user = auth.sign_in_with_email_and_password(email, password)
-            st.sidebar.success(f'Login successful! Welcome {handle}')
+            st.sidebar.success('Login successful!')
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
 #######################################################################################
