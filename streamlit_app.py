@@ -168,7 +168,7 @@ if choice == 'Login':
                 **Chest Pain Types:**
                 - **Typical Angina**: Predictable chest pain caused by exertion, relieved by rest.  
                 - **Atypical Angina**: Chest pain that does not follow typical patterns and may occur at rest.  
-                - **Non-Anginal Pain**: Pain unrelated to the heart, often caused by muscles or digestion.  
+                - **Non-Anginal Pain**: Often related to muscles, not the heart. It can worsen with movement or pressure and improve with rest or changing position.  
                 - **Asymptomatic**: No chest pain symptoms but may still have heart disease.  
                 """
     )
