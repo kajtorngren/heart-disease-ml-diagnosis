@@ -201,9 +201,7 @@ if choice == 'Login':
 
                 max_heart_rate = st.sidebar.slider('Max heart rate (bps)', 70, 220, 150)
 
-                # Add 'Run' button
-                if st.sidebar.button('Run'):
-                    st.session_state.run_clicked = True
+                
 
                 chest_pain_type_mapping = {
                     'typical angina': 1,
@@ -226,6 +224,10 @@ if choice == 'Login':
                 }
                 features = pd.DataFrame(data, index=[0])
                 return features
+            
+            # Add 'Run' button
+            if st.sidebar.button('Run'):
+                st.session_state.run_clicked = True
 
             if st.session_state.run_clicked:
                 # Get user input features
