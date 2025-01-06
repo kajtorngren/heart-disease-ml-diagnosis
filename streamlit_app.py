@@ -240,7 +240,7 @@ if choice == 'Login':
             # Ensure column order matches the model's expected feature order
             input_df = input_df[modelBPCh.feature_names_in_]
 
-            st.subheader('ECG Signal')
+            st.subheader('📉 ECG Signal')
 
             
             # Display the ECG data and visualization side by side
@@ -272,7 +272,7 @@ if choice == 'Login':
                         st.write("No ECG data available to visualize.")
 
 
-            st.subheader('Heart Disease Prediction')
+            st.subheader('🫀 Heart Disease Prediction')
 
             # Button for ECG predictions
             if st.button('Predict ECG'):
