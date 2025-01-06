@@ -179,6 +179,7 @@ if choice == 'Login':
                 st.sidebar.info(
                 """
                 **Resting Blood Pressure:**
+                
                 This is the **systolic blood pressure** (top/first number) measured in mm Hg.  
                 """
                 )
