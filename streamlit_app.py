@@ -14,7 +14,7 @@ from Ensemble import run_ensemble
 
 # Internetflik visning
 st.set_page_config(
-        page_title="Heart Failure Detection",
+        page_title="Heart Disease Detection",
         page_icon="❤",
         layout="wide"
     )
