@@ -408,7 +408,7 @@ if choice == 'Login':
             swedish_tz = pytz.timezone('Europe/Stockholm')
 
             # User input for the post
-            post = st.text_input("Share your current mood, inputs, and prediction results!", max_chars=200)
+            post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
             if st.button('Save your text, input featurues and total prediction'):
                 if post != '':
