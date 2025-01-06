@@ -389,67 +389,47 @@ if choice == 'Login':
             "universe_domain": "googleapis.com"
             }
 
-            from datetime import datetime
-
             cred = credentials.Certificate(service_account_info)
+
             db2 = firestore.client()
 
-            post = st.text_input("Share your current mood, inputs, and results!", max_chars=200)
-
-            if st.button('Save your inputs and prediction results'):
-                if post != '':
+            post = st.text_input("Share your current mood, inputs and results!",max_chars = 200)
+    
+            if st.button('Save you inputs and prediction results'):
+                if post!='':
                     info = db2.collection('Posts').document(user['localId']).get()
-                    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')  # Add timestamp
 
-                    if info.exists:
-                        info = info.to_dict()
+                if info.exists:
+                    info = info.to_dict()
 
-                        if 'Content' in info.keys():
-                            pos = db2.collection('Posts').document(user['localId'])
-                            # Append post with timestamp
-                            pos.update({
-                                u'Content': firestore.ArrayUnion([{
-                                    u'Text': post,
-                                    u'Date': timestamp
-                                }])
-                            })
-                        else:
-                            data = {
-                                "Content": [{
-                                    "Text": post,
-                                    "Date": timestamp
-                                }],
-                                "Username": user['localId']
-                            }
-                            db2.collection('Posts').document(user['localId']).set(data)
+                    if 'Content' in info.keys():
+                        pos=db2.collection('Posts').document(user['localId'])
+                        pos.update({u'Content': firestore.ArrayUnion([u'{}'.format(post)])})
+
                     else:
-                        data = {
-                            "Content": [{
-                                "Text": post,
-                                "Date": timestamp
-                            }],
-                            "Username": user['localId']
-                        }
-                        db2.collection('Posts').document(user['localId']).set(data)
+                        data={"Content":[post],'Username':user['localId']}
+                        db2.collection('Posts').document(user['localId']).set(data)    
+                else:
+                    
+                    data={"Content":[post],'Username':user['localId']}
+                    db2.collection('Posts').document(user['localId']).set(data)
+                
 
             st.subheader('📖 History of inputs and predictions')
-
+            
             docs = db2.collection('Posts').document(user['localId']).get()
-
+            
             if docs.exists:
                 data = docs.to_dict()  # Convert Firestore document to a Python dictionary
                 # Convert data into a list of dictionaries for table display
                 table_data = []
                 if 'Content' in data:
-                    for entry in data['Content']:
-                        table_data.append({
-                            'Content': entry['Text'],
-                            'Date': entry['Date']
-                        })  # Include date in table
+                    for post in data['Content']:
+                        table_data.append({'Content': post}) # Two contents
+                
                 st.table(table_data)  # Display the table in Streamlit
             else:
                 st.write("No data found for this user.")
-
 
 
 
