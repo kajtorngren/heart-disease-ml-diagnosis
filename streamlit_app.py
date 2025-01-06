@@ -398,6 +398,9 @@ if choice == 'Login':
             from datetime import datetime
             import pytz  # Ensure pytz is installed: pip install pytz
 
+            # Displaying history of inputs and predictions
+            st.subheader('📖 History of inputs and predictions')
+
             cred = credentials.Certificate(service_account_info)
             db2 = firestore.client()
 
@@ -430,8 +433,6 @@ if choice == 'Login':
                         data = {"Content": [post_with_timestamp], 'Username': user['localId']}
                         db2.collection('Posts').document(user['localId']).set(data)
 
-            # Displaying history of inputs and predictions
-            st.subheader('📖 History of inputs and predictions')
 
             docs = db2.collection('Posts').document(user['localId']).get()
 
