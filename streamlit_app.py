@@ -430,7 +430,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': res
+                        'TotalPrediction': percentage_ones
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
