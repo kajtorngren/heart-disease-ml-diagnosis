@@ -424,15 +424,13 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
-                    result, TotalPrediction = run_ensemble(ecg_risk, bp_chol_prediction, bp_chol_probability)
-
                     # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': TotalPrediction
+                        'TotalPrediction': res
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
