@@ -372,7 +372,12 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
 
-
+                    # Prepare data to store
+                    res_data = {
+                        'ecg_prediction': percentage_ones,
+                        'bpch_prediction': BPCh_pred_prob,
+                        'ensemble_result': res
+                    }
 
             #History 
             import firebase_admin
@@ -421,7 +426,7 @@ if choice == 'Login':
                     # Current timestamp in Swedish time
                     current_time = datetime.now(swedish_tz).strftime("%Y-%m-%d %H:%M:%S")
 
-                    total_pred = res.to_dict(orient="records")[0]
+                    total_pred = res_data.to_dict(orient="records")[0]
 
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
@@ -477,7 +482,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total prediction': res.get('res', ''),,
+                            'Total prediction': total_pred.get('ensemble_result', ''),,
                         }
                         table_data.append(row)
 
