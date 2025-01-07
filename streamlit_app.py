@@ -421,7 +421,7 @@ if choice == 'Login':
                     # Current timestamp in Swedish time
                     current_time = datetime.now(swedish_tz).strftime("%Y-%m-%d %H:%M:%S")
 
-                    total_pred = res_df.to_dict(orient="records"),
+                    total_pred = res_df.to_dict(orient="records")[0]
 
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
