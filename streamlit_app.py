@@ -477,7 +477,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total prediction': entry['Prediction'],
+                            'Total prediction': res.get('res', ''),,
                         }
                         table_data.append(row)
 
