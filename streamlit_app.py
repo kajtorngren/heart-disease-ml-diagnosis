@@ -470,6 +470,7 @@ if choice == 'Login':
                     for entry in reversed(data['Data']):
                         # Extract user input features and organize them into individual columns
                         user_input = entry['UserInput']
+                        pred2 = entry['pred']
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
@@ -480,7 +481,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total prediction': entry.get('TotalPrediction')
+                            'Total prediction': pred2.get('TotalPrediction')
                         }
                         table_data.append(row)
 
