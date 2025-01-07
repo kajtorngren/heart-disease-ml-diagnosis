@@ -466,7 +466,7 @@ if choice == 'Login':
                             'Age': user_input.get('age', ''),
                             'Sex': user_input.get('sex', ''),
                             'Chest pain type': user_input.get('cp', ''),
-                            'Chest pain during exercise': user_input.get('exang', ''),
+                            'Chest pain from exercise': user_input.get('exang', ''),
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
