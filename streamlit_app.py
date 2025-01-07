@@ -462,7 +462,7 @@ if choice == 'Login':
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
-                            'Age': user_input.get('Age', ''),
+                            'Age': user_input.get('age', ''),
                             'Sex': user_input.get('Sex', ''),
                             'BMI': user_input.get('BMI', ''),
                             'Smoking History': user_input.get('SmokingHistory', ''),
