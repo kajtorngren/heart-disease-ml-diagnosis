@@ -425,13 +425,15 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
+                    total_p = res.to_dict(orient='records')[0]
+
                     # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'Prediction': res
+                        'Prediction': total_p
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -476,7 +478,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Prediction': entry['Prediction'],
+                            'Total prediction': entry['Prediction'],
                         }
                         table_data.append(row)
 
