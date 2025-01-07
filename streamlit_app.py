@@ -328,15 +328,13 @@ if choice == 'Login':
             if st.button('Total predict'):
                 if uploaded_file is None:
                     st.warning("Please upload your ECG signal file first to make a total prediction.")
-                else:    
+                else:
                     # Extract sampling rate from row 8, second column (e.g., "499.348 Hz")
                     sampling_rate_str = ecg_df.iloc[8, 1]  # Adjust if sampling rate is stored differently
                     sampling_rate = float(sampling_rate_str.split()[0])
 
                     # Detect R-peaks using NeuroKit2
                     _, rpeaks = nk.ecg_peaks(ecg_values, sampling_rate=sampling_rate)
-
-
 
                     # Preprocess ECG signal for prediction
                     X_input = preprocess_ecg_for_prediction(ecg_values, rpeaks)
@@ -352,57 +350,46 @@ if choice == 'Login':
                     predicted_classes = np.argmax(y_pred, axis=1)
 
                     percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-                
+
                     prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
                     prediction_proba = modelBPCh.predict_proba(input_df)
 
-
-            
                     if prediction[0] == 0:
                         BPCh_pred_prob = prediction_proba[0][0]
-
-                    else: 
+                    else:
                         BPCh_pred_prob = prediction_proba[0][1]
-                
 
-                    res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
+                    res = run_ensemble(percentage_ones, prediction[0], BPCh_pred_prob)
 
                     if len(res) > 1:
                         st.success(f'{res[0]} {res[1]}')
                     else:
                         st.success(res[0])
 
+                    # Combine the result into a total prediction in percentage
+                    total_prediction = f"{percentage_ones:.2f}%"
 
-
-
-            #History 
+            # Firebase setup
             import firebase_admin
             from firebase_admin import firestore
             from firebase_admin import credentials
-            from firebase_admin import auth
-            import json
-
-            # Firebase setup
-            service_account_info = {
-            "type": "service_account",
-            "project_id": "streamlit-heart-disease-ml",
-            "private_key_id": "f3b905fab6c3084234fb3b7beb74da258717283d",
-            "private_key": st.secrets["PRIVATE_KEY"],
-            "client_email": "firebase-adminsdk-ubvvc@streamlit-heart-disease-ml.iam.gserviceaccount.com",
-            "client_id": "111991242877666197944",
-            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-            "token_uri": "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ubvvc%40streamlit-heart-disease-ml.iam.gserviceaccount.com",
-            "universe_domain": "googleapis.com"
-            }
-
             from datetime import datetime
             import pytz  # Ensure pytz is installed: pip install pytz
 
-            # Displaying history of inputs and predictions
-            st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
-            st.subheader('📖 History of inputs and predictions')
+            # Firebase setup (as in the original code)
+            service_account_info = {
+                "type": "service_account",
+                "project_id": "streamlit-heart-disease-ml",
+                "private_key_id": "f3b905fab6c3084234fb3b7beb74da258717283d",
+                "private_key": st.secrets["PRIVATE_KEY"],
+                "client_email": "firebase-adminsdk-ubvvc@streamlit-heart-disease-ml.iam.gserviceaccount.com",
+                "client_id": "111991242877666197944",
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+                "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ubvvc%40streamlit-heart-disease-ml.iam.gserviceaccount.com",
+                "universe_domain": "googleapis.com"
+            }
 
             cred = credentials.Certificate(service_account_info)
             db2 = firestore.client()
@@ -410,10 +397,13 @@ if choice == 'Login':
             # Set Swedish timezone
             swedish_tz = pytz.timezone('Europe/Stockholm')
 
+            # Displaying history of inputs and predictions
+            st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
+            st.subheader('📖 History of inputs and predictions')
+
             # User input for the post
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
-            # Button to save the data
             # Button to save the data
             if st.button('Save your mood post, input features, and total prediction'):
                 if post != '':
@@ -426,12 +416,13 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
-                    # Combine the data into a single structure
+                    # Combine the data into a single structure including total_prediction
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
+                        'TotalPrediction': total_prediction  # Add the total prediction here
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -474,6 +465,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
+                            'Total Prediction': entry.get('TotalPrediction', '')  # Add total prediction to the row
                         }
                         table_data.append(row)
 
@@ -481,6 +473,7 @@ if choice == 'Login':
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
                 st.write("No data found for this user.")
+
 
 
 
