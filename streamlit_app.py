@@ -430,7 +430,7 @@ if choice == 'Login':
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
-                        'UserInput': user_data
+                        'UserInput': user_data,
                         'Prediction': res
                     }
 
