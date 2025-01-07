@@ -426,7 +426,7 @@ if choice == 'Login':
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
 
-                    total_prediction_percentage = str(res) # Format the prediction as a percentage with 2 decimal places
+                    total_prediction_percentage = res # Format the prediction as a percentage with 2 decimal places
 
 
                     # Combine the data into a single structure
