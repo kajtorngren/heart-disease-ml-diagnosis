@@ -372,12 +372,6 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
 
-                    # Extract the numeric value from the result, assuming it's a percentage string like '87%'
-                    if isinstance(res[0], str) and '%' in res[0]:
-                        # Extract the numeric part of the result (e.g., '87%' -> 87)
-                        total_prediction_value = float(res[0].replace('%', '').strip())
-                        total_prediction = f"{total_prediction_value:.2f}%"  # Store it in percentage format
-
 
 
             #History 
