@@ -444,6 +444,8 @@ if choice == 'Login':
                         db2.collection('UserData').document(user['localId']).set(data)
 
                     st.success('Your input and post have been saved!')
+            else:
+                st.write("No data found for this user.")
 
             # Retrieve and display all saved inputs and posts for the user
             docs = db2.collection('UserData').document(user['localId']).get()
