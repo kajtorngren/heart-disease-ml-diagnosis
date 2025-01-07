@@ -456,13 +456,22 @@ if choice == 'Login':
                 if 'Data' in data:
                     # Reverse the order of entries to show the latest entry first
                     for entry in reversed(data['Data']):
-                        table_data.append({
+                        # Extract user input features and organize them into individual columns
+                        user_input = entry['UserInput']
+                        # Assuming user_input has the following keys: 'Age', 'Sex', 'BMI', 'SmokingHistory', 'Exercise', 'FamilyHistory'
+                        row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
-                            'User Input': entry['UserInput']
-                        })
+                            'Age': user_input.get('Age', ''),
+                            'Sex': user_input.get('Sex', ''),
+                            'BMI': user_input.get('BMI', ''),
+                            'Smoking History': user_input.get('SmokingHistory', ''),
+                            'Exercise': user_input.get('Exercise', ''),
+                            'Family History': user_input.get('FamilyHistory', ''),
+                        }
+                        table_data.append(row)
 
-                    # Display the combined data in a table
+                    # Display the combined data in a table with custom headers
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
                 st.write("No data found for this user.")
