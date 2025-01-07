@@ -418,7 +418,17 @@ if choice == 'Login':
                     current_time = datetime.now(swedish_tz).strftime("%Y-%m-%d %H:%M:%S")
 
                     # Combine post and timestamp as a single entry
-                    post_with_timestamp = f"{current_time}: {post}"
+                    post_with_timestamp = f"{current_time}: {post} | " \
+                                   f"Age: {input_df['age'][0]}, " \
+                                   f"Sex: {'Male' if input_df['sex'][0] == 1 else 'Female'}, " \
+                                   f"Chest Pain Type: {chest_pain_type}, " \
+                                   f"Exercise Induced Angina: {'Yes' if input_df['exercise_induced_angina'][0] == 1 else 'No'}, " \
+                                   f"Resting BP: {input_df['resting_bp_s'][0]}, " \
+                                   f"Cholesterol: {input_df['cholesterol'][0]}, " \
+                                   f"Max Heart Rate: {input_df['max_heart_rate'][0]}, " \
+                                   f"ECG Risk Percentage: {percentage_ones:.2f}%, " \
+                                   f"BPCh Prediction Probability: {BPCh_pred_prob}, " \
+                                   f"Ensemble Prediction: {res[0] if len(res) == 1 else f'{res[0]} {res[1]}'}"
 
                     if info.exists:
                         info = info.to_dict()
@@ -445,7 +455,20 @@ if choice == 'Login':
                     for post_entry in reversed(data['Content']):
                         # Split timestamp and text
                         timestamp, text = post_entry.split(": ", 1)
-                        table_data.append({'Timestamp (GMT+1)': timestamp, 'Text': text})
+                        table_data.append({
+                            'Timestamp': timestamp,
+                            'Text': text,
+                            'Age': input_df['age'][0],
+                            'Sex': 'Male' if input_df['sex'][0] == 1 else 'Female',
+                            'Chest Pain Type': chest_pain_type,
+                            'Exercise Induced Angina': exercise_induced_angina,
+                            'Resting BP': input_df['resting_bp_s'][0],
+                            'Cholesterol': input_df['cholesterol'][0],
+                            'Max Heart Rate': input_df['max_heart_rate'][0],
+                            'ECG Risk Percentage': f"{percentage_ones:.2f}%",
+                            'BPCh Prediction Probability': BPCh_pred_prob,
+                            'Ensemble Prediction': res[0] if len(res) == 1 else f'{res[0]} {res[1]}'
+                        })
 
                 # Use st.dataframe() instead of st.table() and hide the index
                 st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index, can also use table instead
