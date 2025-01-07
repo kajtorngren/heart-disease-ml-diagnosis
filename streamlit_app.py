@@ -160,8 +160,8 @@ if choice == 'Login':
             # Collect other user input features
             def user_input_features():
                 age = st.sidebar.slider('Age', 18, 100, 50)
-                sex = st.sidebar.radio('Sex', ('Male', 'Female'))
-                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('Typical angina', 'Atypical angina', 'Non-anginal pain', 'Asymptomatic'))
+                sex = st.sidebar.radio('Sex', ('male', 'female'))
+                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
 
                 st.sidebar.info(
                 """
@@ -410,72 +410,89 @@ if choice == 'Login':
             # User input for the post
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
-            # Button to save the data
-            if st.button('Save all your text, input features, and total prediction'):
+            if st.button('Save your text, input features and total prediction'):
                 if post != '':
-                    # Retrieve existing data from Firestore for the user
-                    user_doc = db2.collection('UserData').document(user['localId']).get()
+                    info = db2.collection('Posts').document(user['localId']).get()
 
                     # Current timestamp in Swedish time
                     current_time = datetime.now(swedish_tz).strftime("%Y-%m-%d %H:%M:%S")
 
-                    # User input data (convert to dictionary)
-                    user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
+                    # Combine post and timestamp as a single entry
+                    post_with_timestamp = f"{current_time}: {post}"
 
-                    # Combine the data into a single structure
-                    combined_data = {
-                        'UserID': user['localId'],
-                        'Timestamp': current_time,
-                        'MoodPost': post,
-                        'UserInput': user_data
-                    }
+                    if info.exists:
+                        info = info.to_dict()
 
-                    # Save or update the data in Firestore under the "UserData" collection
-                    if user_doc.exists:
-                        user_doc = user_doc.to_dict()
-
-                        # If there is already saved data, we update it (or you can append if needed)
-                        combined_data_list = user_doc.get('Data', [])
-                        combined_data_list.append(combined_data)
-                        db2.collection('UserData').document(user['localId']).update({'Data': combined_data_list})
+                        if 'Content' in info.keys():
+                            pos = db2.collection('Posts').document(user['localId'])
+                            pos.update({u'Content': firestore.ArrayUnion([post_with_timestamp])})
+                        else:
+                            data = {"Content": [post_with_timestamp], 'Username': user['localId']}
+                            db2.collection('Posts').document(user['localId']).set(data)
                     else:
-                        # If no existing data, create a new document with the combined data
-                        data = {"Data": [combined_data]}
-                        db2.collection('UserData').document(user['localId']).set(data)
+                        data = {"Content": [post_with_timestamp], 'Username': user['localId']}
+                        db2.collection('Posts').document(user['localId']).set(data)
 
-                    st.success('Your input and post have been saved!')
+            docs = db2.collection('Posts').document(user['localId']).get()
 
-            # Retrieve and display all saved inputs and posts for the user
-            docs = db2.collection('UserData').document(user['localId']).get()
-
-            st.write("Table of saved inputs, posts, and predictions:")
+            st.write("Table of saved text, input features and total prediction:")    
 
             if docs.exists:
                 data = docs.to_dict()
                 table_data = []
-                if 'Data' in data:
-                    # Reverse the order of entries to show the latest entry first
-                    for entry in reversed(data['Data']):
-                        # Extract user input features and organize them into individual columns
-                        user_input = entry['UserInput']
-                        # Assuming user_input has the following keys: 'Age', 'Sex', 'BMI', 'SmokingHistory', 'Exercise', 'FamilyHistory'
-                        row = {
-                            'Timestamp': entry['Timestamp'],
-                            'Mood Post': entry['MoodPost'],
-                            'Age': user_input.get('age', ''),
-                            'Sex': user_input.get('sex', ''),
-                            'Chest_pain_type': user_input.get('chest_pain_type', ''),
-                            'Smoking History': user_input.get('SmokingHistory', ''),
-                            'Exercise': user_input.get('Exercise', ''),
-                            'Family History': user_input.get('FamilyHistory', ''),
-                        }
-                        table_data.append(row)
+                if 'Content' in data:
+                    # Reverse the order of posts to show the latest post first
+                    for post_entry in reversed(data['Content']):
+                        # Split timestamp and text
+                        timestamp, text = post_entry.split(": ", 1)
+                        table_data.append({'Timestamp': timestamp, 'Text': text})
 
-                    # Display the combined data in a table with custom headers
-                    st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
+                # Use st.dataframe() instead of st.table() and hide the index
+                st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index, can also use table instead
             else:
                 st.write("No data found for this user.")
 
+
+
+
+
+
+
+
+#test for parameters
+            if st.button('Save'):
+                user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
+                
+                # Save to Firestore under the "Users" collection, keyed by user ID
+                user_id = user['localId']  # Replace with dynamic user ID, e.g., from authentication
+                post_data = {
+                    'UserID': user_id,
+                    'UserInput': user_data
+                }
+
+                # Add or update user data in Firestore
+                db2.collection('Users').document(user_id).set(post_data)
+
+                st.success('Your input has been saved!')
+
+            # Display the history of saved inputs
+            st.subheader('📖 History of inputs')
+
+            # Retrieve user input history from Firestore
+            docs = db2.collection('Users').document(user['localId']).get()
+
+            if docs.exists:
+                data = docs.to_dict()  # Convert Firestore document to a Python dictionary
+                user_input_history = data.get('UserInput', {})  # Get the saved input (it's a dict)
+
+                # Display the most recent input as a table
+                if user_input_history:
+                    st.write("Saved Inputs:")
+                    st.table(pd.DataFrame([user_input_history]))  # Display the latest input as a table
+                else:
+                    st.write("No inputs found.")
+            else:
+                st.write("No data found for this user.")
 
         except Exception as e:
             # Handle invalid login
