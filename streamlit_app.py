@@ -449,8 +449,8 @@ if choice == 'Login':
             # Retrieve and display all saved inputs and posts for the user
             docs = db2.collection('UserData').document(user['localId']).get()
 
-            st.markdown('<br><br>', unsafe_allow_html=True)  # Adds space between Button 1 and Button 2
-            
+            st.markdown('<br>', unsafe_allow_html=True)  # Adds space between Button 1 and Button 2
+
             st.write("📋 Table of saved inputs, posts, and predictions:")
 
             if docs.exists:
