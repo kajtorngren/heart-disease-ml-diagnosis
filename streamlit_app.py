@@ -424,6 +424,8 @@ if choice == 'Login':
 
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
+
+
                     total_prediction_percentage = f"{res[0]:.2f}%"  # Format the prediction as a percentage with 2 decimal places
 
 
@@ -433,7 +435,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': res[0]
+                        'TotalPrediction': total_prediction_percentage
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
