@@ -371,7 +371,7 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
                     
-
+                    st.session_state.res = res  # Store the result in session state
 
             #History 
             import firebase_admin
@@ -430,7 +430,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        #'TotalPrediction': res
+                        'TotalPrediction': st.session_state.get('res', 'No prediction') 
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -473,7 +473,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            #'Total prediction': entry.get('TotalPrediction', '')
+                            'Total prediction': entry.get('TotalPrediction', '')
                         }
                         table_data.append(row)
 
