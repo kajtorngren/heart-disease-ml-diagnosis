@@ -436,7 +436,6 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'Prediction': res[0],  # Store the entire prediction message (optional)
                         'CombinedRisk': combined_risk_str  # Store just the percentage value
                     }
 
