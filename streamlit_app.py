@@ -372,7 +372,6 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
 
-            total_prediction_percentage = f"{res[0]:.2f}%" 
 
             #History 
             import firebase_admin
