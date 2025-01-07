@@ -411,7 +411,7 @@ if choice == 'Login':
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
             # Button to save the data
-            if st.button('Save all your text, input features, and total prediction'):
+            if st.button('Save your mood post, input features, and total prediction'):
                 if post != '':
                     # Retrieve existing data from Firestore for the user
                     user_doc = db2.collection('UserData').document(user['localId']).get()
@@ -443,7 +443,7 @@ if choice == 'Login':
                         data = {"Data": [combined_data]}
                         db2.collection('UserData').document(user['localId']).set(data)
 
-                    st.success('Your input and post have been saved!')
+                    st.success('Your post, inputs and prediction have been saved!')
                     
 
             # Retrieve and display all saved inputs and posts for the user
