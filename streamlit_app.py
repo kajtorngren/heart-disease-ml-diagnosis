@@ -431,7 +431,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': total_prediction  # Add the total prediction here
+                        'TotalPrediction': res[0] # Add the total prediction here
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -474,7 +474,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total Prediction': entry.get('TotalPrediction', '')  # Add total prediction to the row
+                            'Total Prediction': entry['TotalPrediction']  # Add total prediction to the row
                         }
                         table_data.append(row)
 
