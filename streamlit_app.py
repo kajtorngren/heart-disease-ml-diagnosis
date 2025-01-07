@@ -428,8 +428,6 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
-                    pred = results_df.to_dict(orient='records')[0]
-        
 
                     # Combine the data into a single structure
                     combined_data = {
