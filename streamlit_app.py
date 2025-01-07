@@ -437,7 +437,7 @@ if choice == 'Login':
                         'MoodPost': post,
                         'UserInput': user_data,
                         'Prediction': res[0],  # Store the entire prediction message (optional)
-                        'CombinedRisk': combined_risk  # Store just the percentage value
+                        'CombinedRisk': combined_risk_str  # Store just the percentage value
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
