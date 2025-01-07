@@ -271,6 +271,8 @@ if choice == 'Login':
                     else:
                         st.write("No ECG data available to visualize.")
 
+
+
             st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
             st.subheader('🫀 Heart Disease Prediction')
 
