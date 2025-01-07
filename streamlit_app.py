@@ -464,11 +464,11 @@ if choice == 'Login':
                             'Mood Post': entry['MoodPost'],
                             'Age': user_input.get('age', ''),
                             'Sex': user_input.get('sex', ''),
-                            'BMI': user_input.get('cp', ''),
-                            'Smoking History': user_input.get('exang', ''),
-                            'Exercise': user_input.get('trestbps', ''),
-                            'Family History': user_input.get('chol', ''),
-                            'Family History': user_input.get('thalach', ''),
+                            'Chest pain type': user_input.get('cp', ''),
+                            'Chest pain during exercise': user_input.get('exang', ''),
+                            'Resting blood pressure': user_input.get('trestbps', ''),
+                            'Cholesterol': user_input.get('chol', ''),
+                            'Max heart rate': user_input.get('thalach', ''),
                         }
                         table_data.append(row)
 
