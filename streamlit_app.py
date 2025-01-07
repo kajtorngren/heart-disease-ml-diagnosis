@@ -160,8 +160,8 @@ if choice == 'Login':
             # Collect other user input features
             def user_input_features():
                 age = st.sidebar.slider('Age', 18, 100, 50)
-                sex = st.sidebar.radio('Sex', ('male', 'female'))
-                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+                sex = st.sidebar.radio('Sex', ('Male', 'Female'))
+                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('Typical angina', 'Atypical angina', 'Non-anginal pain', 'Asymptomatic'))
 
                 st.sidebar.info(
                 """
@@ -477,7 +477,6 @@ if choice == 'Login':
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
                 st.write("No data found for this user.")
-
 
 
         except Exception as e:
