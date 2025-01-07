@@ -414,6 +414,7 @@ if choice == 'Login':
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
             # Button to save the data
+            # Button to save the data
             if st.button('Save your mood post, input features, and total prediction'):
                 if post != '':
                     # Retrieve existing data from Firestore for the user
@@ -427,7 +428,7 @@ if choice == 'Login':
 
                     # Extract combined risk percentage from res
                     combined_risk_str = res[0].split()[2].strip('%')  # Extract percentage from res[0]
-                    combined_risk = float(combined_risk_str)  # Convert to float for database storage
+                    combined_risk = float(res[0].split(":")[1].split("%")[0].strip())  # Extracts the numeric value from 'Combined risk: 85.2%'
 
                     # Combine the data into a single structure
                     combined_data = {
@@ -479,7 +480,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total Prediction': entry.get('CombinedRisk', ''),  # Add CombinedRisk to the row
+                            'Total Prediction': entry['CombinedRisk'],  # Add CombinedRisk to the row
                         }
                         table_data.append(row)
 
