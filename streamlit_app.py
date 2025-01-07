@@ -372,7 +372,7 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
 
-
+                    total_prediction_percentage = f"{res[0]:.2f}%" 
 
             #History 
             import firebase_admin
@@ -426,16 +426,13 @@ if choice == 'Login':
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
 
-                    total_prediction_percentage = f"{res[0]:.2f}%" if res[0] is not None else "N/A" # Format the prediction as a percentage with 2 decimal places
-
-
                     # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': total_prediction_percentage,
+                        'TotalPrediction': total_prediction_percentage
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
