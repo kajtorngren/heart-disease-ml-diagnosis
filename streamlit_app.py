@@ -468,7 +468,6 @@ if choice == 'Login':
                     for entry in reversed(data['Data']):
                         # Extract user input features and organize them into individual columns
                         user_input = entry['UserInput']
-                        pred = entry['TotalPrediction']
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
