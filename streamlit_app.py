@@ -421,17 +421,8 @@ if choice == 'Login':
                     # Current timestamp in Swedish time
                     current_time = datetime.now(swedish_tz).strftime("%Y-%m-%d %H:%M:%S")
 
-                    if len(res) > 1:
-                        prediction_text = f'{res[0]} {res[1]}'
-                    else:
-                        prediction_text = res[0]  # Or a default value if res is empty
-
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
-
-                    # Add 'TotalPrediction' to user_data
-                    user_data['TotalPrediction'] = prediction_text
-
 
                     # Combine the data into a single structure
                     combined_data = {
@@ -439,6 +430,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
+                        'TotalPrediction': res
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -481,7 +473,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total prediction': user_input.get('TotalPrediction', '')
+                            'Total prediction': entry.get('TotalPrediction', '')
                         }
                         table_data.append(row)
 
