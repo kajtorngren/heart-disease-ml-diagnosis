@@ -430,17 +430,21 @@ if choice == 'Login':
                                    f"BPCh Prediction Probability: {BPCh_pred_prob}, " \
                                    f"Ensemble Prediction: {res[0] if len(res) == 1 else f'{res[0]} {res[1]}'}"
 
+                    # Check if the document exists in the database
                     if info.exists:
                         info = info.to_dict()
 
                         if 'Content' in info.keys():
+                            # If content exists, update it with the new post
                             pos = db2.collection('Posts').document(user['localId'])
-                            pos.update({u'Content': firestore.ArrayUnion([post_with_timestamp])})
+                            pos.update({u'Content': firestore.ArrayUnion([post_with_timestamp_and_features])})
                         else:
-                            data = {"Content": [post_with_timestamp], 'Username': user['localId']}
+                            # If no content exists, create new content with the post
+                            data = {"Content": [post_with_timestamp_and_features], 'Username': user['localId']}
                             db2.collection('Posts').document(user['localId']).set(data)
                     else:
-                        data = {"Content": [post_with_timestamp], 'Username': user['localId']}
+                        # If no document exists for the user, create the new data
+                        data = {"Content": [post_with_timestamp_and_features], 'Username': user['localId']}
                         db2.collection('Posts').document(user['localId']).set(data)
 
             docs = db2.collection('Posts').document(user['localId']).get()
