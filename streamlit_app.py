@@ -426,10 +426,6 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
-                    # Extract combined risk percentage from res
-                    combined_risk_str = res[0].split()[2].strip('%')  # Extract percentage from res[0]
-                    combined_risk = float(res[0].split(":")[1].split("%")[0].strip())  # Extracts the numeric value from 'Combined risk: 85.2%'
-
                     # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
@@ -478,7 +474,6 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total Prediction': entry['CombinedRisk'],  # Add CombinedRisk to the row
                         }
                         table_data.append(row)
 
