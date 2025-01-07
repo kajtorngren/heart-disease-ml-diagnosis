@@ -372,7 +372,11 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
 
-
+                    prediction_data = {
+                        'ecg_prediction': percentage_ones,
+                        'bpch_prediction': BPCh_pred_prob,
+                        'ensemble_result': res
+                    }
 
 
             #History 
@@ -425,7 +429,7 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
-                    total_p = res.to_dict(orient='records')[0]
+                    pred_data = prediction_data.to_dict(orient='records')[0]  # Convert input data to dictionary
 
                     # Combine the data into a single structure
                     combined_data = {
@@ -433,7 +437,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'Prediction': total_p
+                        'Prediction': pred_data
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
