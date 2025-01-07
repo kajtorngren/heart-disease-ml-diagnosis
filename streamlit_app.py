@@ -411,7 +411,7 @@ if choice == 'Login':
 
             # User input for the post
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
-            total_prediction_value = res 
+            total_prediction_value = res[0] 
             # Button to save the data
             # Button to save the data
             if st.button('Save your mood post, input features, and total prediction'):
