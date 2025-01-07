@@ -364,12 +364,8 @@ if choice == 'Login':
                     else: 
                         BPCh_pred_prob = prediction_proba[0][1]
                 
-
                     res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
-
-                    results_df = pd.DataFrame([res], columns=['Prediction1', 'Prediction2'])  # Create DataFrame with the results
         
-
                     if len(res) > 1:
                         st.success(f'{res[0]} {res[1]}')
                     else:
