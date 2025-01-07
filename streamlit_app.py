@@ -445,7 +445,7 @@ if choice == 'Login':
                     for post_entry in reversed(data['Content']):
                         # Split timestamp and text
                         timestamp, text = post_entry.split(": ", 1)
-                        table_data.append({'Timestamp': timestamp, 'Text': text})
+                        table_data.append({'Timestamp (GMT+1)': timestamp, 'Text': text})
 
                 # Use st.dataframe() instead of st.table() and hide the index
                 st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index, can also use table instead
