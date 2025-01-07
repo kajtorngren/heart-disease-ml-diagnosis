@@ -271,7 +271,7 @@ if choice == 'Login':
                     else:
                         st.write("No ECG data available to visualize.")
 
-
+            st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
             st.subheader('🫀 Heart Disease Prediction')
 
             # Button for ECG predictions
@@ -399,6 +399,7 @@ if choice == 'Login':
             import pytz  # Ensure pytz is installed: pip install pytz
 
             # Displaying history of inputs and predictions
+            st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
             st.subheader('📖 History of inputs and predictions')
 
             cred = credentials.Certificate(service_account_info)
@@ -449,7 +450,7 @@ if choice == 'Login':
             # Retrieve and display all saved inputs and posts for the user
             docs = db2.collection('UserData').document(user['localId']).get()
 
-            st.markdown('<br>', unsafe_allow_html=True)  # Adds space between Button 1 and Button 2
+            st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
 
             st.write("📋 Table of saved inputs, posts, and predictions:")
 
