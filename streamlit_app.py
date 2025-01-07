@@ -425,12 +425,18 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
+                    # Extract combined risk percentage from res
+                    combined_risk_str = res[0].split()[2].strip('%')  # Extract percentage from res[0]
+                    combined_risk = float(combined_risk_str)  # Convert to float for database storage
+
                     # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
+                        'Prediction': res[0],  # Store the entire prediction message (optional)
+                        'CombinedRisk': combined_risk  # Store just the percentage value
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -447,12 +453,11 @@ if choice == 'Login':
                         db2.collection('UserData').document(user['localId']).set(data)
 
                     st.success('Your post, inputs and prediction have been saved!')
-                    
 
             # Retrieve and display all saved inputs and posts for the user
             docs = db2.collection('UserData').document(user['localId']).get()
 
-            st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
+            st.markdown('<br>', unsafe_allow_html=True)  # Adds space
 
             st.write("📋 Table of saved inputs, posts, and predictions:")
 
@@ -464,7 +469,6 @@ if choice == 'Login':
                     for entry in reversed(data['Data']):
                         # Extract user input features and organize them into individual columns
                         user_input = entry['UserInput']
-                        # Assuming user_input has the following keys: 'Age', 'Sex', 'BMI', 'SmokingHistory', 'Exercise', 'FamilyHistory'
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
@@ -475,6 +479,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
+                            'Total Prediction': entry.get('CombinedRisk', ''),  # Add CombinedRisk to the row
                         }
                         table_data.append(row)
 
@@ -482,6 +487,7 @@ if choice == 'Login':
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
                 st.write("No data found for this user.")
+
 
 
         except Exception as e:
