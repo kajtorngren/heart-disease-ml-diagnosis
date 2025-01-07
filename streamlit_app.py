@@ -453,7 +453,7 @@ if choice == 'Login':
 
             st.markdown('<br>', unsafe_allow_html=True)  # Adds space
 
-            st.write("📋 Table of saved inputs, posts, and predictions:")
+            st.write("📋 Table of saved posts, inputs and predictions:")
 
             if docs.exists:
                 data = docs.to_dict()
