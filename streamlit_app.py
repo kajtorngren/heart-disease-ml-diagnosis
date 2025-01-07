@@ -160,8 +160,8 @@ if choice == 'Login':
             # Collect other user input features
             def user_input_features():
                 age = st.sidebar.slider('Age', 18, 100, 50)
-                sex = st.sidebar.radio('Sex', ('Male', 'Female'))
-                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('Typical angina', 'Atypical angina', 'Non-anginal pain', 'Asymptomatic'))
+                sex = st.sidebar.radio('Sex', ('male', 'female'))
+                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
 
                 st.sidebar.info(
                 """
@@ -456,22 +456,13 @@ if choice == 'Login':
                 if 'Data' in data:
                     # Reverse the order of entries to show the latest entry first
                     for entry in reversed(data['Data']):
-                        # Extract user input features and organize them into individual columns
-                        user_input = entry['UserInput']
-                        # Assuming user_input has the following keys: 'Age', 'Sex', 'BMI', 'SmokingHistory', 'Exercise', 'FamilyHistory'
-                        row = {
+                        table_data.append({
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
-                            'Age': user_input.get('age', ''),
-                            'Sex': user_input.get('sex', ''),
-                            'Chest_pain_type': user_input.get('chest_pain_type', ''),
-                            'Smoking History': user_input.get('SmokingHistory', ''),
-                            'Exercise': user_input.get('Exercise', ''),
-                            'Family History': user_input.get('FamilyHistory', ''),
-                        }
-                        table_data.append(row)
+                            'User Input': entry['UserInput']
+                        })
 
-                    # Display the combined data in a table with custom headers
+                    # Display the combined data in a table
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
                 st.write("No data found for this user.")
