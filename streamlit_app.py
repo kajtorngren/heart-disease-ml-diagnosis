@@ -464,7 +464,7 @@ if choice == 'Login':
                             'Mood Post': entry['MoodPost'],
                             'Age': user_input.get('age', ''),
                             'Sex': user_input.get('sex', ''),
-                            'BMI': user_input.get('BMI', ''),
+                            'Chest_pain_type': user_input.get('chest_pain_type', ''),
                             'Smoking History': user_input.get('SmokingHistory', ''),
                             'Exercise': user_input.get('Exercise', ''),
                             'Family History': user_input.get('FamilyHistory', ''),
