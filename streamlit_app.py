@@ -367,10 +367,14 @@ if choice == 'Login':
 
                     res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
 
+                    results_df = pd.DataFrame([res], columns=['Prediction1', 'Prediction2'])  # Create DataFrame with the results
+        
+
                     if len(res) > 1:
                         st.success(f'{res[0]} {res[1]}')
                     else:
                         st.success(res[0])
+                    
 
 
             #History 
@@ -424,13 +428,16 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
+                    pred = results_df.to_dict(orient='records')[0]
+        
+
                     # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': str(res[0])
+                        'TotalPrediction': pred
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
