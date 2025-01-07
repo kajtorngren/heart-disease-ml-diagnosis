@@ -449,7 +449,9 @@ if choice == 'Login':
             # Retrieve and display all saved inputs and posts for the user
             docs = db2.collection('UserData').document(user['localId']).get()
 
-            st.write("Table of saved inputs, posts, and predictions:")
+            st.markdown('<h4 style="font-size: 12px;">📖 History of inputs and predictions</h4>', unsafe_allow_html=True)
+
+            st.write("📋 Table of saved inputs, posts, and predictions:")
 
             if docs.exists:
                 data = docs.to_dict()
