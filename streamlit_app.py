@@ -468,7 +468,7 @@ if choice == 'Login':
                             'Chest pain from exercise': user_input.get('exercise_induced_angina', ''),
                             'Resting blood pressure': user_input.get('resting_bp_s', ''),
                             'Cholestrol': user_input.get('cholesterol', ''),
-                            'Max heart rate': user_input.get('max_heart_rate, ''),
+                            'Max heart rate': user_input.get('max_heart_rate', ''),
                         }
                         table_data.append(row)
 
