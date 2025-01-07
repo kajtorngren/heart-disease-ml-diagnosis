@@ -412,6 +412,7 @@ if choice == 'Login':
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
             # Button to save the data
+            # Button to save the data
             if st.button('Save your mood post, input features, and total prediction'):
                 if post != '':
                     # Retrieve existing data from Firestore for the user
@@ -423,26 +424,13 @@ if choice == 'Login':
                     # User input data (convert to dictionary)
                     user_data = input_df.to_dict(orient='records')[0]  # Convert input data to dictionary
 
-                    # Run prediction logic to get the res value
-                    percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
-                    prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
-                    prediction_proba = modelBPCh.predict_proba(input_df)
-                    
-                    if prediction[0] == 0:
-                        BPCh_pred_prob = prediction_proba[0][0]
-                    else: 
-                        BPCh_pred_prob = prediction_proba[0][1]
-
-                    res = run_ensemble(percentage_ones, prediction[0], BPCh_pred_prob)
-
-                    # Combine the data into a single structure, including the result
+                    # Combine the data into a single structure
                     combined_data = {
                         'UserID': user['localId'],
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': res[0] if len(res) > 1 else res[0],  # Saving the first result, adjust if necessary
-                        'AdditionalPrediction': res[1] if len(res) > 1 else None  # If there's a second value in res, save it
+                        'TotalPrediction': res[0]
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -485,11 +473,14 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
-                            'Total prediction': entry.get('TotalPrediction', ''),
-                            'Additional Prediction': entry.get('AdditionalPrediction', '')  # Display additional prediction if available
+                            'Total prediction': entry.get('TotalPrediction')
                         }
                         table_data.append(row)
 
+                    # Display the combined data in a table with custom headers
+                    st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
+            else:
+                st.write("No data found for this user.")
 
 
 
