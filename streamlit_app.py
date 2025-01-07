@@ -160,8 +160,8 @@ if choice == 'Login':
             # Collect other user input features
             def user_input_features():
                 age = st.sidebar.slider('Age', 18, 100, 50)
-                sex = st.sidebar.radio('Sex', ('male', 'female'))
-                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('typical angina', 'atypical angina', 'non-anginal pain', 'asymptomatic'))
+                sex = st.sidebar.radio('Sex', ('Male', 'Female'))
+                chest_pain_type = st.sidebar.selectbox('Chest pain type', ('Typical angina', 'Atypical angina', 'Non-anginal pain', 'Asymptomatic'))
 
                 st.sidebar.info(
                 """
@@ -463,11 +463,12 @@ if choice == 'Login':
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
                             'Age': user_input.get('age', ''),
-                            'Sex': user_input.get('Sex', ''),
-                            'BMI': user_input.get('BMI', ''),
-                            'Smoking History': user_input.get('SmokingHistory', ''),
-                            'Exercise': user_input.get('Exercise', ''),
-                            'Family History': user_input.get('FamilyHistory', ''),
+                            'Sex': user_input.get('sex', ''),
+                            'Chest pain type': user_input.get('chest_pain_type', ''),
+                            'Chest pain from exercise': user_input.get('exercise_induced_angina', ''),
+                            'Resting blood pressure': user_input.get('resting_bp_s', ''),
+                            'Cholestrol': user_input.get('cholesterol', ''),
+                            'Max heart rate': user_input.get('max_heart_rate, ''),
                         }
                         table_data.append(row)
 
