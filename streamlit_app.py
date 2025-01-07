@@ -462,12 +462,13 @@ if choice == 'Login':
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
-                            'Age': user_input.get('Age', ''),
-                            'Sex': user_input.get('Sex', ''),
-                            'BMI': user_input.get('BMI', ''),
-                            'Smoking History': user_input.get('SmokingHistory', ''),
-                            'Exercise': user_input.get('Exercise', ''),
-                            'Family History': user_input.get('FamilyHistory', ''),
+                            'Age': user_input.get('age', ''),
+                            'Sex': user_input.get('sex', ''),
+                            'BMI': user_input.get('chest_pain_type', ''),
+                            'Smoking History': user_input.get('exercise_induced_angina', ''),
+                            'Exercise': user_input.get('resting_bp_s', ''),
+                            'Family History': user_input.get('cholesterol', ''),
+                            'Family History': user_input.get('max_heart_rate', ''),
                         }
                         table_data.append(row)
 
