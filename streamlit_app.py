@@ -372,6 +372,11 @@ if choice == 'Login':
                     else:
                         st.success(res[0])
 
+                    # Extract the numeric value from the result, assuming it's a percentage string like '87%'
+                    if isinstance(res[0], str) and '%' in res[0]:
+                        # Extract the numeric part of the result (e.g., '87%' -> 87)
+                        total_prediction_value = float(res[0].replace('%', '').strip())
+                        total_prediction = f"{total_prediction_value:.2f}%"  # Store it in percentage format
 
 
 
@@ -432,6 +437,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
+                        'TotalPrediction': total_prediction  # Add the total prediction here
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
@@ -474,6 +480,7 @@ if choice == 'Login':
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
+                            'Total Prediction': entry.get('TotalPrediction', '')  # Add total prediction to the row
                         }
                         table_data.append(row)
 
