@@ -1,5 +1,4 @@
 # URL: https://heart-disease-ml-diagnosis.streamlit.app/
-# Streamlit APIs: https://docs.streamlit.io/develop/api-reference
 
 # Modules
 import streamlit as st
@@ -25,10 +24,9 @@ st.image("cardiology.jpg", use_container_width=True)
 st.title('🧠 Machine Learning For Diagnosing & Monitoring Heart Disease 🫀')
 st.info('This app builds a machine learning application for heart disease diagnosis. A prediction is made based on the ECG signal and input features.')
 
-####################################################################################
+#Login/Authentication function
 import pyrebase
 from datetime import datetime
-
 
 # Configuration Key
 firebaseConfig = {
@@ -41,7 +39,6 @@ firebaseConfig = {
   'appId': "1:1040645849945:web:a19cc6518fdb3da11d4248",
   'measurementId': "G-NWG4YZ6VSX"
 }
-
 
 # Firebase Authentication
 firebase = pyrebase.initialize_app(firebaseConfig)
@@ -59,7 +56,6 @@ email = st.sidebar.text_input('Please enter your email address')
 password = st.sidebar.text_input('Please enter your password',type = 'password')
 
 # App 
-
 # Sign up Block
 if choice == 'Sign up':
 
@@ -91,7 +87,6 @@ if choice == 'Login':
             st.sidebar.success('Login successful!')
             st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>', unsafe_allow_html=True)
 
-#######################################################################################
 
             # Load the saved models
             modelBPCh = joblib.load('BPCh_model.pkl')
@@ -246,8 +241,6 @@ if choice == 'Login':
             # Display the ECG data and visualization side by side
             col1, col2 = st.columns(2)
 
-            
-
             with col1:
                 with st.expander('📑 ECG Signal Data'):
                     if not ecg_df.empty:
@@ -324,7 +317,7 @@ if choice == 'Login':
                     st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
 
 
-
+            # Button for total predictions (combined risk)
             if st.button('Total predict'):
                 if uploaded_file is None:
                     st.warning("Please upload your ECG signal file first to make a total prediction.")
@@ -356,7 +349,6 @@ if choice == 'Login':
                     prediction = modelBPCh.predict(input_df)  # Invert the predictions if they are inverted
                     prediction_proba = modelBPCh.predict_proba(input_df)
 
-
             
                     if prediction[0] == 0:
                         BPCh_pred_prob = prediction_proba[0][0]
@@ -372,6 +364,8 @@ if choice == 'Login':
                         st.success(res[0])
                     
                     st.session_state.res = res  # Store the result in session state
+
+
 
             #History 
             import firebase_admin
@@ -481,7 +475,6 @@ if choice == 'Login':
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
                 st.write("No data found for this user.")
-
 
 
         except Exception as e:
