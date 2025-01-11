@@ -466,13 +466,28 @@ if choice == 'Login':
                             s = "Male"
                         else:
                             s = 'Female'
+
+                        if user_input.get('cp', '') == 1:
+                            cp = "Typical Anginga"
+                        elif user_input.get('cp', '') == 2:
+                            cp = "Atypical Angina"
+                        elif user_input.get('cp', '') == 3:
+                            cp = "Non-Anginal Pain"
+                        else:
+                            cp = "Asymptomatic"
+
+                        if user_input.get('exang', '') == 1:
+                            exang = "Yes"
+                        else:
+                            exang = 'No'
+                        
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
                             'Age': user_input.get('age', ''),
                             'Sex': s,
-                            'Chest pain type': user_input.get('cp', ''),
-                            'Chest pain from exercise': user_input.get('exang', ''),
+                            'Chest pain type': cp,
+                            'Chest pain from exercise': exang,
                             'Resting blood pressure': user_input.get('trestbps', ''),
                             'Cholesterol': user_input.get('chol', ''),
                             'Max heart rate': user_input.get('thalach', ''),
