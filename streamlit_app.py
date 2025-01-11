@@ -470,7 +470,7 @@ if choice == 'Login':
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
                             'Age': user_input.get('age', ''),
-                            'Sex': user_input.get('sex', ''),
+                            'Sex': s,
                             'Chest pain type': user_input.get('cp', ''),
                             'Chest pain from exercise': user_input.get('exang', ''),
                             'Resting blood pressure': user_input.get('trestbps', ''),
