@@ -54,12 +54,16 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
     # Tröskelvärden för riskkategori
     if combined_risk < 50:
         risk_category = "Low risk for heart disease."
+        image = "LowRiskGreen.jpeg"
     elif 50 <= combined_risk < 75:
         risk_category = "Moderate risk for heart disease"
+        image = "ModerateRiskYellow.jpeg"
     elif 75 <= combined_risk < 90:
         risk_category = "High risk for heart disease."
+        image = "HighRiskOrange.jpeg"
     else:
         risk_category = "Very high risk for heart disease"
+        image = "VeryHighRiskRed.jpeg"
 
     # Skriv ut sammanvägt resultat på samma rad
     res = [(f"Combined risk: {combined_risk:.2f}% - {risk_category}")]
@@ -70,7 +74,7 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
 
     # Skriv ut procentuellt resultat för BP/Chol
     #print(f"BP/Chol Risk: {bp_chol_risk}%")
-    return res
+    return res, image
 
     #return combined_risk, risk_category, ecg_risk
 
