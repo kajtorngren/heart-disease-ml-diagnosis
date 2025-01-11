@@ -361,7 +361,6 @@ if choice == 'Login':
                 
                     res = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
 
-
                     if len(res) > 1:
                         st.success(f'{res[0]} {res[1]}')
                     else:
