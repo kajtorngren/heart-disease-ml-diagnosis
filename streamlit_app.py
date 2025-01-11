@@ -300,7 +300,10 @@ if choice == 'Login':
                     #st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
                     percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
 
-                    st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+                    if percentage_ones > 50:
+                        st.error(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
+                    else:
+                        st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
 
 
 
