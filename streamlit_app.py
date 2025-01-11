@@ -312,7 +312,7 @@ if choice == 'Login':
 
                 # Display the prediction and probability
                 if prediction[0] == 0:
-                    st.text(f":red[The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.]")
+                    st.error(f"The model predicts that the patient is at risk of heart disease with a probability of {prediction_proba[0][0]*100:.1f}%.")
                 else:
                     st.success(f"The model predicts that the patient is not at risk of heart disease with a probability of {prediction_proba[0][1]*100:.1f}%.")
 
