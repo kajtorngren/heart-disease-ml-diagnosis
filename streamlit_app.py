@@ -462,6 +462,10 @@ if choice == 'Login':
                     for entry in reversed(data['Data']):
                         # Extract user input features and organize them into individual columns
                         user_input = entry['UserInput']
+                        if user_input.get('sex', '') == 1:
+                            s = "Male"
+                        else:
+                            s = 'Female'
                         row = {
                             'Timestamp': entry['Timestamp'],
                             'Mood Post': entry['MoodPost'],
