@@ -363,10 +363,10 @@ if choice == 'Login':
                     res, image = run_ensemble(percentage_ones,prediction[0],BPCh_pred_prob)
 
                     if len(res) > 1:
-                        st.subheader(f'{res[0]} {res[1]}')
+                        st.text(f'{res[0]} {res[1]}')
                     else:
                         st.image(image,caption="",width=350)
-                        st.subheader(res[0])
+                        st.text(res[0])
                     
                     st.session_state.res = res  # Store the result in session state
 
