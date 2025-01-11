@@ -297,7 +297,7 @@ if choice == 'Login':
                     y_pred = modelECG.predict(X_input)
                     predicted_classes = np.argmax(y_pred, axis=1)
 
-                    st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
+                    #st.success(predicted_classes)  # Output will be an array of class labels (0 or 1)
                     percentage_ones = (np.sum(predicted_classes == 1) / len(predicted_classes)) * 100
 
                     st.success(f"Risk-percentage of abnormality: {percentage_ones:.2f}%")
