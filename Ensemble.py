@@ -72,6 +72,7 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
     #print(f"BP/Chol Risk: {bp_chol_risk}%")
     return res
 
+    #return combined_risk, risk_category, ecg_risk
 
 
 
