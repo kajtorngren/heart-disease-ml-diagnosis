@@ -365,7 +365,7 @@ if choice == 'Login':
                     if len(res) > 1:
                         st.success(f'{res[0]} {res[1]}')
                     else:
-                        st.image(image,caption="",width=65)
+                        st.image(image,caption="",width=650)
                         st.success(res[0])
                     
                     st.session_state.res = res  # Store the result in session state
