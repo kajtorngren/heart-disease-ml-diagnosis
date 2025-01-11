@@ -54,19 +54,19 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
     # Tröskelvärden för riskkategori
     if combined_risk < 50:
         risk_category = "Low risk for heart disease."
-        image = "LowRiskGreen.jpeg"
+        image = "Green.jpeg"
     elif 50 <= combined_risk < 75:
         risk_category = "Moderate risk for heart disease"
-        image = "ModerateRiskYellow.jpeg"
+        image = "Yellow.jpeg"
     elif 75 <= combined_risk < 90:
         risk_category = "High risk for heart disease."
-        image = "HighRiskOrange.jpeg"
+        image = "Orange.jpeg"
     else:
         risk_category = "Very high risk for heart disease"
-        image = "VeryHighRiskRed.jpeg"
+        image = "Red.jpeg"
 
     # Skriv ut sammanvägt resultat på samma rad
-    res = [(f"Combined risk: {combined_risk:.2f}% - {risk_category}")]
+    res = [(f"Combined risk: {combined_risk:.2f}%")]
 
     # Extra medicinsk insikt om arytmi vid hög EKG-risk
     if ecg_risk >= 70:
