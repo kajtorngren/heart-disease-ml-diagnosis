@@ -498,7 +498,7 @@ if choice == 'Login':
                     # Display the combined data in a table with custom headers
                     st.dataframe(table_data, hide_index=True)  # Display the dataframe without an index
             else:
-                st.write("No data found for this user.")
+                st.write("You have no history stored.")
 
 
         except Exception as e:
