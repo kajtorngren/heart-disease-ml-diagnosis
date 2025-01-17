@@ -27,29 +27,36 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
         # Om modellen förutspår "hälsosam" (1), invertera sannolikheten till låg risk
         bp_chol_risk = int((1 - bp_chol_probability) * 100)
 
+
     # Dynamiska vikter baserat på båda riskerna
-    def adjust_weights(ecg_risk, bp_chol_risk):
-        """
-        Justera vikterna för de två modellerna baserat på båda risknivåerna.
-        Om en risk är 0, ge hela vikten till den andra.
-        """
-        if ecg_risk == 0 and bp_chol_risk == 0:
-            return 0.5, 0.5  # Ge lika vikt om båda är noll
-        elif ecg_risk == 0:
-            return 0.0, 1.0  # All vikt till BP/Chol om EKG-risk är 0
-        elif bp_chol_risk == 0:
-            return 1.0, 0.0  # All vikt till EKG om BP/Chol-risk är 0
-        else:
-            total_risk = ecg_risk + bp_chol_risk
-            ecg_weight = ecg_risk / total_risk
-            bp_chol_weight = bp_chol_risk / total_risk
-            return ecg_weight, bp_chol_weight
+    #def adjust_weights(ecg_risk, bp_chol_risk):
+        
+        #Justera vikterna för de två modellerna baserat på båda risknivåerna.
+        #Om en risk är 0, ge hela vikten till den andra.
+        
+    #    if ecg_risk == 0 and bp_chol_risk == 0:
+    #        return 0.5, 0.5  # Ge lika vikt om båda är noll
+    #    elif ecg_risk == 0:
+    #        return 0.0, 1.0  # All vikt till BP/Chol om EKG-risk är 0
+    #    elif bp_chol_risk == 0:
+    #        return 1.0, 0.0  # All vikt till EKG om BP/Chol-risk är 0
+    #    else:
+    #        total_risk = ecg_risk + bp_chol_risk
+    #        ecg_weight = ecg_risk / total_risk
+    #        bp_chol_weight = bp_chol_risk / total_risk
+    #        return ecg_weight, bp_chol_weight
 
     # Hämta dynamiska vikter
-    ecg_weight, bp_chol_weight = adjust_weights(ecg_risk, bp_chol_risk)
+    #ecg_weight, bp_chol_weight = adjust_weights(ecg_risk, bp_chol_risk)
 
     # Kombinera riskerna med justerade vikter
-    combined_risk = (ecg_risk * ecg_weight + bp_chol_risk * bp_chol_weight)
+    #combined_risk = (ecg_risk * ecg_weight + bp_chol_risk * bp_chol_weight)
+
+    
+
+    combined_risk = 1 - (1 - ecg_risk) * (1 - bp_chol_risk)
+
+
 
     # Tröskelvärden för riskkategori
     if combined_risk < 30:
