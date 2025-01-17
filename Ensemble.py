@@ -54,7 +54,7 @@ def run_ensemble(ecg_risk,bp_chol_prediction,bp_chol_probability):
 
     
 
-    combined_risk = 1 - (1 - ecg_risk/100) * (1 - bp_chol_risk)
+    combined_risk = 1 - (1 - ecg_risk/100) * (1 - bp_chol_risk/100)
 
 
 
