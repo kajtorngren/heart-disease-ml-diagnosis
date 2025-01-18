@@ -401,6 +401,8 @@ if choice == 'Login':
             st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
             st.subheader('📖 History of inputs and predictions')
 
+            st.text_input("Share your current mood and how you are feeling.", max_chars=200)
+
             cred = credentials.Certificate(service_account_info)
             db2 = firestore.client()
 
