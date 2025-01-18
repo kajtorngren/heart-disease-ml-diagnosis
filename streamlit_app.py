@@ -501,6 +501,4 @@ if choice == 'Login':
                 st.write("You have no history stored.")
 
 
-        except Exception as e:
-            # Handle invalid login
-            st.sidebar.error('Invalid email address or password. \nPlease try again.')
+        
