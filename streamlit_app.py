@@ -368,7 +368,7 @@ if choice == 'Login':
                         st.image(image,caption="",width=350)
                         st.text(res[0])
                     
-                    #st.session_state.res = res  # Store the result in session state
+                    st.session_state.res = res  # Store the result in session state
 
 
 
@@ -429,7 +429,7 @@ if choice == 'Login':
                         'Timestamp': current_time,
                         'MoodPost': post,
                         'UserInput': user_data,
-                        'TotalPrediction': res
+                        'TotalPrediction': st.session_state.get('res', 'No prediction') 
                     }
 
                     # Save or update the data in Firestore under the "UserData" collection
