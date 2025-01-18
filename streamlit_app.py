@@ -400,12 +400,10 @@ if choice == 'Login':
             # Displaying history of inputs and predictions
             st.markdown('<br>', unsafe_allow_html=True)  # Adds space 
             st.subheader('📖 History of inputs and predictions')
-            
 
             cred = credentials.Certificate(service_account_info)
             db2 = firestore.client()
 
-            st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
             # Set Swedish timezone
             swedish_tz = pytz.timezone('Europe/Stockholm')
