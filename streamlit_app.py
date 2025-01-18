@@ -405,7 +405,6 @@ if choice == 'Login':
             firebase_admin.initialize_app(cred)
             db2 = firestore.client()
 
-
             # Set Swedish timezone
             swedish_tz = pytz.timezone('Europe/Stockholm')
 
