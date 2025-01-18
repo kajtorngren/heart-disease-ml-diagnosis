@@ -407,6 +407,7 @@ if choice == 'Login':
             # Set Swedish timezone
             swedish_tz = pytz.timezone('Europe/Stockholm')
 
+            post2 = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
             # User input for the post
             post = st.text_input("Share your current mood and how you are feeling.", max_chars=200)
 
