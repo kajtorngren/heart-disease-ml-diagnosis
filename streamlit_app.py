@@ -402,7 +402,7 @@ if choice == 'Login':
             st.subheader('📖 History of inputs and predictions')
 
             cred = credentials.Certificate(service_account_info)
-            firebase_admin.initialize_app(cred)
+            #firebase_admin.initialize_app(cred)
             db2 = firestore.client()
 
             # Set Swedish timezone
